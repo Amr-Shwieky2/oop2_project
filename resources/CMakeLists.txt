@@ -5,8 +5,7 @@ configure_file ("./images/menu.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/setting.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/chooseCharacters1.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/chooseCharacters2.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./fonds/arial.ttf" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("highScore.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+
 
 
 
@@ -36,7 +35,8 @@ configure_file ("./sounds/winning.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 
-
+configure_file ("./fonts/arial.ttf" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("highScore.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 
