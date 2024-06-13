@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Singleton.h"
-
+#include <SFML/Graphics.hpp>
+#include <map>
 
 
 class Screens
@@ -24,7 +25,7 @@ private:
 	void helpPage();
 	void settingsPage();
 	void highScorePage();
-
+	void chooseCharacter();
 
 	void playerDetails(const int& numberOfPlayers);
 
@@ -34,6 +35,7 @@ private:
 	int m_TopScore[NUM_OF_HIGH_SCCORES];
 
 	bool m_back;
+
 
 };
 

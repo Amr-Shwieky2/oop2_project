@@ -19,6 +19,7 @@ Screens::~Screens()
 	exit(EXIT_SUCCESS);
 }
 
+
 void Screens::runMenu()
 {
 	directorScreens(MENU_m, "menu");
@@ -34,6 +35,7 @@ void Screens::runMenu()
 			case sf::Event::Closed:
 				m_window.close();
 				break;
+
 			case sf::Event::MouseButtonReleased:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
@@ -303,13 +305,105 @@ void Screens::highScorePage()
 	}
 }
 
+void Screens::chooseCharacter()
+{
+	// Define the initial selected character index
+	int selectedCharacterIndex = 0;
+
+	// Define the positions and sizes of the character rectangles based on the given coordinates
+	sf::FloatRect characterBounds[4] = {
+		{19, 88, 171, 224},   // Character 1 bounds
+		{252, 89, 164, 215},  // Character 2 bounds
+		{471, 98, 175, 212},  // Character 3 bounds
+		{711, 88, 177, 220}   // Character 4 bounds
+	};
+
+	// Create a rectangle shape for the selection outline
+	sf::RectangleShape selectionRectangle;
+	selectionRectangle.setSize(sf::Vector2f(characterBounds[0].width, characterBounds[0].height));
+	selectionRectangle.setOutlineThickness(5);
+	selectionRectangle.setOutlineColor(sf::Color::Red);
+	selectionRectangle.setFillColor(sf::Color::Transparent);
+
+	// Define the position for the text input area
+	sf::FloatRect textInputBounds = { 456, 382, 226, 29 };
+
+	// Create a text object to display the player's name
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf")) // Make sure to replace with the path to your font file
+	{
+		std::cerr << "Error loading font" << std::endl;
+	}
+
+	sf::Text playerNameText;
+	playerNameText.setFont(font);
+	playerNameText.setCharacterSize(24);
+	playerNameText.setFillColor(sf::Color::White);
+	playerNameText.setPosition(textInputBounds.left, textInputBounds.top);
+
+	std::string playerName;
+
+	// Update the position of the selection rectangle based on the current selection
+	selectionRectangle.setPosition(characterBounds[selectedCharacterIndex].left, characterBounds[selectedCharacterIndex].top);
+
+	while (m_window.isOpen())
+	{
+		sf::Event event;
+		while (m_window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				m_window.close();
+				break;
+			case sf::Event::KeyPressed:
+				if (event.key.code == sf::Keyboard::Right)
+				{
+					// Move selection to the right
+					selectedCharacterIndex = (selectedCharacterIndex + 1) % 4;
+				}
+				else if (event.key.code == sf::Keyboard::Left)
+				{
+					// Move selection to the left
+					selectedCharacterIndex = (selectedCharacterIndex + 3) % 4; // +3 instead of -1 to handle negative modulus
+				}
+				// Update the position of the selection rectangle
+				selectionRectangle.setPosition(characterBounds[selectedCharacterIndex].left, characterBounds[selectedCharacterIndex].top);
+				selectionRectangle.setSize(sf::Vector2f(characterBounds[selectedCharacterIndex].width, characterBounds[selectedCharacterIndex].height));
+				break;
+			case sf::Event::TextEntered:
+				if (event.text.unicode == '\b' && !playerName.empty())
+				{
+					// Handle backspace
+					playerName.pop_back();
+				}
+				else if (event.text.unicode < 128 && event.text.unicode != '\b')
+				{
+					// Append the entered character to the player's name
+					playerName += static_cast<char>(event.text.unicode);
+				}
+				playerNameText.setString(playerName);
+				break;
+			}
+		}
+		m_window.draw(m_screens[C1_m]);
+		m_window.draw(selectionRectangle);
+		m_window.draw(playerNameText);
+		m_window.display();
+		m_window.clear();
+	}
+}
+
+
 void Screens::playerDetails(const int& numberOfPlayers)
 {
 
-	if (numberOfPlayers == 1) {
+	if (numberOfPlayers == 1)
+	{
 		directorScreens(C1_m, "One player mode");
 	}
-	else {
+	else
+	{
 		directorScreens(C2_m, "Two player mode");
 	}
 
@@ -327,7 +421,10 @@ void Screens::playerDetails(const int& numberOfPlayers)
 		}
 
 		if (numberOfPlayers == 1)
-			render(C1_m);
+		{
+
+			chooseCharacter();
+		}
 		else
 			render(C2_m);
 		
