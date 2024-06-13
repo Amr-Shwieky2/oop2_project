@@ -1,41 +1,23 @@
 #pragma once
-
-#include "Singleton.h"
-#include <SFML/Graphics.hpp>
+#include "BaseScreen.h"
+#include "MenuScreen.h"
+#include "PlayerSelectionScreen.h"
+#include "HelpScreen.h"
+#include "SettingsScreen.h"
+#include "HighScoreScreen.h"
+//#include "CharacterScreen.h"
 #include <map>
 
-
-class Screens
-{
+class Screens {
 public:
-	Screens();
-	~Screens();
-	void runMenu();
+    Screens();
+    ~Screens();
+    void run();
 
 private:
-	void directorScreens(const Screens_m& screen, const std::string& title);
-	void render(const Screens_m& screen);
-
-	void getUpdatedScore();
-	Menu_c getMenuButton(sf::Vector2i mousePos);
-
-	void choosePlayer();
-	Chooseen getChooseButton(sf::Vector2i mousePos);
-
-	void helpPage();
-	void settingsPage();
-	void highScorePage();
-	void chooseCharacter();
-
-	void playerDetails(const int& numberOfPlayers);
-
-	sf::RenderWindow m_window;
-
-	sf::Sprite m_screens[NUM_OF_SCREENS];
-	int m_TopScore[NUM_OF_HIGH_SCCORES];
-
-	bool m_back;
-
-
+    void changeScreen(Screens_m screenType);
+    void adjustWindowSize(Screens_m screenType);
+    sf::RenderWindow m_window;
+    BaseScreen* m_currentScreen;
+    std::map<Screens_m, BaseScreen*> m_screens;
 };
-
