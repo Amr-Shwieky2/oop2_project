@@ -5,7 +5,7 @@
 #include "HelpScreen.h"
 #include "SettingsScreen.h"
 #include "HighScoreScreen.h"
-//#include "CharacterScreen.h"
+#include "CharacterScreen.h"
 #include <map>
 
 class Screens {
@@ -20,4 +20,5 @@ private:
     sf::RenderWindow m_window;
     BaseScreen* m_currentScreen;
     std::map<Screens_m, BaseScreen*> m_screens;
+    Screens_m m_chackMoveScreen;
 };
