@@ -21,7 +21,7 @@ CharacterScreen::CharacterScreen(Screens_m returnScreen) :
         }
     }
     catch (const GameException& e) {
-        std::cerr << "Error setting texture: " << e.what() << std::endl;
+        std::cerr << "Error setting texture in CharacterScreen: " << e.what() << std::endl;
         throw;  // Rethrow the exception after logging it
     }
 
