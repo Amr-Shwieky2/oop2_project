@@ -1,6 +1,7 @@
 #include "Screens.h"
 #include <iostream>
 #include "GameException.h"
+#include "TwoPlayerCharacterScreen.h"
 
 Screens::Screens() : m_currentScreen(nullptr) {
     m_window.create(sf::VideoMode(800, 600), "Game Window"); // Initial size, will adjust
@@ -12,7 +13,7 @@ Screens::Screens() : m_currentScreen(nullptr) {
         m_screens[SETTINGS_m] = new SettingsScreen();
         m_screens[HIGH_SCOORE_m] = new HighScoreScreen();
         m_screens[C1_m] = new CharacterScreen(C1_m);
-        m_screens[C2_m] = new CharacterScreen(C2_m);
+        m_screens[C2_m] = new TwoPlayerCharacterScreen(C2_m);
 
         changeScreen(MENU_m); // Start with the menu screen
     }

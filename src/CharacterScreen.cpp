@@ -42,13 +42,15 @@ CharacterScreen::CharacterScreen(Screens_m returnScreen) :
 
 Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
     sf::Event event;
-    while (window.pollEvent(event)) {
+    while (window.pollEvent(event)) 
+    {
         switch (event.type) {
         case sf::Event::Closed:
             window.close();
             return m_returnScreen;  // or a specific screen type for closing
         case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Right) {
+            if (event.key.code == sf::Keyboard::Right) 
+            {
                 m_selectedCharacterIndex = (m_selectedCharacterIndex + 1) % 4;
                 updateSelection();
             }
@@ -58,7 +60,8 @@ Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
             }
             break;
         case sf::Event::TextEntered:
-            if (event.text.unicode == '\b' && !m_playerName.empty()) {
+            if (event.text.unicode == '\b' && !m_playerName.empty())
+            {
                 m_playerName.pop_back();
             }
             else if (event.text.unicode < 128 && event.text.unicode != '\b') {

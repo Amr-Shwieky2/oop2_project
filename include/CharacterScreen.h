@@ -16,9 +16,9 @@ private:
     sf::RectangleShape m_selectionRectangle;
     sf::Text m_playerNameText;
     sf::Font m_font;
-    std::string m_playerName;
+    std::string m_playerName;//////saves the name for character
     sf::FloatRect m_characterBounds[4];
-    int m_selectedCharacterIndex;
+    int m_selectedCharacterIndex;///////saves the number for character
     sf::FloatRect m_textInputBounds;
     Screens_m m_returnScreen;
 
