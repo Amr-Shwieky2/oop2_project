@@ -14,6 +14,7 @@ Screens::Screens() : m_currentScreen(nullptr) {
         m_screens[HIGH_SCOORE_m] = new HighScoreScreen();
         m_screens[C1_m] = new CharacterScreen(C1_m);
         m_screens[C2_m] = new TwoPlayerCharacterScreen(C2_m);
+        Singleton::instance().getSoundManager().playMusic(); // Start background music
 
         changeScreen(MENU_m); // Start with the menu screen
     }

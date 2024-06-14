@@ -16,6 +16,7 @@ Screens_m HighScoreScreen::handleEvents(sf::RenderWindow& window) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
                 if (m_backButton.contains(mousePos)) {
+                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
                     return MENU_m;  // Return to menu screen
                 }
             }

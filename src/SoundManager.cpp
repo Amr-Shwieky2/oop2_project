@@ -1,7 +1,7 @@
 #include "SoundManager.h"
 #include <iostream>
 
-SoundManager::SoundManager() 
+SoundManager::SoundManager()
 {
     // Load all sounds
     loadSound("burned", "burned.wav");
@@ -10,39 +10,60 @@ SoundManager::SoundManager()
     loadSound("coins", "coins.wav");
     loadSound("glassshatter", "glassshatter.wav");
     loadSound("jump", "jump.wav");
-    loadSound("music", "music.ogg");
+    loadSound("music", "music2.ogg");
     loadSound("names", "names.wav");
     loadSound("rock", "rock.wav");
     loadSound("top5", "top5.wav");
     loadSound("winning", "winning.wav");
 
     // Optionally, set up music streams if they need to be looped or controlled separately
-    if (!music.openFromFile("music.ogg")) {
+    if (!music.openFromFile("music2.ogg"))
+    {
         std::cerr << "Failed to load music" << std::endl;
     }
     music.setLoop(true); // Setting music to loop
 }
 
-void SoundManager::playSound(const std::string& name) {
-    if (sounds.find(name) != sounds.end()) {
+void SoundManager::playSound(const std::string& name) 
+{
+    if (sounds.find(name) != sounds.end())
+    {
         sounds[name].play();
     }
-    else {
+    else
+    {
         std::cerr << "Sound not found: " << name << std::endl;
     }
 }
 
-void SoundManager::playMusic() {
+void SoundManager::playMusic()
+{
     music.play();
 }
 
-void SoundManager::stopMusic() {
+void SoundManager::stopMusic()
+{
     music.stop();
 }
 
-void SoundManager::loadSound(const std::string& name, const std::string& filename) {
+void SoundManager::setMusicVolume(float volume)
+{
+    music.setVolume(volume);
+}
+
+void SoundManager::setEffectsVolume(float volume)
+{
+    for (auto& sound : sounds)
+    {
+        sound.second.setVolume(volume);
+    }
+}
+
+void SoundManager::loadSound(const std::string& name, const std::string& filename)
+{
     sf::SoundBuffer buffer;
-    if (buffer.loadFromFile(filename)) {
+    if (buffer.loadFromFile(filename))
+    {
         buffers[name] = buffer;
         sf::Sound sound;
         sound.setBuffer(buffers[name]);
@@ -53,7 +74,4 @@ void SoundManager::loadSound(const std::string& name, const std::string& filenam
     }
 }
 
-
-SoundManager::~SoundManager() {
-    // Cleanup or explicit resource management could be added here if necessary
-}
+SoundManager::~SoundManager() {}

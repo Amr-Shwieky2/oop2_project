@@ -2,7 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Singleton.h"
 
-class BaseScreen {
+class BaseScreen
+{
 public:
     virtual ~BaseScreen() = default;
     virtual Screens_m handleEvents(sf::RenderWindow& window) = 0;

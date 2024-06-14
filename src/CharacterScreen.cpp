@@ -51,10 +51,12 @@ Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Right) 
             {
+                Singleton::instance().getSoundManager().playSound("characters"); 
                 m_selectedCharacterIndex = (m_selectedCharacterIndex + 1) % 4;
                 updateSelection();
             }
             else if (event.key.code == sf::Keyboard::Left) {
+                Singleton::instance().getSoundManager().playSound("characters");
                 m_selectedCharacterIndex = (m_selectedCharacterIndex + 3) % 4; // +3 instead of -1 to handle negative modulus
                 updateSelection();
             }
@@ -65,6 +67,7 @@ Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
                 m_playerName.pop_back();
             }
             else if (event.text.unicode < 128 && event.text.unicode != '\b') {
+                Singleton::instance().getSoundManager().playSound("names");
                 m_playerName += static_cast<char>(event.text.unicode);
             }
             m_playerNameText.setString(m_playerName);

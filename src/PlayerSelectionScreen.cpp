@@ -19,10 +19,13 @@ Screens_m PlayerSelectionScreen::handleEvents(sf::RenderWindow& window) {
                 Chooseen button = getChooseButton(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
                 switch (button) {
                 case ONE_PLAYER:
+                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
                     return C1_m;  // Return to character selection for one player
                 case TWO_PLAYERS:
+                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
                     return C2_m;  // Return to character selection for two players
                 case BACK:
+                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
                     return MENU_m;  // Return to menu screen
                 default:
                     break;

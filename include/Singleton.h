@@ -4,6 +4,7 @@
 #include <string>
 #include "GameException.h"
 #include "Icon.h"
+#include "SoundManager.h"
 
 const int NUM_OF_SCREENS = 7;
 const int NUM_OF_HIGH_SCORES = 5;
@@ -18,6 +19,7 @@ public:
     static Singleton& instance();
     sf::Texture* getScreen(const int& screen);
     const std::vector<high_score>& loadHighScore();
+    SoundManager& getSoundManager(); // Add this method
 
 private:
     Singleton();
@@ -25,4 +27,6 @@ private:
 
     sf::Texture m_screens[NUM_OF_SCREENS];
     std::vector<high_score> m_listScore;
+    SoundManager m_soundManager; // Add this member
+
 };

@@ -64,24 +64,30 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window)
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Right) // Choosing character
             {
+
                 if (!m_isPlayerOneDone)
                 {
+                    Singleton::instance().getSoundManager().playSound("characters");
                     m_selectedCharacterIndex1 = (m_selectedCharacterIndex1 + 1) % 4;
                 }
                 else if (!m_isPlayerTwoDone)
                 {
+                    Singleton::instance().getSoundManager().playSound("characters");
                     m_selectedCharacterIndex2 = (m_selectedCharacterIndex2 + 1) % 4;
                 }
                 updateSelection();
             }
             else if (event.key.code == sf::Keyboard::Left)
             {
+
                 if (!m_isPlayerOneDone)
                 {
+                    Singleton::instance().getSoundManager().playSound("characters");
                     m_selectedCharacterIndex1 = (m_selectedCharacterIndex1 + 3) % 4; // +3 instead of -1 to handle negative modulus
                 }
                 else if (!m_isPlayerTwoDone)
                 {
+                    Singleton::instance().getSoundManager().playSound("characters");
                     m_selectedCharacterIndex2 = (m_selectedCharacterIndex2 + 3) % 4; // +3 instead of -1 to handle negative modulus
                 }
                 updateSelection();
@@ -98,9 +104,12 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window)
                 }
             }
             break;
+
         case sf::Event::TextEntered:
             if (!m_isPlayerOneDone)
             {
+                Singleton::instance().getSoundManager().playSound("names");
+
                 if (event.text.unicode == '\b' && !m_playerName1.empty())
                 {
                     m_playerName1.pop_back();
@@ -113,6 +122,8 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window)
             }
             else if (!m_isPlayerTwoDone)
             {
+                Singleton::instance().getSoundManager().playSound("names");
+
                 if (event.text.unicode == '\b' && !m_playerName2.empty())
                 {
                     m_playerName2.pop_back();
@@ -136,9 +147,6 @@ void TwoPlayerCharacterScreen::render(sf::RenderWindow& window) {
     window.draw(m_selectionRectangle2);
     window.draw(m_playerNameText1);
     window.draw(m_playerNameText2);
-    std::cout << m_selectedCharacterIndex1;
-    std::cout << m_selectedCharacterIndex2;
-
 }
 
 void TwoPlayerCharacterScreen::updateSelection() {
