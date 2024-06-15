@@ -11,13 +11,14 @@ SoundManager::SoundManager()
     loadSound("glassshatter", "glassshatter.wav");
     loadSound("jump", "jump.wav");
     loadSound("music", "music2.ogg");
+    loadSound("drama", "drama.ogg");
     loadSound("names", "names.wav");
     loadSound("rock", "rock.wav");
     loadSound("top5", "top5.wav");
     loadSound("winning", "winning.wav");
 
     // Optionally, set up music streams if they need to be looped or controlled separately
-    if (!music.openFromFile("music2.ogg"))
+    if (!music.openFromFile("drama.ogg"))
     {
         std::cerr << "Failed to load music" << std::endl;
     }
