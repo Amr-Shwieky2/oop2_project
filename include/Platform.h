@@ -3,7 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-class Platform {
+class Platform
+{
 public:
     Platform(float x, float y);
 
