@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseScreen.h"
 #include "Singleton.h"
+#include <SFML/Graphics.hpp>
+#include <vector>
 
 class HighScoreScreen : public BaseScreen {
 public:
@@ -11,4 +13,6 @@ public:
 private:
     sf::Sprite m_screen;
     sf::IntRect m_backButton;
+    sf::Font m_font;
+    std::vector<sf::Text> m_highScoreTexts;  // Text objects for displaying high scores
 };

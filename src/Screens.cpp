@@ -4,7 +4,6 @@
 #include "TwoPlayerCharacterScreen.h"
 
 Screens::Screens() : m_currentScreen(nullptr) {
-    m_window.create(sf::VideoMode(800, 600), "Game Window"); // Initial size, will adjust
 
     try {
         m_screens[MENU_m] = new MenuScreen();
@@ -15,7 +14,7 @@ Screens::Screens() : m_currentScreen(nullptr) {
         m_screens[C1_m] = new CharacterScreen(C1_m);
         m_screens[C2_m] = new TwoPlayerCharacterScreen(C2_m);
         Singleton::instance().getSoundManager().playMusic(); // Start background music
-
+        m_window.create(sf::VideoMode(800, 600), "Game Window");
         changeScreen(MENU_m); // Start with the menu screen
     }
     catch (const GameException& e) {
@@ -34,13 +33,13 @@ void Screens::run() {
     while (m_window.isOpen()) {
         if (m_currentScreen) {
             try {
+                m_window.clear();
+                m_currentScreen->render(m_window);
+                m_window.display();
                 Screens_m nextScreen = m_currentScreen->handleEvents(m_window);
                 if (m_screens.find(nextScreen) != m_screens.end()) { // Ensure valid screen transitions
                     changeScreen(nextScreen);
                 }
-                m_window.clear();
-                m_currentScreen->render(m_window);
-                m_window.display();
             }
             catch (const GameException& e) {
                 std::cerr << "Error during screen transition: " << e.what() << std::endl;
