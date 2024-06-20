@@ -1,11 +1,12 @@
 #include "Player.h"
+#include "BreakablePlatform.h"
 
 Player::Player(float startX, float startY)
-    : velocity(0.2f), gravity(0.1f), jumpStrength(-7.0f), moveSpeed(2.0f) 
+    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) // Adjusted values
 {
-    playerShape.setSize(sf::Vector2f(50, 50)); // Sets the size of the rectangle
-    playerShape.setFillColor(sf::Color::Green); //set color
-    playerShape.setPosition(startX, startY);//set position 
+    playerShape.setSize(sf::Vector2f(50, 50));
+    playerShape.setFillColor(sf::Color::Green);
+    playerShape.setPosition(startX, startY);
 }
 
 void Player::draw(sf::RenderWindow& window)
@@ -13,64 +14,61 @@ void Player::draw(sf::RenderWindow& window)
     window.draw(playerShape);
 }
 
-//updating the player's position
-void Player::update(const std::vector<Platform>& platforms)
+void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
-    velocity += gravity;// making the player accelerate downwards over time
-    playerShape.move(0, velocity); //player's position is updated 
+    velocity += gravity;
+    playerShape.move(0, velocity);
 
-    // Move left
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         playerShape.move(-moveSpeed, 0);
     }
 
-    // Move right
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         playerShape.move(moveSpeed, 0);
     }
 
-    //to ensures the player wraps around the screen 
     if (playerShape.getPosition().x + playerShape.getSize().x < 0)
     {
-        playerShape.setPosition(800, playerShape.getPosition().y); // Wrap to the right
+        playerShape.setPosition(800, playerShape.getPosition().y);
     }
 
     if (playerShape.getPosition().x > 800)
     {
-        playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y); // Wrap to the left
+        playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y);
     }
 
-    // Collision detection with platforms
-    for (const auto& platform : platforms)
+    for (auto platform : platforms)
     {
-        sf::FloatRect platformBounds = platform.getBounds();
+        sf::FloatRect platformBounds = platform->getBounds();
         sf::FloatRect playerBounds = playerShape.getGlobalBounds();
 
-        //checks if the bottom of the player is within the vertical
-        // bounds of the platform and if the player is falling
         if (playerBounds.top + playerBounds.height >= platformBounds.top &&
             playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
-            velocity > 0) // Only check collision if the player is falling
+            velocity > 0)
         {
             float minX = platformBounds.left - playerBounds.width;
             float maxX = platformBounds.left + platformBounds.width;
-            //if the player is horizontally within the bounds of the platform
             if (playerBounds.left >= minX && playerBounds.left <= maxX)
             {
-                //the player is considered to have landed on the platform
+                if (platform->isBreakable())
+                {
+                    static_cast<BreakablePlatform*>(platform)->breakPlatform();
+                }
                 jump();
             }
         }
+
+        platform->update(deltaTime);
     }
 }
 
 void Player::jump()
 {
-    if (velocity > 0) // Only jump if the player is falling down
+    if (velocity > 0)
     {
-        velocity = jumpStrength; // Set velocity to jumpStrength to make the player jump
+        velocity = jumpStrength;
     }
 }
 
