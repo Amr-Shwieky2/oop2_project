@@ -2,7 +2,7 @@
 #include "BreakablePlatform.h"
 
 Player::Player(float startX, float startY)
-    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) // Adjusted values
+    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , lives(3), currentlyColliding(false)
 {
     playerShape.setSize(sf::Vector2f(50, 50));
     playerShape.setFillColor(sf::Color::Green);
@@ -13,6 +13,7 @@ void Player::draw(sf::RenderWindow& window)
 {
     window.draw(playerShape);
 }
+
 
 void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
@@ -38,8 +39,7 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
     {
         playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y);
     }
-
-    for (auto platform : platforms)
+   for (auto platform : platforms)
     {
         sf::FloatRect platformBounds = platform->getBounds();
         sf::FloatRect playerBounds = playerShape.getGlobalBounds();
@@ -62,15 +62,27 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 
         platform->update(deltaTime);
     }
+
 }
 
-void Player::jump()
+
+
+
+sf::FloatRect Player::getGlobalBounds() const
+{
+    return playerShape.getGlobalBounds();
+}
+   
+
+
+void Player::jump() 
 {
     if (velocity > 0)
     {
         velocity = jumpStrength;
     }
 }
+
 
 sf::Vector2f Player::getPosition() const
 {
@@ -80,4 +92,28 @@ sf::Vector2f Player::getPosition() const
 bool Player::hasFallen() const
 {
     return playerShape.getPosition().y > 600;
+}
+
+
+int Player::getLives()
+{
+    return lives;
+}
+
+void Player::decrementLife()
+{
+    if (!currentlyColliding) {
+        lives--;
+        currentlyColliding = true;
+    }
+}
+
+void Player::resetCollisionFlag()
+{
+    currentlyColliding = false;
+}
+
+bool Player::isColliding() const
+{
+    return currentlyColliding;
 }
