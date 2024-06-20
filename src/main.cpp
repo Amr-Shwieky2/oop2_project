@@ -141,7 +141,7 @@ int main() {
         for (auto platform : platforms) {
             platform->draw(window);
         }
-
+        std::cout << player.getLives();
         sf::Text text;
         text.setFont(font);
         text.setString(std::to_string(score));
