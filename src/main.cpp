@@ -7,9 +7,20 @@
 #include "Platform.h"
 #include "MovingPlatform.h"
 #include "BreakablePlatform.h"
+#include "Bat.h"
+#include "BlackHole.h"
 
-// Score variable
+
 int score = 0;
+const int MEDIUM_HEIGHT = 30;  // Height at which the bat starts appearing
+bool batActive = false;//whether the bat should be active or not
+const float BAT_SPAWN_INTERVAL = 5.0f; // Time in seconds between bat appearances
+float batTimer = 0; // Timer to manage bat spawn intervals
+const int HARD_HEIGHT = 100; // Hard height after which the black hole starts appearing
+BlackHole blackHole(-100, -100); // Initialize off-screen
+float blackHoleTimer = 0;
+const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f; // Time in seconds between black hole appearances
+
 
 void addNewPlatform(std::vector<Platform*>& platforms, float windowWidth, float gap) {
     float x = static_cast<float>(std::rand() % static_cast<int>(windowWidth - 60));
@@ -56,7 +67,8 @@ int main() {
     float playerStartY = platforms[1]->getBounds().top - 50;
     Player player(playerStartX, playerStartY);
 
-    sf::Clock clock;
+    Bat bat(-100, -100); //The bat is initialized 
+    sf::Clock clock; // Clock to manage bat spawn timing
 
     while (window.isOpen()) {
         sf::Event event;
@@ -71,6 +83,41 @@ int main() {
 
         if (player.hasFallen()) {
             window.close();
+        }
+
+        //medium level
+        if (player.getPosition().y < MEDIUM_HEIGHT)
+        {
+            batActive = true;
+        }
+        if (batActive)
+        {
+            batTimer += deltaTime;
+            if (batTimer >= BAT_SPAWN_INTERVAL + 7.0f)
+            {
+                batTimer = 0; // Reset timer
+                bat.resetPosition(window.getSize().x, player.getPosition().y - 300); // New bat position
+            }
+            bat.update(deltaTime); // Update bat position
+            if (bat.getGlobalBounds().intersects(player.getGlobalBounds())) {
+                player.decrementLife(); // Decrement lives only if not currently colliding
+            }
+            else if (player.isColliding()) {
+                player.resetCollisionFlag(); // Reset flag if they are not colliding anymore
+            }
+        }
+        //hard level
+        if (player.getPosition().y < HARD_HEIGHT)
+        {
+            blackHoleTimer += deltaTime;
+            if (blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL)
+            {
+                blackHoleTimer = 0; // Reset timer
+                blackHole.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); // New black hole position
+            }
+        }
+        if (blackHole.getGlobalBounds().intersects(player.getGlobalBounds())) {
+            window.close(); // Close the window to end the game, as the black hole ends the game on collision
         }
 
         sf::View view = window.getView();
