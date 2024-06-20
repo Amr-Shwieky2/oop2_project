@@ -20,6 +20,8 @@ public:
     void resetCollisionFlag();
     bool isColliding() const;
     void increaseLife();
+    void boostJump();  // Method to boost the jump strength temporarily
+    void resetJumpStrength();  // Resets the jump strength to normal
 private:
     int lives;
     bool currentlyColliding;
@@ -28,6 +30,11 @@ private:
     float gravity;
     float jumpStrength;
     float moveSpeed;
+    bool jumpBoosted;  // Indicates if the next jump is boosted
+    float normalJumpStrength;  // Regular jump strength
+    float boostedJumpStrength;  // Increased jump strength for trampoline jumps
+
+
 };
 
 #endif

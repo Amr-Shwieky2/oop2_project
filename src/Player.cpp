@@ -2,7 +2,8 @@
 #include "BreakablePlatform.h"
 
 Player::Player(float startX, float startY)
-    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , currentlyColliding(false)
+    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , currentlyColliding(false) 
+    , jumpBoosted(false), normalJumpStrength(-15.0f) , boostedJumpStrength(-30.0f)
 {
     lives = 3;
     playerShape.setSize(sf::Vector2f(50, 50));
@@ -81,8 +82,10 @@ void Player::jump()
     if (velocity > 0)
     {
         velocity = jumpStrength;
+        resetJumpStrength();  // Reset jump strength immediately after jumping
     }
 }
+
 
 
 sf::Vector2f Player::getPosition() const
@@ -121,4 +124,19 @@ void Player::increaseLife()
 {
     if(lives < 3)
         lives++;
+}
+
+void Player::boostJump() {
+    if (!jumpBoosted) {
+        jumpStrength = boostedJumpStrength;
+        jumpBoosted = true;
+    }
+}
+
+void Player::resetJumpStrength() {
+    if (jumpBoosted) 
+    {
+        jumpStrength = normalJumpStrength;
+        jumpBoosted = false;
+    }
 }

@@ -112,28 +112,31 @@ int main() {
             }
 
             trampolineTimer += deltaTime;
-            if (trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL)
-            {
+            if (trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
                 trampolineTimer = 0; // Reset timer
-                trampoline.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); 
+                if (!platforms.empty()) {
+                    int randomIndex = std::rand() % platforms.size();  // Select a random platform
+                    trampoline.resetPosition(platforms[randomIndex]); // Place trampoline on the chosen platform
+                }
             }
 
+
         }
-        if (bat.getGlobalBounds().intersects(player.getGlobalBounds()))
-        {
-            std::cout << "batttt";
-            player.decrementLife(); 
-        }
+        //if (bat.getGlobalBounds().intersects(player.getGlobalBounds()))
+        //{
+        //    std::cout << "batttt";
+        //    player.decrementLife(); 
+        //}
         if (heartgift.getGlobalBounds().intersects(player.getGlobalBounds()))
         {
             std::cout << "gifttt";
             player.increaseLife(); 
         }
-        //player.updateJumpEnhancement(deltaTime);
-        //// Check for trampoline collision
-        //if (trampoline.getGlobalBounds().intersects(player.getGlobalBounds())) {
-        //    player.enhanceJump(trampoline.getEnhancedJumpStrength(), 5.0f);  // Enhance player's jump for 5 seconds
-        //}
+        if (trampoline.getGlobalBounds().intersects(player.getGlobalBounds())) {
+            std::cout << "trampoline";
+            player.boostJump();  // Boost the player's jump
+        }
+
             //hard level
         if (player.getPosition().y < HARD_HEIGHT)
         {
@@ -144,9 +147,9 @@ int main() {
                 blackHole.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); // New black hole position
             }
         }
-        if (blackHole.getGlobalBounds().intersects(player.getGlobalBounds())) {
-            window.close(); // Close the window to end the game, as the black hole ends the game on collision
-        }
+        //if (blackHole.getGlobalBounds().intersects(player.getGlobalBounds())) {
+        //    window.close(); // Close the window to end the game, as the black hole ends the game on collision
+        //}
         player.update(platforms, deltaTime);
 
         if (player.hasFallen() || player.getLives() == 0)
