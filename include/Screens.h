@@ -21,4 +21,5 @@ private:
     BaseScreen* m_currentScreen;
     std::map<Screens_m, BaseScreen*> m_screens;
     Screens_m m_chackMoveScreen;
+    bool m_firstPage;
 };

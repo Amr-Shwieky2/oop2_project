@@ -36,7 +36,7 @@ TwoPlayerCharacterScreen::TwoPlayerCharacterScreen(Screens_m returnScreen) :
     m_selectionRectangle2.setFillColor(sf::Color::Transparent);
     m_selectionRectangle2.setPosition(m_characterBounds[m_selectedCharacterIndex2].left, m_characterBounds[m_selectedCharacterIndex2].top);
 
-    if (!m_font.loadFromFile("arial.ttf")) { // Make sure to replace with the path to your font file
+    if (!m_font.loadFromFile("arial.ttf")) { 
         throw GameException("Error loading font");
     }
 

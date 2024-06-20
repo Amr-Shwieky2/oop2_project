@@ -2,8 +2,9 @@
 #include <iostream>
 #include "GameException.h"
 #include "TwoPlayerCharacterScreen.h"
+#include "GameLogic.h"
 
-Screens::Screens() : m_currentScreen(nullptr) {
+Screens::Screens() : m_currentScreen(nullptr), m_firstPage(true) {
 
     try {
         m_screens[MENU_m] = new MenuScreen();
@@ -13,8 +14,9 @@ Screens::Screens() : m_currentScreen(nullptr) {
         m_screens[HIGH_SCOORE_m] = new HighScoreScreen();
         m_screens[C1_m] = new CharacterScreen(C1_m);
         m_screens[C2_m] = new TwoPlayerCharacterScreen(C2_m);
+        m_screens[GAME_m] = new GameLogic();
         Singleton::instance().getSoundManager().playMusic(); // Start background music
-        m_window.create(sf::VideoMode(800, 600), "Game Window");
+        
         changeScreen(MENU_m); // Start with the menu screen
     }
     catch (const GameException& e) {
@@ -65,8 +67,14 @@ void Screens::adjustWindowSize(Screens_m screenType) {
         sf::Texture* texture = Singleton::instance().getScreen(screenType);
         if (texture) {
             sf::Vector2u imageSize = texture->getSize();
-            m_window.setSize(sf::Vector2u(static_cast<unsigned int>(imageSize.x), static_cast<unsigned int>(imageSize.y)));
-            m_window.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
+            if (m_firstPage) {
+                m_window.create(sf::VideoMode(imageSize.x, imageSize.y), "Game Window");
+                m_firstPage = false;
+            }else{
+                m_window.setSize(sf::Vector2u(static_cast<unsigned int>(imageSize.x), static_cast<unsigned int>(imageSize.y)));
+                m_window.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
+        
+            }
         }
     }
     catch (const GameException& e) {

@@ -34,6 +34,8 @@ void Singleton::loadTextures() {
             throw GameException("Failed to load chooseCharacters1.jpg");
         if (!m_screens[C2_m].loadFromFile("chooseCharacters2.jpg"))
             throw GameException("Failed to load chooseCharacters2.jpg");
+        if (!m_screens[GAME_m].loadFromFile("background.jpg"))
+            throw GameException("Failed to load background.jpg");
     }
     catch (const std::exception& e) {
         std::cerr << "Error loading textures: " << e.what() << std::endl;
@@ -64,3 +66,4 @@ const std::vector<high_score>& Singleton::loadHighScore() {
 SoundManager& Singleton::getSoundManager() {
     return m_soundManager;
 }
+

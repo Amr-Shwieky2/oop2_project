@@ -42,16 +42,16 @@ CharacterScreen::CharacterScreen(Screens_m returnScreen) :
 
 Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
     sf::Event event;
-    while (window.pollEvent(event)) 
+    while (window.pollEvent(event))
     {
         switch (event.type) {
         case sf::Event::Closed:
             window.close();
             return m_returnScreen;  // or a specific screen type for closing
         case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Right) 
+            if (event.key.code == sf::Keyboard::Right)
             {
-                Singleton::instance().getSoundManager().playSound("characters"); 
+                Singleton::instance().getSoundManager().playSound("characters");
                 m_selectedCharacterIndex = (m_selectedCharacterIndex + 1) % 4;
                 updateSelection();
             }
@@ -59,6 +59,10 @@ Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
                 Singleton::instance().getSoundManager().playSound("characters");
                 m_selectedCharacterIndex = (m_selectedCharacterIndex + 3) % 4; // +3 instead of -1 to handle negative modulus
                 updateSelection();
+            }
+            else if (event.key.code == sf::Keyboard::Enter) {
+                std::cout << "Enter key pressed. Returning GAME_m." << std::endl;
+                return GAME_m;
             }
             break;
         case sf::Event::TextEntered:
@@ -72,7 +76,9 @@ Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
             }
             m_playerNameText.setString(m_playerName);
             break;
+
         }
+
     }
     return m_returnScreen;
 }

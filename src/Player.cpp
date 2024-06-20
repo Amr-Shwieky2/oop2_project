@@ -1,11 +1,15 @@
 #include "Player.h"
 #include "BreakablePlatform.h"
 
-Player::Player(float startX, float startY)
+Player::Player()
     : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , lives(3), currentlyColliding(false)
 {
     playerShape.setSize(sf::Vector2f(50, 50));
     playerShape.setFillColor(sf::Color::Green);
+}
+
+void Player::setPosition(float startX, float startY)
+{
     playerShape.setPosition(startX, startY);
 }
 

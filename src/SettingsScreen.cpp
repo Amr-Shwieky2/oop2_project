@@ -29,9 +29,9 @@ SettingsScreen::SettingsScreen() :
     m_musicDot.setPosition(525 + m_musicVolume * 2 - 10, 426 - 5); // Updated position based on volume
 
     // Set initial volumes
-    Singleton::instance().getSoundManager().playMusic();
+    /*Singleton::instance().getSoundManager().playMusic();
     Singleton::instance().getSoundManager().setMusicVolume(m_musicVolume);
-    Singleton::instance().getSoundManager().setEffectsVolume(m_effectsVolume);
+    Singleton::instance().getSoundManager().setEffectsVolume(m_effectsVolume);*/
 }
 
 Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
@@ -45,7 +45,7 @@ Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
                 if (m_backButton.contains(mousePos)) {
-                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
+                    //Singleton::instance().getSoundManager().playSound("click"); // Play click sound
                     return MENU_m;  // Return to menu screen
                 }
                 if (m_effectsBar.getGlobalBounds().contains(mousePos.x, mousePos.y)) {

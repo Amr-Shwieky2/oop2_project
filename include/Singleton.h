@@ -6,7 +6,7 @@
 #include "Icon.h"
 #include "SoundManager.h"
 
-const int NUM_OF_SCREENS = 7;
+const int NUM_OF_SCREENS = 8;
 const int NUM_OF_HIGH_SCORES = 5;
 
 struct high_score {
