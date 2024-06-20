@@ -11,15 +11,17 @@
 #include "BlackHole.h"
 #include "HeartGift.h"
 #include "Trampoline.h"
+#include "WingGift.h"
 
 // Score variable
 int score = 0;
 const int MEDIUM_HEIGHT = 2;  // Height at which the bat starts appearing
-bool batActive = false , heartgiftActive = false;//whether the bat , heartgift should be active or not
 const float BAT_SPAWN_INTERVAL = 2.0f; // Time in seconds between bat appearances
 const float GIFT_SPAWN_INTERVAL = 3.0f; // Time in seconds between bat appearances
 const float TRAMPOLINE_SPAWN_INTERVAL = 3.0f; // Time in seconds between bat appearances
+const float WING_GIFT_SPAWN_INTERVAL = 3.0f; // Time in seconds between bat appearances
 
+float wingGiftTimer = 0; // Timer to manage bat spawn intervals
 float trampolineTimer = 0; // Timer to manage bat spawn intervals
 float batTimer = 0; // Timer to manage bat spawn intervals
 float giftTimer = 0; // Timer to manage bat spawn intervals
@@ -78,7 +80,7 @@ int main() {
     HeartGift heartgift(-100, -100);;
     Bat bat(-100, -100); //The bat is initialized 
     Trampoline trampoline(-100, -100);  // Example position, adjust as needed
-
+    WingGift wingGift(-100, -100);
     sf::Clock clock; // Clock to manage bat spawn timing
 
     while (window.isOpen()) 
@@ -92,35 +94,35 @@ int main() {
 
 
         float deltaTime = clock.restart().asSeconds();
-        // medium level
-        if (player.getPosition().y < MEDIUM_HEIGHT)
+        batTimer += deltaTime;
+        if (batTimer >= BAT_SPAWN_INTERVAL)
         {
-            batTimer += deltaTime;
-            if (batTimer >= BAT_SPAWN_INTERVAL + 7.0f)
-            {
-                batTimer = 0; // Reset timer
-                bat.resetPosition(window.getSize().x, player.getPosition().y - 300); // New bat position
+            batTimer = 0; // Reset timer
+            bat.resetPosition(window.getSize().x, player.getPosition().y - 300); // New bat position
+        }
+        bat.update(deltaTime); // Update bat position
+
+
+        giftTimer += deltaTime;
+        if (giftTimer >= GIFT_SPAWN_INTERVAL)
+        {
+            giftTimer = 0; // Reset timer
+            heartgift.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); // New black hole position
+        }
+
+        trampolineTimer += deltaTime;
+        if (trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
+            trampolineTimer = 0; // Reset timer
+            if (!platforms.empty()) {
+                int randomIndex = std::rand() % platforms.size();  // Select a random platform
+                trampoline.resetPosition(platforms[randomIndex]); // Place trampoline on the chosen platform
             }
-            bat.update(deltaTime); // Update bat position
+        }
 
-
-            giftTimer += deltaTime;
-            if (giftTimer >= GIFT_SPAWN_INTERVAL)
-            {
-                giftTimer = 0; // Reset timer
-                heartgift.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); // New black hole position
-            }
-
-            trampolineTimer += deltaTime;
-            if (trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
-                trampolineTimer = 0; // Reset timer
-                if (!platforms.empty()) {
-                    int randomIndex = std::rand() % platforms.size();  // Select a random platform
-                    trampoline.resetPosition(platforms[randomIndex]); // Place trampoline on the chosen platform
-                }
-            }
-
-
+        wingGiftTimer += deltaTime;
+        if (wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
+            wingGiftTimer = 0;
+            wingGift.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350);
         }
         //if (bat.getGlobalBounds().intersects(player.getGlobalBounds()))
         //{
@@ -136,7 +138,10 @@ int main() {
             std::cout << "trampoline";
             player.boostJump();  // Boost the player's jump
         }
-
+        // Collision detection
+        if (wingGift.getGlobalBounds().intersects(player.getGlobalBounds())) {
+            player.activateFlying(3.0f);  // Activate flying for 5 seconds
+        }
             //hard level
         if (player.getPosition().y < HARD_HEIGHT)
         {
@@ -178,6 +183,8 @@ int main() {
         bat.draw(window);
         heartgift.draw(window);
         blackHole.draw(window);
+        wingGift.draw(window);
+
         for (auto platform : platforms) {
             platform->draw(window);
         }

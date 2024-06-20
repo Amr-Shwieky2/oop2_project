@@ -3,7 +3,7 @@
 
 Player::Player(float startX, float startY)
     : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , currentlyColliding(false) 
-    , jumpBoosted(false), normalJumpStrength(-15.0f) , boostedJumpStrength(-30.0f)
+    , jumpBoosted(false), normalJumpStrength(-15.0f) , boostedJumpStrength(-23.0f)
 {
     lives = 3;
     playerShape.setSize(sf::Vector2f(50, 50));
@@ -19,6 +19,8 @@ void Player::draw(sf::RenderWindow& window)
 
 void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
+    updateFlying(deltaTime);
+
     velocity += gravity;
     playerShape.move(0, velocity);
 
@@ -138,5 +140,25 @@ void Player::resetJumpStrength() {
     {
         jumpStrength = normalJumpStrength;
         jumpBoosted = false;
+    }
+}
+
+void Player::activateFlying(float duration)
+{
+    isFlying = true;
+    maxFlyingDuration = duration;
+    flyingTimer = 0;
+}
+
+void Player::updateFlying(float deltaTime)
+{
+    if (isFlying) {
+        flyingTimer += deltaTime;
+        if (flyingTimer < maxFlyingDuration) {
+            velocity = -7.0f;  // Negative to move up
+        }
+        else {
+            isFlying = false;
+        }
     }
 }

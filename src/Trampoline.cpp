@@ -1,6 +1,6 @@
 #include "Trampoline.h"
 
-Trampoline::Trampoline(float startX, float startY) : enhancedJumpStrength(-20.0f) {
+Trampoline::Trampoline(float startX, float startY) : enhancedJumpStrength(-25.0f) {
     TrampolineShape.setSize(sf::Vector2f(50, 50));
     TrampolineShape.setFillColor(sf::Color::Green);
     TrampolineShape.setPosition(startX, startY);
