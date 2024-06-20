@@ -1,7 +1,8 @@
 #include "Player.h"
+#include "BreakablePlatform.h"
 
 Player::Player(float startX, float startY)
-    : velocity(2.0f), gravity(0.1f), jumpStrength(-6.5f), moveSpeed(0.5f), lives(3), currentlyColliding(false)
+    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , lives(3), currentlyColliding(false)
 {
     playerShape.setSize(sf::Vector2f(50, 50));
     playerShape.setFillColor(sf::Color::Green);
@@ -13,51 +14,55 @@ void Player::draw(sf::RenderWindow& window)
     window.draw(playerShape);
 }
 
-// Updating the player's position
-void Player::update(const std::vector<Platform>& platforms) 
+
+void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
-    velocity += gravity;  // Apply gravity
-    playerShape.move(0, velocity);  // Update vertical position
+    velocity += gravity;
+    playerShape.move(0, velocity);
 
-    handleHorizontalMovement();  // Handle left/right movement
-
-    // Check collision with platforms
-    currentlyColliding = false;  // Reset collision flag
-    for (const auto& platform : platforms) {
-        if (isOnPlatform(platform.getBounds())) {
-            if (velocity > 0) {  // Falling down onto the platform
-                jump();  // Perform jump
-                currentlyColliding = true;
-                break;  // No need to check further platforms
-            }
-        }
-    }
-}
-
-bool Player::isOnPlatform(const sf::FloatRect& platformBounds) {
-    sf::FloatRect playerBounds = playerShape.getGlobalBounds();
-    // Check vertical alignment and within bounds horizontally
-    return (playerBounds.top + playerBounds.height > platformBounds.top - 10 &&
-        playerBounds.top + playerBounds.height < platformBounds.top + 10 &&
-        playerBounds.left < platformBounds.left + platformBounds.width &&
-        playerBounds.left + playerBounds.width > platformBounds.left);
-}
-
-void Player::handleHorizontalMovement() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
         playerShape.move(-moveSpeed, 0);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
         playerShape.move(moveSpeed, 0);
     }
 
-    // Screen wrap logic
-    if (playerShape.getPosition().x + playerShape.getSize().x < 0) {
+    if (playerShape.getPosition().x + playerShape.getSize().x < 0)
+    {
         playerShape.setPosition(800, playerShape.getPosition().y);
     }
-    else if (playerShape.getPosition().x > 800) {
+
+    if (playerShape.getPosition().x > 800)
+    {
         playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y);
     }
+   for (auto platform : platforms)
+    {
+        sf::FloatRect platformBounds = platform->getBounds();
+        sf::FloatRect playerBounds = playerShape.getGlobalBounds();
+
+        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
+            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
+            velocity > 0)
+        {
+            float minX = platformBounds.left - playerBounds.width;
+            float maxX = platformBounds.left + platformBounds.width;
+            if (playerBounds.left >= minX && playerBounds.left <= maxX)
+            {
+                if (platform->isBreakable())
+                {
+                    static_cast<BreakablePlatform*>(platform)->breakPlatform();
+                }
+                jump();
+            }
+        }
+
+        platform->update(deltaTime);
+    }
+
 }
 
 
@@ -67,12 +72,15 @@ sf::FloatRect Player::getGlobalBounds() const
 {
     return playerShape.getGlobalBounds();
 }
+   
 
 
 void Player::jump() 
 {
-    velocity = jumpStrength;  // jumpStrength should be a negative value
-
+    if (velocity > 0)
+    {
+        velocity = jumpStrength;
+    }
 }
 
 
@@ -85,6 +93,7 @@ bool Player::hasFallen() const
 {
     return playerShape.getPosition().y > 600;
 }
+
 
 int Player::getLives()
 {
