@@ -1,56 +1,114 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include "Player.h"
+#include "Platform.h"
+#include "MovingPlatform.h"
+#include "BreakablePlatform.h"
 
-int main()
-{
-    // Create a texture
-    sf::Texture texture;
+// Score variable
+int score = 0;
 
-    // Load an image file into the texture
-    if (!texture.loadFromFile("setting.jpg")) // Change "menu.jpg" to the path of your image file
+void addNewPlatform(std::vector<Platform*>& platforms, float windowWidth, float gap) {
+    float x = static_cast<float>(std::rand() % static_cast<int>(windowWidth - 60));
+    float y = platforms.back()->getBounds().top - gap;
+    Platform::Type type = static_cast<Platform::Type>(std::rand() % 3);
+
+    switch (type)
     {
-        std::cerr << "Failed to load image" << std::endl;
-        return 1;
+    case Platform::Type::NORMAL:
+        platforms.push_back(new Platform(x, y));
+        break;
+    case Platform::Type::MOVING:
+        platforms.push_back(new MovingPlatform(x, y));
+        break;
+    case Platform::Type::BREAKABLE:
+        platforms.push_back(new BreakablePlatform(x, y));
+        break;
+    }
+}
+
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "fell fall");
+    window.setFramerateLimit(60);
+
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        std::cerr << "Couldn't load the font!" << std::endl;
+        return -1;
     }
 
-    // Get the size of the loaded image
-    sf::Vector2u imageSize = texture.getSize();
+    const int platformCount = 6;
+    const float gap = static_cast<float>(window.getSize().y / 2) / platformCount;
+    std::vector<Platform*> platforms;
 
-    // Create a window with the size of the loaded image
-    sf::RenderWindow window(sf::VideoMode(imageSize.x, imageSize.y), "SFML Image Loading Example");
+    for (int i = 0; i < platformCount; ++i) {
+        float x = static_cast<float>(std::rand() % (window.getSize().x - 60));
+        float y = window.getSize().y - i * gap;
+        platforms.push_back(new Platform(x, y));
+    }
 
-    // Create a sprite and set its texture
-    sf::Sprite sprite(texture);
+    float playerStartX = platforms[1]->getBounds().left + platforms[1]->getBounds().width / 2 - 25;
+    float playerStartY = platforms[1]->getBounds().top - 50;
+    Player player(playerStartX, playerStartY);
 
-    // Main loop
-    while (window.isOpen())
-    {
+    sf::Clock clock;
+
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
-
-            // Check if the event is a mouse button release
-            if (event.type == sf::Event::MouseButtonReleased)
-            {
-                // Get the mouse position
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-               
-                // Check if the mouse position falls within the specified ranges
-                    std::cout << "x = " << mousePos.x << "y = " << mousePos.y << std::endl;
-                
-            }
         }
 
-        // Clear the window
-        window.clear();
+        float deltaTime = clock.restart().asSeconds();
 
-        // Draw the sprite
-        window.draw(sprite);
+        player.update(platforms, deltaTime);
 
-        // Display the window
+        if (player.hasFallen()) {
+            window.close();
+        }
+
+        sf::View view = window.getView();
+        view.setCenter(view.getCenter().x, player.getPosition().y);
+        window.setView(view);
+
+        if (player.getPosition().y < platforms.back()->getBounds().top + 200) {
+            addNewPlatform(platforms, window.getSize().x, gap);
+        }
+
+        if (!platforms.empty() && platforms[0]->getBounds().top > player.getPosition().y + 400) {
+            delete platforms[0];
+            platforms.erase(platforms.begin());
+            score++;
+        }
+
+        window.clear(sf::Color(100, 100, 255));
+
+        player.draw(window);
+
+        for (auto platform : platforms) {
+            platform->draw(window);
+        }
+
+        sf::Text text;
+        text.setFont(font);
+        text.setString(std::to_string(score));
+        text.setCharacterSize(30);
+        text.setFillColor(sf::Color::White);
+        text.setStyle(sf::Text::Bold);
+        text.setPosition(window.getSize().x / 2.0f, player.getPosition().y - 150);
+        window.draw(text);
+
         window.display();
+    }
+
+    for (auto platform : platforms) {
+        delete platform;
     }
 
     return 0;
