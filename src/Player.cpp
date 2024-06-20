@@ -2,8 +2,9 @@
 #include "BreakablePlatform.h"
 
 Player::Player(float startX, float startY)
-    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , lives(3), currentlyColliding(false)
+    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , currentlyColliding(false)
 {
+    lives = 3;
     playerShape.setSize(sf::Vector2f(50, 50));
     playerShape.setFillColor(sf::Color::Green);
     playerShape.setPosition(startX, startY);
@@ -102,10 +103,8 @@ int Player::getLives()
 
 void Player::decrementLife()
 {
-    if (!currentlyColliding) {
-        lives--;
-        currentlyColliding = true;
-    }
+    lives = lives - 1;
+
 }
 
 void Player::resetCollisionFlag()
@@ -116,4 +115,10 @@ void Player::resetCollisionFlag()
 bool Player::isColliding() const
 {
     return currentlyColliding;
+}
+
+void Player::increaseLife()
+{
+    if(lives < 3)
+        lives++;
 }

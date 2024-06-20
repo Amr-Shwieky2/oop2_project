@@ -19,9 +19,8 @@ public:
     void decrementLife();
     void resetCollisionFlag();
     bool isColliding() const;
+    void increaseLife();
 private:
-    bool isOnPlatform(const sf::FloatRect& platformBounds);
-    void handleHorizontalMovement();
     int lives;
     bool currentlyColliding;
     sf::RectangleShape playerShape;

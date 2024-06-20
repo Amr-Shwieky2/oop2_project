@@ -9,22 +9,30 @@
 #include "BreakablePlatform.h"
 #include "Bat.h"
 #include "BlackHole.h"
+#include "HeartGift.h"
+#include "Trampoline.h"
 
 // Score variable
 int score = 0;
-const int MEDIUM_HEIGHT = 30;  // Height at which the bat starts appearing
-bool batActive = false;//whether the bat should be active or not
-const float BAT_SPAWN_INTERVAL = 5.0f; // Time in seconds between bat appearances
+const int MEDIUM_HEIGHT = 2;  // Height at which the bat starts appearing
+bool batActive = false , heartgiftActive = false;//whether the bat , heartgift should be active or not
+const float BAT_SPAWN_INTERVAL = 2.0f; // Time in seconds between bat appearances
+const float GIFT_SPAWN_INTERVAL = 3.0f; // Time in seconds between bat appearances
+const float TRAMPOLINE_SPAWN_INTERVAL = 3.0f; // Time in seconds between bat appearances
+
+float trampolineTimer = 0; // Timer to manage bat spawn intervals
 float batTimer = 0; // Timer to manage bat spawn intervals
+float giftTimer = 0; // Timer to manage bat spawn intervals
 const int HARD_HEIGHT = 100; // Hard height after which the black hole starts appearing
-BlackHole blackHole(-100, -100); // Initialize off-screen
 float blackHoleTimer = 0;
 const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f; // Time in seconds between black hole appearances
 
 void addNewPlatform(std::vector<Platform*>& platforms, float windowWidth, float gap) {
     float x = static_cast<float>(std::rand() % static_cast<int>(windowWidth - 60));
     float y = platforms.back()->getBounds().top - gap;
-    Platform::Type type = static_cast<Platform::Type>(std::rand() % 3);
+    //Platform::Type type = static_cast<Platform::Type>(std::rand() % 3);
+    Platform::Type type = static_cast<Platform::Type>(0);
+
 
     switch (type)
     {
@@ -64,27 +72,28 @@ int main() {
 
     float playerStartX = platforms[1]->getBounds().left + platforms[1]->getBounds().width / 2 - 25;
     float playerStartY = platforms[1]->getBounds().top - 50;
-    Player player(playerStartX, playerStartY);
 
+    Player player(playerStartX, playerStartY);
+    BlackHole blackHole(-100, -100); // Initialize off-screen
+    HeartGift heartgift(-100, -100);;
     Bat bat(-100, -100); //The bat is initialized 
+    Trampoline trampoline(-100, -100);  // Example position, adjust as needed
+
     sf::Clock clock; // Clock to manage bat spawn timing
 
-    while (window.isOpen()) {
+    while (window.isOpen()) 
+    {
         sf::Event event;
-        while (window.pollEvent(event)) {
+        while (window.pollEvent(event)) 
+        {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
 
-
         float deltaTime = clock.restart().asSeconds();
         // medium level
         if (player.getPosition().y < MEDIUM_HEIGHT)
-        {
-            batActive = true;
-        }
-        if (batActive)
         {
             batTimer += deltaTime;
             if (batTimer >= BAT_SPAWN_INTERVAL + 7.0f)
@@ -93,14 +102,39 @@ int main() {
                 bat.resetPosition(window.getSize().x, player.getPosition().y - 300); // New bat position
             }
             bat.update(deltaTime); // Update bat position
-            if (bat.getGlobalBounds().intersects(player.getGlobalBounds())) {
-                player.decrementLife(); // Decrement lives only if not currently colliding
+
+
+            giftTimer += deltaTime;
+            if (giftTimer >= GIFT_SPAWN_INTERVAL)
+            {
+                giftTimer = 0; // Reset timer
+                heartgift.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); // New black hole position
             }
-            else if (player.isColliding()) {
-                player.resetCollisionFlag(); // Reset flag if they are not colliding anymore
+
+            trampolineTimer += deltaTime;
+            if (trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL)
+            {
+                trampolineTimer = 0; // Reset timer
+                trampoline.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); 
             }
+
         }
-        //hard level
+        if (bat.getGlobalBounds().intersects(player.getGlobalBounds()))
+        {
+            std::cout << "batttt";
+            player.decrementLife(); 
+        }
+        if (heartgift.getGlobalBounds().intersects(player.getGlobalBounds()))
+        {
+            std::cout << "gifttt";
+            player.increaseLife(); 
+        }
+        //player.updateJumpEnhancement(deltaTime);
+        //// Check for trampoline collision
+        //if (trampoline.getGlobalBounds().intersects(player.getGlobalBounds())) {
+        //    player.enhanceJump(trampoline.getEnhancedJumpStrength(), 5.0f);  // Enhance player's jump for 5 seconds
+        //}
+            //hard level
         if (player.getPosition().y < HARD_HEIGHT)
         {
             blackHoleTimer += deltaTime;
@@ -115,7 +149,8 @@ int main() {
         }
         player.update(platforms, deltaTime);
 
-        if (player.hasFallen()) {
+        if (player.hasFallen() || player.getLives() == 0)
+        {
             window.close();
         }
 
@@ -134,9 +169,11 @@ int main() {
         }
 
         window.clear(sf::Color(100, 100, 255));
+        trampoline.draw(window);
 
         player.draw(window);
         bat.draw(window);
+        heartgift.draw(window);
         blackHole.draw(window);
         for (auto platform : platforms) {
             platform->draw(window);
