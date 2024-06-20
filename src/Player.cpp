@@ -39,6 +39,8 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
     {
         playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y);
     }
+    std::vector<Platform*>::iterator it = platforms.begin();
+
    for (auto platform : platforms)
     {
         sf::FloatRect platformBounds = platform->getBounds();
