@@ -10,7 +10,7 @@ class Player
 public:
     Player(float startX, float startY);
     void draw(sf::RenderWindow& window);
-    void update(std::vector<Platform*>& platforms);
+    void update(std::vector<Platform*>& platforms, float deltaTime);
     void jump();
     sf::Vector2f getPosition() const;
     sf::FloatRect getGlobalBounds() const;
