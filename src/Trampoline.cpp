@@ -19,6 +19,7 @@ void Trampoline::resetPosition(Platform* platform) {
     }  // Ensure this closing brace matches the opening brace for the 'if' statement
 }
 
+
 sf::Vector2f Trampoline::getPosition() const {
     return TrampolineShape.getPosition();
 }
