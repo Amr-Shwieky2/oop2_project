@@ -5,20 +5,31 @@
 #include <ctime>
 #include "Player.h"
 #include "Platform.h"
+#include "Bat.h"
+#include "BlackHole.h"
+#include <ctime>
 
-// Score variable
 int score = 0;
+const int MEDIUM_HEIGHT = 30;  // Height at which the bat starts appearing
+bool batActive = false;//whether the bat should be active or not
+const float BAT_SPAWN_INTERVAL = 5.0f; // Time in seconds between bat appearances
+float batTimer = 0; // Timer to manage bat spawn intervals
+const int HARD_HEIGHT = 100; // Hard height after which the black hole starts appearing
+BlackHole blackHole(-100, -100); // Initialize off-screen
+float blackHoleTimer = 0;
+const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f; // Time in seconds between black hole appearances
 
-int main() {
+int main()
+{
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "fell fall");
 
-        // Seed random number generator
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
+    // Seed random number generator
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     // Create initial platforms
     const int platformCount = 6;//Defines the number of platforms 
-    const float gap = static_cast<float>(window.getSize().y/2) / platformCount;
+    const float gap = static_cast<float>(window.getSize().y / 2) / platformCount;
     std::vector<Platform> platforms;
 
     for (int i = 0; i < platformCount; ++i)
@@ -33,6 +44,10 @@ int main() {
     float playerStartY = platforms[1].getBounds().top - 50;
     Player player(playerStartX, playerStartY);
 
+    Bat bat(-100, -100); //The bat is initialized 
+    sf::Clock clock; // Clock to manage bat spawn timing
+
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -44,6 +59,8 @@ int main() {
                 window.close();
         }
 
+        float deltaTime = clock.restart().asSeconds(); // Restart the clock and get elapsed time
+
         // Update the player (apply gravity and handle movement)
         player.update(platforms);
 
@@ -53,17 +70,51 @@ int main() {
             window.close(); // Close the window to end the game
         }
 
+        // medium level
+        //if (player.getPosition().y < MEDIUM_HEIGHT)
+        //{
+        //    batActive = true;
+        //}
+        //if (batActive)
+        //{
+        //    batTimer += deltaTime;
+        //    if (batTimer >= BAT_SPAWN_INTERVAL + 7.0f)
+        //    {
+        //        batTimer = 0; // Reset timer
+        //        bat.resetPosition(window.getSize().x, player.getPosition().y - 300); // New bat position
+        //    }
+        //    bat.update(deltaTime); // Update bat position
+        //    if (bat.getGlobalBounds().intersects(player.getGlobalBounds())) {
+        //        player.decrementLife(); // Decrement lives only if not currently colliding
+        //    }
+        //    else if (player.isColliding()) {
+        //        player.resetCollisionFlag(); // Reset flag if they are not colliding anymore
+        //    }
+        //}
+        ////hard level
+        //if (player.getPosition().y < HARD_HEIGHT)
+        //{
+        //    blackHoleTimer += deltaTime;
+        //    if (blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL)
+        //    {
+        //        blackHoleTimer = 0; // Reset timer
+        //        blackHole.resetPosition(std::rand() % window.getSize().x, player.getPosition().y - 350); // New black hole position
+        //    }
+        //}
+        //if (blackHole.getGlobalBounds().intersects(player.getGlobalBounds())) {
+        //    window.close(); // Close the window to end the game, as the black hole ends the game on collision
+        //}
         // Adjust the view to keep the player centered
-        sf::View view = window.getView();//defines what part of the game world is visible on the screen
-        view.setCenter(view.getCenter().x, player.getPosition().y);// keeps the player vertically centered in the view
+        sf::View view = window.getView(); // defines what part of the game world is visible on the screen
+        view.setCenter(view.getCenter().x, player.getPosition().y); // keeps the player vertically centered in the view
         window.setView(view);
 
         // Create more platforms as the player moves up the screen
         if (player.getPosition().y < platforms.back().getBounds().top + 200)
         {
-            float x = static_cast<float>(std::rand() % window.getSize().x);// generates a random x-coordinate for the new platform
+            float x = static_cast<float>(std::rand() % window.getSize().x); // generates a random x-coordinate for the new platform
             float y = platforms.back().getBounds().top - gap; // calculates the y-coordinate for the new platform
-            platforms.emplace_back(x, y);//adds the new platform to the platforms vector
+            platforms.emplace_back(x, y); // adds the new platform to the platforms vector
         }
 
         // Remove platforms that are off the screen and increment score
@@ -77,6 +128,8 @@ int main() {
 
         // Draw the player
         player.draw(window);
+        bat.draw(window);
+        blackHole.draw(window);
 
         // Draw the platforms
         for (auto& platform : platforms)
@@ -88,7 +141,7 @@ int main() {
         sf::Font font;
         if (!font.loadFromFile("arial.ttf"))
         {
-            std::cout << "could't laod the font ";
+            std::cout << "Could not load the font";
         }
         sf::Text text;
         text.setFont(font);
@@ -103,5 +156,8 @@ int main() {
         window.display();
     }
 
+
     return 0;
 }
+
+//needs to take care of the lives decrese while there is a collision

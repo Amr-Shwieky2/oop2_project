@@ -1,11 +1,11 @@
 #include "Player.h"
 
 Player::Player(float startX, float startY)
-    : velocity(0.2f), gravity(0.1f), jumpStrength(-7.0f), moveSpeed(2.0f) 
+    : velocity(2.0f), gravity(0.1f), jumpStrength(-6.5f), moveSpeed(0.5f), lives(3), currentlyColliding(false)
 {
-    playerShape.setSize(sf::Vector2f(50, 50)); // Sets the size of the rectangle
-    playerShape.setFillColor(sf::Color::Green); //set color
-    playerShape.setPosition(startX, startY);//set position 
+    playerShape.setSize(sf::Vector2f(50, 50));
+    playerShape.setFillColor(sf::Color::Green);
+    playerShape.setPosition(startX, startY);
 }
 
 void Player::draw(sf::RenderWindow& window)
@@ -13,66 +13,68 @@ void Player::draw(sf::RenderWindow& window)
     window.draw(playerShape);
 }
 
-//updating the player's position
-void Player::update(const std::vector<Platform>& platforms)
+// Updating the player's position
+void Player::update(const std::vector<Platform>& platforms) 
 {
-    velocity += gravity;// making the player accelerate downwards over time
-    playerShape.move(0, velocity); //player's position is updated 
+    velocity += gravity;  // Apply gravity
+    playerShape.move(0, velocity);  // Update vertical position
 
-    // Move left
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        playerShape.move(-moveSpeed, 0);
-    }
+    handleHorizontalMovement();  // Handle left/right movement
 
-    // Move right
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        playerShape.move(moveSpeed, 0);
-    }
-
-    //to ensures the player wraps around the screen 
-    if (playerShape.getPosition().x + playerShape.getSize().x < 0)
-    {
-        playerShape.setPosition(800, playerShape.getPosition().y); // Wrap to the right
-    }
-
-    if (playerShape.getPosition().x > 800)
-    {
-        playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y); // Wrap to the left
-    }
-
-    // Collision detection with platforms
-    for (const auto& platform : platforms)
-    {
-        sf::FloatRect platformBounds = platform.getBounds();
-        sf::FloatRect playerBounds = playerShape.getGlobalBounds();
-
-        //checks if the bottom of the player is within the vertical
-        // bounds of the platform and if the player is falling
-        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
-            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
-            velocity > 0) // Only check collision if the player is falling
-        {
-            float minX = platformBounds.left - playerBounds.width;
-            float maxX = platformBounds.left + platformBounds.width;
-            //if the player is horizontally within the bounds of the platform
-            if (playerBounds.left >= minX && playerBounds.left <= maxX)
-            {
-                //the player is considered to have landed on the platform
-                jump();
+    // Check collision with platforms
+    currentlyColliding = false;  // Reset collision flag
+    for (const auto& platform : platforms) {
+        if (isOnPlatform(platform.getBounds())) {
+            if (velocity > 0) {  // Falling down onto the platform
+                jump();  // Perform jump
+                currentlyColliding = true;
+                break;  // No need to check further platforms
             }
         }
     }
 }
 
-void Player::jump()
-{
-    if (velocity > 0) // Only jump if the player is falling down
-    {
-        velocity = jumpStrength; // Set velocity to jumpStrength to make the player jump
+bool Player::isOnPlatform(const sf::FloatRect& platformBounds) {
+    sf::FloatRect playerBounds = playerShape.getGlobalBounds();
+    // Check vertical alignment and within bounds horizontally
+    return (playerBounds.top + playerBounds.height > platformBounds.top - 10 &&
+        playerBounds.top + playerBounds.height < platformBounds.top + 10 &&
+        playerBounds.left < platformBounds.left + platformBounds.width &&
+        playerBounds.left + playerBounds.width > platformBounds.left);
+}
+
+void Player::handleHorizontalMovement() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        playerShape.move(-moveSpeed, 0);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        playerShape.move(moveSpeed, 0);
+    }
+
+    // Screen wrap logic
+    if (playerShape.getPosition().x + playerShape.getSize().x < 0) {
+        playerShape.setPosition(800, playerShape.getPosition().y);
+    }
+    else if (playerShape.getPosition().x > 800) {
+        playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y);
     }
 }
+
+
+
+
+sf::FloatRect Player::getGlobalBounds() const
+{
+    return playerShape.getGlobalBounds();
+}
+
+
+void Player::jump() 
+{
+    velocity = jumpStrength;  // jumpStrength should be a negative value
+
+}
+
 
 sf::Vector2f Player::getPosition() const
 {
@@ -82,4 +84,27 @@ sf::Vector2f Player::getPosition() const
 bool Player::hasFallen() const
 {
     return playerShape.getPosition().y > 600;
+}
+
+int Player::getLives()
+{
+    return lives;
+}
+
+void Player::decrementLife()
+{
+    if (!currentlyColliding) {
+        lives--;
+        currentlyColliding = true;
+    }
+}
+
+void Player::resetCollisionFlag()
+{
+    currentlyColliding = false;
+}
+
+bool Player::isColliding() const
+{
+    return currentlyColliding;
 }
