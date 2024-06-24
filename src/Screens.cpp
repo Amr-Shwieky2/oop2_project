@@ -71,6 +71,8 @@ void Screens::adjustWindowSize(Screens_m screenType) {
                 m_window.create(sf::VideoMode(imageSize.x, imageSize.y), "Game Window");
                 m_firstPage = false;
             }else{
+                if(screenType == GAME_m && m_window.isOpen())
+                    m_window.create(sf::VideoMode(imageSize.x, imageSize.y + 50), "Game Window");
                 m_window.setSize(sf::Vector2u(static_cast<unsigned int>(imageSize.x), static_cast<unsigned int>(imageSize.y)));
                 m_window.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
         
