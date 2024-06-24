@@ -20,6 +20,7 @@ GameLogic::GameLogic()
         std::cerr << "Couldn't load the font!" << std::endl;
         std::exit(-1);
     }
+
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
 }
