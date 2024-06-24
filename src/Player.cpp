@@ -48,7 +48,9 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
         m_playerShape.setPosition(-m_playerShape.getSize().x, m_playerShape.getPosition().y);
     }
 
-    for (auto platform : platforms)
+    std::vector<Platform*>::iterator it = platforms.begin();
+
+   for (auto platform : platforms)
     {
         sf::FloatRect platformBounds = platform->getBounds();
         sf::FloatRect playerBounds = m_playerShape.getGlobalBounds();
