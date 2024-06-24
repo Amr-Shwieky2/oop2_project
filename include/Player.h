@@ -20,15 +20,28 @@ public:
     void decrementLife();
     void resetCollisionFlag();
     bool isColliding() const;
+    void increaseLife();
+    void boostJump();  // Method to boost the jump strength temporarily
+    void resetJumpStrength();  // Resets the jump strength to normal
+    void activateFlying(float duration);
+    void updateFlying(float deltaTime);
 
 private:
-    int m_lives;
-    bool m_currentlyColliding;
-    sf::RectangleShape m_playerShape;
-    float m_velocity;
-    float m_gravity;
-    float m_jumpStrength;
-    float m_moveSpeed;
+    int lives;
+    bool currentlyColliding;
+    sf::RectangleShape playerShape;
+    float velocity;
+    float gravity;
+    float jumpStrength;
+    float moveSpeed;
+    bool jumpBoosted;  // Indicates if the next jump is boosted
+    float normalJumpStrength;  // Regular jump strength
+    float boostedJumpStrength;  // Increased jump strength for trampoline jumps
+    bool isFlying;
+    float flyingTimer;
+    float maxFlyingDuration;
+
+
 };
 
 #endif

@@ -3,11 +3,8 @@
 #include "Singleton.h"
 #include <SFML/Graphics.hpp>
 
-
 int main() {
     Screens s;
     s.run();
-
-
     return 0;
 }
