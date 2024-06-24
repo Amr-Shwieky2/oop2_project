@@ -13,8 +13,13 @@ GameLogic::GameLogic()
     m_blackHoleTimer(0),
     m_giftTimer(0),
     m_trampolineTimer(0),
-    m_wingGiftTimer(0)
+    m_wingGiftTimer(0),
+    m_sidebar(800, 50)
 {
+    if (!m_font.loadFromFile("arial.ttf")) {
+        std::cerr << "Couldn't load the font!" << std::endl;
+        std::exit(-1);
+    }
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
 }
@@ -26,12 +31,9 @@ GameLogic::~GameLogic() {
 }
 
 void GameLogic::initialize(sf::RenderWindow& window) {
-    if (!m_font.loadFromFile("arial.ttf")) {
-        std::cerr << "Couldn't load the font!" << std::endl;
-        std::exit(-1);
-    }
+    
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(65);
     const int platformCount = 6;
     const float gap = static_cast<float>(window.getSize().y / 2) / platformCount;
 
@@ -98,7 +100,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
     if (m_giftTimer >= GIFT_SPAWN_INTERVAL) {
         m_giftTimer = 0;
         m_heartGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
-                                  static_cast<float>(m_player.getPosition().y - 350));
+            static_cast<float>(m_player.getPosition().y - 350));
     }
 
     m_trampolineTimer += deltaTime;
@@ -114,7 +116,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
     if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
         m_wingGiftTimer = 0;
         m_wingGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
-                                 static_cast<float>(m_player.getPosition().y - 350));
+            static_cast<float>(m_player.getPosition().y - 350));
     }
 
     if (m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
@@ -148,6 +150,8 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
         m_platforms.erase(m_platforms.begin());
         m_score++;
     }
+
+    m_sidebar.update(m_score, static_cast<int>(m_player.getPosition().y), m_player.getLives());  // Update Sidebar
 }
 
 void GameLogic::render(sf::RenderWindow& window) {
@@ -172,14 +176,9 @@ void GameLogic::render(sf::RenderWindow& window) {
         platform->draw(window);
     }
 
-    sf::Text text;
-    text.setFont(m_font);
-    text.setString(std::to_string(m_score));
-    text.setCharacterSize(30);
-    text.setFillColor(sf::Color::White);
-    text.setStyle(sf::Text::Bold);
-    text.setPosition(window.getSize().x / 2.0f, m_player.getPosition().y - 150);
-    window.draw(text);
+    // Reset the view to the default view to draw the sidebar fixed at the top
+    window.setView(window.getDefaultView());
+    m_sidebar.draw(window);
 
     window.display();
 }

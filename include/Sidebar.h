@@ -6,7 +6,7 @@
 
 class Sidebar {
 public:
-    Sidebar(float width, float height, const sf::Font& font);
+    Sidebar(float width, float height);
 
     void update(int score, int height, int lives);
     void draw(sf::RenderWindow& window);
@@ -19,7 +19,7 @@ private:
     sf::RectangleShape m_pauseButton;
     std::vector<sf::RectangleShape> m_livesRects;
 
-    const sf::Font& m_font;
+    sf::Font m_font;
     float m_sidebarWidth;
     float m_sidebarHeight;
 };

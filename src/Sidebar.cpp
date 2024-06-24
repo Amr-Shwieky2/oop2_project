@@ -1,23 +1,28 @@
 #include "Sidebar.h"
+#include <iostream>
 
-Sidebar::Sidebar(float width, float height, const sf::Font& font)
-    : m_font(font), m_sidebarWidth(width), m_sidebarHeight(height)
+Sidebar::Sidebar(float width, float height)
+    : m_sidebarWidth(width), m_sidebarHeight(height)
 {
+    if (!m_font.loadFromFile("arial.ttf")) {
+        std::cerr << "Couldn't load the font!" << std::endl;
+        std::exit(-1);
+    }
     m_background.setSize(sf::Vector2f(width, height));
     m_background.setFillColor(sf::Color(150, 150, 150, 255));  // Light grey
 
-    m_scoreText.setFont(font);
+    m_scoreText.setFont(m_font);
     m_scoreText.setCharacterSize(24);
     m_scoreText.setFillColor(sf::Color::Black);
 
-    m_heightText.setFont(font);
+    m_heightText.setFont(m_font);
     m_heightText.setCharacterSize(24);
     m_heightText.setFillColor(sf::Color::Black);
 
     m_pauseButton.setSize(sf::Vector2f(70, 30));
     m_pauseButton.setFillColor(sf::Color::Black);
 
-    m_pauseText.setFont(font);
+    m_pauseText.setFont(m_font);
     m_pauseText.setString("PAUSE");
     m_pauseText.setCharacterSize(24);
     m_pauseText.setFillColor(sf::Color::White);

@@ -16,6 +16,8 @@
 #include "WingGift.h"
 #include "Singleton.h"
 
+#include "Sidebar.h"
+
 const int MEDIUM_HEIGHT = 30;
 const float BAT_SPAWN_INTERVAL = 5.0f;
 const int HARD_HEIGHT = 100;
@@ -56,4 +58,6 @@ private:
     float m_giftTimer;
     float m_trampolineTimer;
     float m_wingGiftTimer;
+
+    Sidebar m_sidebar;  // Add the Sidebar instance
 };
