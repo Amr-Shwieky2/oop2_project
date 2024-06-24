@@ -8,20 +8,20 @@ class Sidebar {
 public:
     Sidebar(float width, float height, const sf::Font& font);
 
-    void update(int score, int height, int lives, float x, float y);
+    void update(int score, int height, int lives);
     void draw(sf::RenderWindow& window);
     bool isPaused(sf::Vector2i mousePos);
 private:
-    sf::RectangleShape background;
-    sf::Text scoreText;
-    sf::Text heightText;
-    sf::Text pauseText;
-    sf::RectangleShape pauseButton;
-    std::vector<sf::RectangleShape> livesRects;
+    sf::RectangleShape m_background;
+    sf::Text m_scoreText;
+    sf::Text m_heightText;
+    sf::Text m_pauseText;
+    sf::RectangleShape m_pauseButton;
+    std::vector<sf::RectangleShape> m_livesRects;
 
-    const sf::Font& font;
-    float sidebarWidth;
-    float sidebarHeight;
+    const sf::Font& m_font;
+    float m_sidebarWidth;
+    float m_sidebarHeight;
 };
 
 #endif // SIDEBAR_H

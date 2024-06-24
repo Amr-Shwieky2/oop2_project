@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 
 int main() {
-
     sf::RenderWindow m_window;
     sf::Texture* texture = Singleton::instance().getScreen(GAME_m);
     sf::Vector2u imageSize = texture->getSize();

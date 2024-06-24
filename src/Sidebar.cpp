@@ -1,65 +1,57 @@
 #include "Sidebar.h"
 
 Sidebar::Sidebar(float width, float height, const sf::Font& font)
-    : font(font), sidebarWidth(width), sidebarHeight(height) 
+    : m_font(font), m_sidebarWidth(width), m_sidebarHeight(height)
 {
-    background.setSize(sf::Vector2f(width, height));
-    background.setFillColor(sf::Color(150, 150, 150, 255));  // Light grey
+    m_background.setSize(sf::Vector2f(width, height));
+    m_background.setFillColor(sf::Color(150, 150, 150, 255));  // Light grey
 
-    scoreText.setFont(font);
-    scoreText.setCharacterSize(24);
-    scoreText.setFillColor(sf::Color::Black);
-    //scoreText.setPosition(10, 10);
+    m_scoreText.setFont(font);
+    m_scoreText.setCharacterSize(24);
+    m_scoreText.setFillColor(sf::Color::Black);
 
-    heightText.setFont(font);
-    heightText.setCharacterSize(24);
-    heightText.setFillColor(sf::Color::Black);
-    //heightText.setPosition(120, 10);
+    m_heightText.setFont(font);
+    m_heightText.setCharacterSize(24);
+    m_heightText.setFillColor(sf::Color::Black);
 
-    pauseButton.setSize(sf::Vector2f(70, 30));
-    pauseButton.setFillColor(sf::Color::Black);
-    //pauseButton.setPosition(width - 110, 10);  // Position within the sidebar
+    m_pauseButton.setSize(sf::Vector2f(70, 30));
+    m_pauseButton.setFillColor(sf::Color::Black);
 
-    pauseText.setFont(font);
-    pauseText.setString("PAUSE");
-    pauseText.setCharacterSize(24);
-    pauseText.setFillColor(sf::Color::White);
-    //pauseText.setPosition(pauseButton.getPosition().x , pauseButton.getPosition().y );
-
-
+    m_pauseText.setFont(font);
+    m_pauseText.setString("PAUSE");
+    m_pauseText.setCharacterSize(24);
+    m_pauseText.setFillColor(sf::Color::White);
 }
 
-void Sidebar::update(int score, int height, int lives , float x , float y) 
+void Sidebar::update(int score, int height, int lives)
 {
-    scoreText.setString("Score: " + std::to_string(score));
+    m_scoreText.setString("Score: " + std::to_string(score));
+    m_heightText.setString("Height: " + std::to_string(height));
 
-    heightText.setString("Height: " + std::to_string(height));
-
-
-    livesRects.clear();
-    for (int i = 0; i < lives; ++i) 
+    m_livesRects.clear();
+    for (int i = 0; i < lives; ++i)
     {
         sf::RectangleShape life(sf::Vector2f(20, 20));
         life.setFillColor(sf::Color::Red);
-        life.setPosition(300 + i * 30, y+20);
-        livesRects.push_back(life);
+        life.setPosition(300 + i * 30, 20);
+        m_livesRects.push_back(life);
     }
-    background.setPosition(x, y + 20);
-    scoreText.setPosition(10, y + 20);
-    heightText.setPosition(100, y + 20);
-    pauseButton.setPosition(700, y + 20);
-    pauseText.setPosition(700 , y + 20);
 
+    m_background.setPosition(0, 0);
+    m_scoreText.setPosition(10, 10);
+    m_heightText.setPosition(100, 10);
+    m_pauseButton.setPosition(700, 10);
+    m_pauseText.setPosition(705, 15);
 }
 
 void Sidebar::draw(sf::RenderWindow& window)
 {
-    window.draw(background);
-    window.draw(scoreText);
-    window.draw(heightText);
-    window.draw(pauseButton);
-    window.draw(pauseText);
-    for (auto& rect : livesRects)
+    window.draw(m_background);
+    window.draw(m_scoreText);
+    window.draw(m_heightText);
+    window.draw(m_pauseButton);
+    window.draw(m_pauseText);
+    for (auto& rect : m_livesRects)
     {
         window.draw(rect);
     }
@@ -67,7 +59,5 @@ void Sidebar::draw(sf::RenderWindow& window)
 
 bool Sidebar::isPaused(sf::Vector2i mousePos)
 {
-    return pauseButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
+    return m_pauseButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
-
-
