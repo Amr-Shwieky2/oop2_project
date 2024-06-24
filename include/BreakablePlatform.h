@@ -13,7 +13,7 @@ public:
     bool isBroken() const;
 
 private:
-    bool isBrokenPlatform;
+    bool m_isBrokenPlatform;
 };
 
 #endif
