@@ -11,8 +11,8 @@ public:
     void update(float deltaTime) override;
 
 private:
-    float direction;
-    float speed;
+    float m_direction;
+    float m_speed;
 };
 
 #endif

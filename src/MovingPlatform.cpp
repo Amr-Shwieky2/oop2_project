@@ -1,16 +1,16 @@
 #include "MovingPlatform.h"
 
 MovingPlatform::MovingPlatform(float x, float y)
-    : Platform(x, y, Type::MOVING), direction(1.0f), speed(200.0f) // Increased speed
+    : Platform(x, y, Type::MOVING), m_direction(1.0f), m_speed(200.0f) // Increased speed
 {}
 
 void MovingPlatform::update(float deltaTime)
 {
-    float moveAmount = direction * speed * deltaTime;
-    platformShape.move(moveAmount, 0);
+    float moveAmount = m_direction * m_speed * deltaTime;
+    m_platformShape.move(moveAmount, 0);
 
-    if (platformShape.getPosition().x < 0 || platformShape.getPosition().x + platformShape.getSize().x > 800)
+    if (m_platformShape.getPosition().x < 0 || m_platformShape.getPosition().x + m_platformShape.getSize().x > 800)
     {
-        direction *= -1; // Reverse direction
+        m_direction *= -1; // Reverse direction
     }
 }

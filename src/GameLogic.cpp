@@ -13,6 +13,7 @@ GameLogic::GameLogic()
 {
     
     std::srand(static_cast<unsigned>(std::time(nullptr)));
+    m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
     
 }
 
@@ -26,7 +27,7 @@ void GameLogic::initialize(sf::RenderWindow& window) {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
         std::exit(-1);
-    }
+    }//change to exption
 
     window.setFramerateLimit(60);
     const int platformCount = 6;
@@ -52,10 +53,12 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            float deltaTime = m_clock.restart().asSeconds();
-            update(deltaTime, window);
-            render(window);
+           
+            
         }
+        float deltaTime = m_clock.restart().asSeconds();
+        update(deltaTime, window);
+        render(window);
     }
 
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
@@ -96,9 +99,9 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
 
     m_player.update(m_platforms, deltaTime);
 
-    /*if (m_player.hasFallen()) {
+    if (m_player.hasFallen()) {
         window.close();
-    }*/
+    }
 
     sf::View view = window.getView();
     view.setCenter(view.getCenter().x, m_player.getPosition().y);
@@ -118,12 +121,29 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
 void GameLogic::render(sf::RenderWindow& window) {
     window.clear();
 
+    sf::View view = window.getView();
+    float viewTop = view.getCenter().y - view.getSize().y / 2;
+
+    // Draw multiple backgrounds
+    for (int i = 0; i < 3; ++i) { // Adjust the number of backgrounds based on your game's needs
+        m_screen.setPosition(0, viewTop + i * m_screen.getTexture()->getSize().y);
+        window.draw(m_screen);
+
+        // Draw the extra background above the current one
+        if (i > 0) {
+            m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
+            m_screen.setPosition(0, viewTop + (i - 1) * m_screen.getTexture()->getSize().y);
+            window.draw(m_screen);
+        }
+    }
+
     m_player.draw(window);
     m_bat.draw(window);
     m_blackHole.draw(window);
     for (auto platform : m_platforms) {
         platform->draw(window);
     }
+    
 
     sf::Text text;
     text.setFont(m_font);

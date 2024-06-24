@@ -10,10 +10,10 @@
 #include "BlackHole.h"
 #include "BaseScreen.h"
 
-const int MEDIUM_HEIGHT = 30;
-const float BAT_SPAWN_INTERVAL = 5.0f;
-const int HARD_HEIGHT = 100;
-const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f;
+const int MEDIUM_HEIGHT = 30; 
+const float BAT_SPAWN_INTERVAL = 5.0f; 
+const int HARD_HEIGHT = 100; 
+const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f; 
 
 class GameLogic : public BaseScreen {
 public:
@@ -37,6 +37,7 @@ private:
     Player m_player;
     Bat m_bat;
     BlackHole m_blackHole;
+    sf::Sprite m_screen;
 
     int m_score;
     bool m_batActive;

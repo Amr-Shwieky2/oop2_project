@@ -2,55 +2,55 @@
 #include "BreakablePlatform.h"
 
 Player::Player()
-    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , lives(3), currentlyColliding(false)
+    : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f), m_lives(3), m_currentlyColliding(false)
 {
-    playerShape.setSize(sf::Vector2f(50, 50));
-    playerShape.setFillColor(sf::Color::Green);
+    m_playerShape.setSize(sf::Vector2f(50, 50));
+    m_playerShape.setFillColor(sf::Color::Green);
 }
 
 void Player::setPosition(float startX, float startY)
 {
-    playerShape.setPosition(startX, startY);
+    m_playerShape.setPosition(startX, startY);
 }
 
 void Player::draw(sf::RenderWindow& window)
 {
-    window.draw(playerShape);
+    window.draw(m_playerShape);
 }
-
 
 void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
-    velocity += gravity;
-    playerShape.move(0, velocity);
+    m_velocity += m_gravity;
+    m_playerShape.move(0, m_velocity);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        playerShape.move(-moveSpeed, 0);
+        m_playerShape.move(-m_moveSpeed, 0);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        playerShape.move(moveSpeed, 0);
+        m_playerShape.move(m_moveSpeed, 0);
     }
 
-    if (playerShape.getPosition().x + playerShape.getSize().x < 0)
+    if (m_playerShape.getPosition().x + m_playerShape.getSize().x < 0)
     {
-        playerShape.setPosition(800, playerShape.getPosition().y);
+        m_playerShape.setPosition(800, m_playerShape.getPosition().y);
     }
 
-    if (playerShape.getPosition().x > 800)
+    if (m_playerShape.getPosition().x > 800)
     {
-        playerShape.setPosition(-playerShape.getSize().x, playerShape.getPosition().y);
+        m_playerShape.setPosition(-m_playerShape.getSize().x, m_playerShape.getPosition().y);
     }
-   for (auto platform : platforms)
+
+    for (auto platform : platforms)
     {
         sf::FloatRect platformBounds = platform->getBounds();
-        sf::FloatRect playerBounds = playerShape.getGlobalBounds();
+        sf::FloatRect playerBounds = m_playerShape.getGlobalBounds();
 
         if (playerBounds.top + playerBounds.height >= platformBounds.top &&
             playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
-            velocity > 0)
+            m_velocity > 0)
         {
             float minX = platformBounds.left - playerBounds.width;
             float maxX = platformBounds.left + platformBounds.width;
@@ -66,58 +66,51 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 
         platform->update(deltaTime);
     }
-
 }
-
-
-
 
 sf::FloatRect Player::getGlobalBounds() const
 {
-    return playerShape.getGlobalBounds();
+    return m_playerShape.getGlobalBounds();
 }
-   
 
-
-void Player::jump() 
+void Player::jump()
 {
-    if (velocity > 0)
+    if (m_velocity > 0)
     {
-        velocity = jumpStrength;
+        m_velocity = m_jumpStrength;
     }
 }
 
-
 sf::Vector2f Player::getPosition() const
 {
-    return playerShape.getPosition();
+    return m_playerShape.getPosition();
 }
 
 bool Player::hasFallen() const
 {
-    return playerShape.getPosition().y > 600;
+    return m_playerShape.getPosition().y > 600;
 }
 
-
-int Player::getLives()
+int Player::getLives() const
 {
-    return lives;
+    return m_lives;
 }
 
 void Player::decrementLife()
 {
-    if (!currentlyColliding) {
-        lives--;
-        currentlyColliding = true;
+    if (!m_currentlyColliding)
+    {
+        m_lives--;
+        m_currentlyColliding = true;
     }
 }
 
 void Player::resetCollisionFlag()
 {
-    currentlyColliding = false;
+    m_currentlyColliding = false;
 }
 
 bool Player::isColliding() const
 {
-    return currentlyColliding;
+    return m_currentlyColliding;
 }

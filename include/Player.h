@@ -16,19 +16,19 @@ public:
     sf::Vector2f getPosition() const;
     sf::FloatRect getGlobalBounds() const;
     bool hasFallen() const;
-    int getLives();
+    int getLives() const;
     void decrementLife();
     void resetCollisionFlag();
     bool isColliding() const;
+
 private:
-    
-    int lives;
-    bool currentlyColliding;
-    sf::RectangleShape playerShape;
-    float velocity;
-    float gravity;
-    float jumpStrength;
-    float moveSpeed;
+    int m_lives;
+    bool m_currentlyColliding;
+    sf::RectangleShape m_playerShape;
+    float m_velocity;
+    float m_gravity;
+    float m_jumpStrength;
+    float m_moveSpeed;
 };
 
 #endif

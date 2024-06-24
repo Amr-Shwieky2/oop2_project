@@ -17,9 +17,9 @@ public:
     bool isBreakable() const;
 
 protected:
-    sf::RectangleShape platformShape;
-    Type type;
-    bool broken;
+    sf::RectangleShape m_platformShape;
+    Type m_type;
+    bool m_broken;
 };
 
 #endif
