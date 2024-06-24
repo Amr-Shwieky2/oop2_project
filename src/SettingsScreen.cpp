@@ -48,12 +48,12 @@ Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
                     //Singleton::instance().getSoundManager().playSound("click"); // Play click sound
                     return MENU_m;  // Return to menu screen
                 }
-                if (m_effectsBar.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                if (m_effectsBar.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                     m_effectsVolume = (mousePos.x - 525) / 2.0f;
                     m_effectsDot.setPosition(525 + m_effectsVolume * 2 - 10, 318 - 5);
                     updateVolume();
                 }
-                if (m_musicBar.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                if (m_musicBar.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                     m_musicVolume = (mousePos.x - 525) / 2.0f;
                     m_musicDot.setPosition(525 + m_musicVolume * 2 - 10, 426 - 5);
                     updateVolume();

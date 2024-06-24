@@ -10,6 +10,7 @@ void BreakablePlatform::update(float deltaTime)
     {
         broken = true;
     }
+    static_cast<void>(deltaTime);
 }
 
 void BreakablePlatform::breakPlatform()

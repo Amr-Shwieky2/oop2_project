@@ -69,7 +69,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
         m_batTimer += deltaTime;
         if (m_batTimer >= BAT_SPAWN_INTERVAL + 7.0f) {
             m_batTimer = 0;
-            m_bat.resetPosition(window.getSize().x, m_player.getPosition().y - 300);
+            m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(m_player.getPosition().y - 300));
         }
         m_bat.update(deltaTime);
         if (m_bat.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
@@ -84,7 +84,9 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
         m_blackHoleTimer += deltaTime;
         if (m_blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL) {
             m_blackHoleTimer = 0;
-            m_blackHole.resetPosition(std::rand() % window.getSize().x, m_player.getPosition().y - 350);
+            m_blackHole.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
+                                        static_cast<float>(m_player.getPosition().y - 350));
+
         }
     }
 

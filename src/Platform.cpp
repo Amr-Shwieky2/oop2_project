@@ -8,7 +8,7 @@ Platform::Platform(float x, float y, Type type)
     platformShape.setPosition(x, y);
 }
 
-void Platform::update(float deltaTime) {}
+void Platform::update(float deltaTime) { static_cast<void>(deltaTime); }
 
 void Platform::draw(sf::RenderWindow& window)
 {
