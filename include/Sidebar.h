@@ -8,7 +8,7 @@ class Sidebar {
 public:
     Sidebar(float width, float height, const sf::Font& font);
 
-    void update(int score, int height, int lives, float x, float y);
+    void update(int score, int height, int lives);
     void draw(sf::RenderWindow& window);
     bool isPaused(sf::Vector2i mousePos);
 private:

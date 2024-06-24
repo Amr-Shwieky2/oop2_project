@@ -52,7 +52,7 @@ int main() {
         std::cerr << "Couldn't load the font!" << std::endl;
         return -1;
     }
-    Sidebar sidebar(800, 50, font );
+    Sidebar sidebar(800, 50, font);
     window.setFramerateLimit(65);
 
     const int platformCount = 6;
@@ -72,7 +72,7 @@ int main() {
     Bat bat(-100, -100); //The bat is initialized 
     sf::Clock clock; // Clock to manage bat spawn timing
 
-    while (window.isOpen()) 
+    while (window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -91,7 +91,6 @@ int main() {
                 }
             }
         }
-
 
         //-----------------------------------------------levels-------------------------------
         float displayedHeight = playerStartY - player.getPosition().y;  // Height increases as the player goes up
@@ -134,7 +133,7 @@ int main() {
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         player.update(platforms, deltaTime);
 
-        if (player.hasFallen() || player.getLives()==0) 
+        if (player.hasFallen() || player.getLives() == 0)
         {
             window.close();
         }
@@ -152,9 +151,8 @@ int main() {
             platforms.erase(platforms.begin());
             score++;
         }
-        float x = 0;
-        float y = player.getPosition().y - 325;
-        sidebar.update(score, static_cast<int>(displayedHeight), player.getLives() , x , y);
+
+        sidebar.update(score, static_cast<int>(displayedHeight), player.getLives());
 
         window.clear(sf::Color(100, 100, 255));
 
@@ -164,15 +162,9 @@ int main() {
         for (auto platform : platforms) {
             platform->draw(window);
         }
-        //std::cout << player.getLives();
-        //sf::Text text;
-        //text.setFont(font);
-        //text.setString(std::to_string(score));
-        //text.setCharacterSize(30);
-        //text.setFillColor(sf::Color::White);
-        //text.setStyle(sf::Text::Bold);
-        //text.setPosition(window.getSize().x / 2.0f, player.getPosition().y - 150);
-        //window.draw(text);
+
+        // Reset the view to the default view to draw the sidebar fixed at the top
+        window.setView(window.getDefaultView());
         sidebar.draw(window);
 
         window.display();
