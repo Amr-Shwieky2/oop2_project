@@ -27,21 +27,19 @@ public:
     void updateFlying(float deltaTime);
 
 private:
-    int lives;
-    bool currentlyColliding;
-    sf::RectangleShape playerShape;
-    float velocity;
-    float gravity;
-    float jumpStrength;
-    float moveSpeed;
-    bool jumpBoosted;  // Indicates if the next jump is boosted
-    float normalJumpStrength;  // Regular jump strength
-    float boostedJumpStrength;  // Increased jump strength for trampoline jumps
-    bool isFlying;
-    float flyingTimer;
-    float maxFlyingDuration;
-
-
+    int m_lives;
+    bool m_currentlyColliding;
+    sf::RectangleShape m_playerShape;
+    float m_velocity;
+    float m_gravity;
+    float m_jumpStrength;
+    float m_moveSpeed;
+    bool m_jumpBoosted;  // Indicates if the next jump is boosted
+    float m_normalJumpStrength;  // Regular jump strength
+    float m_boostedJumpStrength;  // Increased jump strength for trampoline jumps
+    bool m_isFlying;
+    float m_flyingTimer;
+    float m_maxFlyingDuration;
 };
 
 #endif

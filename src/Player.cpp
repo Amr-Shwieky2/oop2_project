@@ -1,10 +1,10 @@
 #include "Player.h"
 #include "BreakablePlatform.h"
 
-
 Player::Player()
-    : velocity(0.0f), gravity(0.5f), jumpStrength(-15.0f), moveSpeed(5.0f) , currentlyColliding(false) 
-    , jumpBoosted(false), normalJumpStrength(-15.0f) , boostedJumpStrength(-23.0f)
+    : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
+    m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
+    m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3)
 {
     m_playerShape.setSize(sf::Vector2f(50, 50));
     m_playerShape.setFillColor(sf::Color::Green);
@@ -14,6 +14,7 @@ void Player::setPosition(float startX, float startY)
 {
     m_playerShape.setPosition(startX, startY);
 }
+
 void Player::draw(sf::RenderWindow& window)
 {
     window.draw(m_playerShape);
@@ -21,12 +22,10 @@ void Player::draw(sf::RenderWindow& window)
 
 void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
-
     updateFlying(deltaTime);
 
-    velocity += gravity;
-    playerShape.move(0, velocity);
-
+    m_velocity += m_gravity;
+    m_playerShape.move(0, m_velocity);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
@@ -82,8 +81,7 @@ void Player::jump()
 {
     if (m_velocity > 0)
     {
-
-        velocity = jumpStrength;
+        m_velocity = m_jumpStrength;
         resetJumpStrength();  // Reset jump strength immediately after jumping
     }
 }
@@ -105,9 +103,7 @@ int Player::getLives() const
 
 void Player::decrementLife()
 {
-
-    lives = lives - 1;
-
+    m_lives--;
 }
 
 void Player::resetCollisionFlag()
@@ -122,41 +118,40 @@ bool Player::isColliding() const
 
 void Player::increaseLife()
 {
-    if(lives < 3)
-        lives++;
+    if (m_lives < 3)
+        m_lives++;
 }
 
 void Player::boostJump() {
-    if (!jumpBoosted) {
-        jumpStrength = boostedJumpStrength;
-        jumpBoosted = true;
+    if (!m_jumpBoosted) {
+        m_jumpStrength = m_boostedJumpStrength;
+        m_jumpBoosted = true;
     }
 }
 
 void Player::resetJumpStrength() {
-    if (jumpBoosted) 
-    {
-        jumpStrength = normalJumpStrength;
-        jumpBoosted = false;
+    if (m_jumpBoosted) {
+        m_jumpStrength = m_normalJumpStrength;
+        m_jumpBoosted = false;
     }
 }
 
 void Player::activateFlying(float duration)
 {
-    isFlying = true;
-    maxFlyingDuration = duration;
-    flyingTimer = 0;
+    m_isFlying = true;
+    m_maxFlyingDuration = duration;
+    m_flyingTimer = 0;
 }
 
 void Player::updateFlying(float deltaTime)
 {
-    if (isFlying) {
-        flyingTimer += deltaTime;
-        if (flyingTimer < maxFlyingDuration) {
-            velocity = -7.0f;  // Negative to move up
+    if (m_isFlying) {
+        m_flyingTimer += deltaTime;
+        if (m_flyingTimer < m_maxFlyingDuration) {
+            m_velocity = -7.0f;  // Negative to move up
         }
         else {
-            isFlying = false;
+            m_isFlying = false;
         }
     }
 }
