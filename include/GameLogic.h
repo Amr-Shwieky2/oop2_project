@@ -33,7 +33,7 @@ public:
 
     void initialize(sf::RenderWindow& window);
     Screens_m handleEvents(sf::RenderWindow& window) override;
-    void update(float deltaTime, sf::RenderWindow& window);
+    void update(float deltaTime, sf::RenderWindow& window , float displayedHeight);
     void render(sf::RenderWindow& window) override;
 
 private:
@@ -50,7 +50,7 @@ private:
     Trampoline m_trampoline;
     WingGift m_wingGift;
     sf::Sprite m_screen;
-
+    bool m_isGamePaused;
     int m_score;
     bool m_batActive;
     float m_batTimer;
@@ -58,6 +58,8 @@ private:
     float m_giftTimer;
     float m_trampolineTimer;
     float m_wingGiftTimer;
+    float m_playerStartX;
+    float m_playerStartY;
 
     Sidebar m_sidebar;  // Add the Sidebar instance
 };

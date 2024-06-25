@@ -19,6 +19,7 @@ public:
     int getLives() const;
     void decrementLife();
     void resetCollisionFlag();
+    void setCurrentlyColliding(bool status);
     bool isColliding() const;
     void increaseLife();
     void boostJump();  // Method to boost the jump strength temporarily
@@ -26,6 +27,8 @@ public:
     void activateFlying(float duration);
     void updateFlying(float deltaTime);
 
+
+    void updateInvulnerability(float deltaTime);
 private:
     int m_lives;
     bool m_currentlyColliding;
@@ -40,6 +43,9 @@ private:
     bool m_isFlying;
     float m_flyingTimer;
     float m_maxFlyingDuration;
+
+    float m_invulnerabilityTimer; // Timer to track invulnerability duration
+    float m_invulnerabilityPeriod; // Period of invulnerability after being hit
 };
 
 #endif

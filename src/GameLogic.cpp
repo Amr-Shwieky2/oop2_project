@@ -44,9 +44,9 @@ void GameLogic::initialize(sf::RenderWindow& window) {
         m_platforms.push_back(new Platform(x, y));
     }
 
-    float playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
-    float playerStartY = m_platforms[1]->getBounds().top - 50;
-    m_player.setPosition(playerStartX, playerStartY);
+     m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
+     m_playerStartY = m_platforms[1]->getBounds().top - 50;
+    m_player.setPosition(m_playerStartX, m_playerStartY);
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
@@ -57,17 +57,30 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                    sf::Vector2i transformedMousePos = static_cast<sf::Vector2i>(worldPos);
+                    if (m_sidebar.isPaused(transformedMousePos)) {
+                        m_isGamePaused = !m_isGamePaused;  // Toggle pause state
+                        std::cout << (m_isGamePaused ? "Game Paused" : "Game Resumed") << std::endl;
+                    }
+                }
+            }
         }
 
         float deltaTime = m_clock.restart().asSeconds();
-        update(deltaTime, window);
+        float displayedHeight = m_playerStartY - m_player.getPosition().y;  
+        update(deltaTime, window , displayedHeight);
         render(window);
     }
 
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
 }
 
-void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
+void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displayedHeight)
+{
+
     if (m_player.getPosition().y < MEDIUM_HEIGHT) {
         m_batActive = true;
     }
@@ -79,7 +92,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
             m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(m_player.getPosition().y - 300));
         }
         m_bat.update(deltaTime);
-        if (m_bat.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+        if (m_bat.getGlobalBounds().intersects(m_player.getGlobalBounds())){
             m_player.decrementLife();
         }
     }
@@ -142,7 +155,8 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
     view.setCenter(view.getCenter().x, m_player.getPosition().y);
     window.setView(view);
 
-    if (m_player.getPosition().y < m_platforms.back()->getBounds().top + 200) {
+    if (m_player.getPosition().y < m_platforms.back()->getBounds().top + 300)
+    {
         addNewPlatform(window);
     }
 
@@ -152,7 +166,18 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
         m_score++;
     }
 
-    m_sidebar.update(m_score, static_cast<int>(m_player.getPosition().y), m_player.getLives());  // Update Sidebar
+    auto it = m_platforms.begin();
+    while (it != m_platforms.end()) {
+        if ((*it)->isBreakable() && static_cast<BreakablePlatform*>(*it)->isBroken()) {
+            delete* it;  // Free memory if you're using raw pointers
+            it = m_platforms.erase(it);  // Remove from the vector
+        }
+        else {
+            ++it;
+        }
+    }
+
+    m_sidebar.update(m_score, static_cast<int>(displayedHeight), m_player.getLives());  // Update Sidebar
 }
 
 void GameLogic::render(sf::RenderWindow& window) {

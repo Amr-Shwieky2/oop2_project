@@ -4,7 +4,8 @@
 Player::Player()
     : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
     m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
-    m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3)
+    m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3),
+     m_invulnerabilityTimer(0), m_invulnerabilityPeriod(1.0f)
 {
     m_playerShape.setSize(sf::Vector2f(50, 50));
     m_playerShape.setFillColor(sf::Color::Green);
@@ -23,6 +24,7 @@ void Player::draw(sf::RenderWindow& window)
 void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 {
     updateFlying(deltaTime);
+    updateInvulnerability(deltaTime);
 
     m_velocity += m_gravity;
     m_playerShape.move(0, m_velocity);
@@ -103,9 +105,16 @@ int Player::getLives() const
     return m_lives;
 }
 
-void Player::decrementLife()
+void Player::decrementLife() {
+    if (m_invulnerabilityTimer <= 0) { // Only decrement life if not invulnerable
+        m_lives--;
+        m_invulnerabilityTimer = m_invulnerabilityPeriod; // Reset invulnerability timer
+    }
+}
+
+void Player::setCurrentlyColliding(bool status)
 {
-    m_lives--;
+    m_currentlyColliding = status;
 }
 
 void Player::resetCollisionFlag()
@@ -120,15 +129,18 @@ bool Player::isColliding() const
 
 void Player::increaseLife()
 {
-    if (m_lives < 3)
+    if (m_invulnerabilityTimer <= 0 && m_lives < 3) { // Only increase life if not invulnerable
         m_lives++;
+        m_invulnerabilityTimer = m_invulnerabilityPeriod; // Reset invulnerability timer
+    }
 }
 
 void Player::boostJump() {
-    if (!m_jumpBoosted) {
+    if (m_invulnerabilityTimer <= 0 && !m_jumpBoosted) { 
         m_jumpStrength = m_boostedJumpStrength;
-        m_jumpBoosted = true;
+        m_jumpBoosted = true;        m_invulnerabilityTimer = m_invulnerabilityPeriod; // Reset invulnerability timer
     }
+
 }
 
 void Player::resetJumpStrength() {
@@ -140,9 +152,12 @@ void Player::resetJumpStrength() {
 
 void Player::activateFlying(float duration)
 {
-    m_isFlying = true;
-    m_maxFlyingDuration = duration;
-    m_flyingTimer = 0;
+    if (m_invulnerabilityTimer <= 0) { 
+        m_isFlying = true;
+        m_maxFlyingDuration = duration;
+        m_flyingTimer = 0;        m_invulnerabilityTimer = m_invulnerabilityPeriod; // Reset invulnerability timer
+    }
+
 }
 
 void Player::updateFlying(float deltaTime)
@@ -155,5 +170,15 @@ void Player::updateFlying(float deltaTime)
         else {
             m_isFlying = false;
         }
+    }
+}
+
+void Player::updateInvulnerability(float deltaTime) {
+    if (m_invulnerabilityTimer > 0) {
+        m_invulnerabilityTimer -= deltaTime;
+        m_currentlyColliding = true; // Stay in colliding state during invulnerability
+    }
+    else {
+        m_currentlyColliding = false;
     }
 }
