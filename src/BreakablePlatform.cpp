@@ -2,7 +2,9 @@
 
 BreakablePlatform::BreakablePlatform(float x, float y)
     : Platform(x, y, Type::BREAKABLE), m_isBrokenPlatform(false)
-{}
+{
+    m_platformShape.setFillColor(sf::Color(0, 0, 255)); // RGB for blue
+}
 
 void BreakablePlatform::update(float deltaTime)
 {
