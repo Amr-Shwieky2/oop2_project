@@ -36,7 +36,7 @@ sf::Texture* Singleton::getEffect(const int& effect) {
 
 void Singleton::loadTextures() {
     try {
-        if (!m_screens[MENU_m].loadFromFile("menu.jpg"))
+        if (!m_screens[MENU_m].loadFromFile("newMenu.jpg"))
             throw GameException("Failed to load menu.jpg");
         if (!m_screens[PLAY_GAME_m].loadFromFile("newChoose.jpg"))
             throw GameException("Failed to load choose.jpg");
