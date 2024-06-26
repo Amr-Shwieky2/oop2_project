@@ -14,7 +14,10 @@ GameLogic::GameLogic()
     m_giftTimer(0),
     m_trampolineTimer(0),
     m_wingGiftTimer(0),
-    m_sidebar(800, 50)
+    m_sidebar(800, 50),
+    m_isGamePaused(false),
+    m_playerStartX(0),
+    m_playerStartY(0)
 {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
@@ -78,23 +81,10 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
 }
 
-void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displayedHeight)
+void GameLogic::levelsLogic(float deltaTime, sf::RenderWindow& window)
 {
-
     if (m_player.getPosition().y < MEDIUM_HEIGHT) {
         m_batActive = true;
-    }
-
-    if (m_batActive) {
-        m_batTimer += deltaTime;
-        if (m_batTimer >= BAT_SPAWN_INTERVAL) {
-            m_batTimer = 0;
-            m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(m_player.getPosition().y - 300));
-        }
-        m_bat.update(deltaTime);
-        if (m_bat.getGlobalBounds().intersects(m_player.getGlobalBounds())){
-            m_player.decrementLife();
-        }
     }
 
     if (m_player.getPosition().y < HARD_HEIGHT) {
@@ -106,12 +96,49 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displaye
         }
     }
 
+}
+
+void GameLogic::collision(sf::RenderWindow& window)
+{
     if (m_blackHole.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
         window.close();
     }
 
+    if (m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+        m_player.increaseLife();
+    }
+
+    if (m_trampoline.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+        m_player.boostJump();
+    }
+
+    if (m_wingGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+        m_player.activateFlying(1.0f);
+        m_wingGift.resetPosition(m_player.getPosition().x, m_player.getPosition().y);
+    }
+
+    if (m_bat.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+        m_player.decrementLife();
+    }
+}
+
+void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displayedHeight)
+{
+    levelsLogic(deltaTime, window);
+
+    if (m_batActive) {
+        m_batTimer += deltaTime;
+        if (m_batTimer >= BAT_SPAWN_INTERVAL) {
+            m_batTimer = 0;
+            m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(m_player.getPosition().y - 300));
+        }
+        m_bat.update(deltaTime);
+        
+    }
+
     m_giftTimer += deltaTime;
-    if (m_giftTimer >= GIFT_SPAWN_INTERVAL) {
+    if (m_giftTimer >= GIFT_SPAWN_INTERVAL || 
+        m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
         m_giftTimer = 0;
         m_heartGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
             static_cast<float>(m_player.getPosition().y - 350));
@@ -130,37 +157,47 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displaye
     if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
         m_wingGiftTimer = 0;
         m_wingGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
-            static_cast<float>(m_player.getPosition().y - 350));
+                                  static_cast<float>(m_player.getPosition().y - 350));
     }
 
-    if (m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
-        m_player.increaseLife();
-    }
-
-    if (m_trampoline.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
-        m_player.boostJump();
-    }
-
-    if (m_wingGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
-        m_player.activateFlying(3.0f);
-    }
-
+    
+    collision(window);
     m_player.update(m_platforms, deltaTime);
 
+    isFail(window);
+
+    CenterView(window);
+
+    
+    updatePlatform(window);
+    
+
+    m_sidebar.update(m_score, static_cast<int>(displayedHeight), m_player.getLives());  // Update Sidebar
+}
+
+void GameLogic::isFail(sf::RenderWindow& window) 
+{
     if (m_player.hasFallen() || m_player.getLives() == 0) {
         window.close();
     }
+}
 
+void GameLogic::CenterView(sf::RenderWindow& window) 
+{
     sf::View view = window.getView();
     view.setCenter(view.getCenter().x, m_player.getPosition().y);
     window.setView(view);
+}
 
+void GameLogic::updatePlatform(sf::RenderWindow& window)
+{
     if (m_player.getPosition().y < m_platforms.back()->getBounds().top + 300)
     {
         addNewPlatform(window);
     }
 
-    if (!m_platforms.empty() && m_platforms[0]->getBounds().top > m_player.getPosition().y + 400) {
+    if (!m_platforms.empty() &&
+        m_platforms[0]->getBounds().top > m_player.getPosition().y + 400) {
         delete m_platforms[0];
         m_platforms.erase(m_platforms.begin());
         m_score++;
@@ -176,8 +213,6 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displaye
             ++it;
         }
     }
-
-    m_sidebar.update(m_score, static_cast<int>(displayedHeight), m_player.getLives());  // Update Sidebar
 }
 
 void GameLogic::render(sf::RenderWindow& window) {

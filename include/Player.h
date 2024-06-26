@@ -29,6 +29,7 @@ public:
 
 
     void updateInvulnerability(float deltaTime);
+    bool getIsFlying() const;
 private:
     int m_lives;
     bool m_currentlyColliding;

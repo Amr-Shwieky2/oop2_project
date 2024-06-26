@@ -24,7 +24,7 @@ const int HARD_HEIGHT = 100;
 const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f;
 const float GIFT_SPAWN_INTERVAL = 3.0f;
 const float TRAMPOLINE_SPAWN_INTERVAL = 3.0f;
-const float WING_GIFT_SPAWN_INTERVAL = 3.0f;
+const float WING_GIFT_SPAWN_INTERVAL = 9.0f;
 
 class GameLogic : public BaseScreen {
 public:
@@ -33,7 +33,12 @@ public:
 
     void initialize(sf::RenderWindow& window);
     Screens_m handleEvents(sf::RenderWindow& window) override;
+    void levelsLogic(float deltaTime, sf::RenderWindow& window);
+    void collision(sf::RenderWindow& window);
     void update(float deltaTime, sf::RenderWindow& window , float displayedHeight);
+    void isFail(sf::RenderWindow& window);
+    void CenterView(sf::RenderWindow& window);
+    void updatePlatform(sf::RenderWindow& window);
     void render(sf::RenderWindow& window) override;
 
 private:

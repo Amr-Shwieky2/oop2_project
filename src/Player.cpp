@@ -155,7 +155,9 @@ void Player::activateFlying(float duration)
     if (m_invulnerabilityTimer <= 0) { 
         m_isFlying = true;
         m_maxFlyingDuration = duration;
-        m_flyingTimer = 0;        m_invulnerabilityTimer = m_invulnerabilityPeriod; // Reset invulnerability timer
+        m_flyingTimer = 0;  
+        m_invulnerabilityTimer = m_invulnerabilityPeriod; 
+        // Reset invulnerability timer
     }
 
 }
@@ -181,4 +183,9 @@ void Player::updateInvulnerability(float deltaTime) {
     else {
         m_currentlyColliding = false;
     }
+}
+
+bool Player::getIsFlying() const
+{
+    return m_isFlying;
 }
