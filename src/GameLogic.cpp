@@ -8,6 +8,7 @@ GameLogic::GameLogic()
     m_trampoline(-100, -100),
     m_wingGift(-100, -100),
     m_score(0),
+    m_Height(0),
     m_batActive(false),
     m_batTimer(0),
     m_blackHoleTimer(0),
@@ -17,7 +18,10 @@ GameLogic::GameLogic()
     m_sidebar(800, 50),
     m_isGamePaused(false),
     m_playerStartX(0),
-    m_playerStartY(0)
+    m_playerStartY(0),
+    m_nextScreen(GAME_m),
+    m_EndGame(false)
+
 {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
@@ -49,7 +53,7 @@ void GameLogic::initialize(sf::RenderWindow& window) {
 
      m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
      m_playerStartY = m_platforms[1]->getBounds().top - 50;
-    m_player.setPosition(m_playerStartX, m_playerStartY);
+     m_player.setPosition(m_playerStartX, m_playerStartY);
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
@@ -73,11 +77,20 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
         }
 
         float deltaTime = m_clock.restart().asSeconds();
-        float displayedHeight = m_playerStartY - m_player.getPosition().y;  
-        update(deltaTime, window , displayedHeight);
+        m_Height = m_playerStartY - m_player.getPosition().y;
+        update(deltaTime, window);
         render(window);
-    }
+        if(m_EndGame) {
+            //std::cout << Singleton::instance().getPlayerName1();
+            //
+            Singleton::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_score);
 
+            return Screens_m::HIGH_SCOORE_m;
+        }
+
+
+    }
+    std::cout << "npopoop";
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
 }
 
@@ -101,7 +114,8 @@ void GameLogic::levelsLogic(float deltaTime, sf::RenderWindow& window)
 void GameLogic::collision(sf::RenderWindow& window)
 {
     if (m_blackHole.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
-        window.close();
+        //window.close();
+        m_EndGame = true;
     }
 
     if (m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
@@ -178,7 +192,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displaye
 void GameLogic::isFail(sf::RenderWindow& window) 
 {
     if (m_player.hasFallen() || m_player.getLives() == 0) {
-        window.close();
+        m_EndGame = true;
     }
 }
 
@@ -213,6 +227,8 @@ void GameLogic::updatePlatform(sf::RenderWindow& window)
             ++it;
         }
     }
+
+    m_sidebar.update(m_score, static_cast<int>(m_Height), m_player.getLives());  // Update Sidebar
 }
 
 void GameLogic::render(sf::RenderWindow& window) {
@@ -241,6 +257,27 @@ void GameLogic::render(sf::RenderWindow& window) {
     window.setView(window.getDefaultView());
     m_sidebar.draw(window);
 
+    // Draw end game score if needed
+    if (m_EndGame) 
+    {
+        sf::RectangleShape scoreBackground(sf::Vector2f(300.0f, 100.0f));
+        scoreBackground.setFillColor(sf::Color::Black);
+        scoreBackground.setPosition(window.getView().getCenter().x - 150, window.getView().getCenter().y - 50);
+
+        sf::Text scoreText;
+        scoreText.setFont(m_font);
+        scoreText.setString("Score: " + std::to_string(m_score));
+        scoreText.setCharacterSize(24);
+        scoreText.setFillColor(sf::Color::White);
+        scoreText.setPosition(window.getView().getCenter().x - 140, window.getView().getCenter().y - 40);
+
+        window.draw(scoreBackground);
+        window.draw(scoreText);
+        window.display();
+
+        sf::sleep(sf::seconds(3.0));
+
+    }
     window.display();
 }
 

@@ -15,7 +15,6 @@
 #include "Trampoline.h"
 #include "WingGift.h"
 #include "Singleton.h"
-
 #include "Sidebar.h"
 
 const int MEDIUM_HEIGHT = 30;
@@ -33,17 +32,17 @@ public:
 
     void initialize(sf::RenderWindow& window);
     Screens_m handleEvents(sf::RenderWindow& window) override;
+
     void levelsLogic(float deltaTime, sf::RenderWindow& window);
     void collision(sf::RenderWindow& window);
     void update(float deltaTime, sf::RenderWindow& window , float displayedHeight);
     void isFail(sf::RenderWindow& window);
     void CenterView(sf::RenderWindow& window);
     void updatePlatform(sf::RenderWindow& window);
-    void render(sf::RenderWindow& window) override;
 
+    void render(sf::RenderWindow& window) override;
 private:
     void addNewPlatform(sf::RenderWindow& window);
-
     sf::Font m_font;
     sf::Clock m_clock;
 
@@ -57,6 +56,7 @@ private:
     sf::Sprite m_screen;
     bool m_isGamePaused;
     int m_score;
+    float m_Height;
     bool m_batActive;
     float m_batTimer;
     float m_blackHoleTimer;
@@ -65,6 +65,10 @@ private:
     float m_wingGiftTimer;
     float m_playerStartX;
     float m_playerStartY;
+    Screens_m m_nextScreen;  // To store the next screen state
 
     Sidebar m_sidebar;  // Add the Sidebar instance
+
+    bool m_EndGame;
+
 };

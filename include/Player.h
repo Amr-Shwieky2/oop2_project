@@ -26,8 +26,6 @@ public:
     void resetJumpStrength();  // Resets the jump strength to normal
     void activateFlying(float duration);
     void updateFlying(float deltaTime);
-
-
     void updateInvulnerability(float deltaTime);
     bool getIsFlying() const;
 private:
@@ -44,7 +42,6 @@ private:
     bool m_isFlying;
     float m_flyingTimer;
     float m_maxFlyingDuration;
-
     float m_invulnerabilityTimer; // Timer to track invulnerability duration
     float m_invulnerabilityPeriod; // Period of invulnerability after being hit
 };
