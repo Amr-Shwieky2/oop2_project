@@ -7,6 +7,7 @@
 class HighScoreScreen : public BaseScreen {
 public:
     HighScoreScreen();
+    void update();
     Screens_m handleEvents(sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
 

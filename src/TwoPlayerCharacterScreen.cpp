@@ -65,15 +65,13 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window)
             if (event.key.code == sf::Keyboard::Right) // Choosing character
             {
 
-                if (!m_isPlayerOneDone)
-                {
-                    Singleton::instance().getSoundManager().playSound("characters");
-                    m_selectedCharacterIndex1 = (m_selectedCharacterIndex1 + 1) % 4;
+                if (!m_isPlayerOneDone) {
+                    Singleton::instance().setPlayerName1(m_playerName1);
+                    m_isPlayerOneDone = true;
                 }
-                else if (!m_isPlayerTwoDone)
-                {
-                    Singleton::instance().getSoundManager().playSound("characters");
-                    m_selectedCharacterIndex2 = (m_selectedCharacterIndex2 + 1) % 4;
+                else if (!m_isPlayerTwoDone) {
+                    Singleton::instance().setPlayerName2(m_playerName2);
+                    m_isPlayerTwoDone = true;
                 }
                 updateSelection();
             }

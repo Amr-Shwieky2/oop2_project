@@ -11,6 +11,7 @@ public:
     void update(int score, int height, int lives);
     void draw(sf::RenderWindow& window);
     bool isPaused(sf::Vector2i mousePos);
+
 private:
     sf::RectangleShape m_background;
     sf::Text m_scoreText;

@@ -5,15 +5,21 @@ HighScoreScreen::HighScoreScreen() :
     m_backButton(230, 800, 465 - 230, 835 - 800) {
     m_screen.setTexture(*(Singleton::instance().getScreen(HIGH_SCOORE_m)));
 
-    // Load the high scores
-    auto highScores = Singleton::instance().loadHighScore();
-
     // Load the font
     if (!m_font.loadFromFile("arial.ttf")) {
         throw GameException("Failed to load font");
     }
-
+    update();
     // Prepare text objects for high scores
+    
+}
+
+void HighScoreScreen::update()
+{
+
+    // Load the high scores
+    auto highScores = Singleton::instance().loadHighScore();
+    m_highScoreTexts.clear();
     float yPos = 349;
     for (const auto& score : highScores) {
         sf::Text nameText;
@@ -33,7 +39,7 @@ HighScoreScreen::HighScoreScreen() :
         m_highScoreTexts.push_back(nameText);
         m_highScoreTexts.push_back(scoreText);
 
-        yPos += 70;  // Adjust this value as needed to space the scores vertically
+        yPos += 70;
     }
 }
 
@@ -61,10 +67,15 @@ Screens_m HighScoreScreen::handleEvents(sf::RenderWindow& window) {
 }
 
 void HighScoreScreen::render(sf::RenderWindow& window) {
+    update();
     window.draw(m_screen);
 
-    // Draw high scores
+    if (m_highScoreTexts.empty()) {
+        std::cout << "No high scores to display." << std::endl; // Debug output
+    }
+
     for (const auto& text : m_highScoreTexts) {
         window.draw(text);
     }
 }
+

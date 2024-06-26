@@ -62,6 +62,7 @@ Screens_m CharacterScreen::handleEvents(sf::RenderWindow& window) {
             }
             else if (event.key.code == sf::Keyboard::Enter) {
                 std::cout << "Enter key pressed. Returning GAME_m." << std::endl;
+                Singleton::instance().setPlayerName1(m_playerName);
                 return GAME_m;
             }
             break;

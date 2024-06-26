@@ -31,7 +31,11 @@ Sidebar::Sidebar(float width, float height)
 void Sidebar::update(int score, int height, int lives)
 {
     m_scoreText.setString("Score: " + std::to_string(score));
-    m_heightText.setString("Height: " + std::to_string(height));
+    if(static_cast<float>(height) >= 0 )
+        m_heightText.setString("Height: " + std::to_string(height));
+    else
+        m_heightText.setString("Height: " + std::to_string(0));
+
 
     m_livesRects.clear();
     for (int i = 0; i < lives; ++i)
@@ -66,3 +70,4 @@ bool Sidebar::isPaused(sf::Vector2i mousePos)
 {
     return m_pauseButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
+
