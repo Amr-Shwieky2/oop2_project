@@ -34,9 +34,9 @@ public:
     Screens_m handleEvents(sf::RenderWindow& window) override;
 
     void levelsLogic(float deltaTime, sf::RenderWindow& window);
-    void collision(sf::RenderWindow& window);
-    void update(float deltaTime, sf::RenderWindow& window , float displayedHeight);
-    void isFail(sf::RenderWindow& window);
+    void collision();
+    void update(float deltaTime, sf::RenderWindow& window);
+    void isFail();
     void CenterView(sf::RenderWindow& window);
     void updatePlatform(sf::RenderWindow& window);
 

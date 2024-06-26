@@ -111,7 +111,7 @@ void GameLogic::levelsLogic(float deltaTime, sf::RenderWindow& window)
 
 }
 
-void GameLogic::collision(sf::RenderWindow& window)
+void GameLogic::collision()
 {
     if (m_blackHole.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
         //window.close();
@@ -136,7 +136,7 @@ void GameLogic::collision(sf::RenderWindow& window)
     }
 }
 
-void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displayedHeight)
+void GameLogic::update(float deltaTime, sf::RenderWindow& window)
 {
     levelsLogic(deltaTime, window);
 
@@ -175,10 +175,10 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displaye
     }
 
     
-    collision(window);
+    collision();
     m_player.update(m_platforms, deltaTime);
 
-    isFail(window);
+    isFail();
 
     CenterView(window);
 
@@ -186,10 +186,10 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window, float displaye
     updatePlatform(window);
     
 
-    m_sidebar.update(m_score, static_cast<int>(displayedHeight), m_player.getLives());  // Update Sidebar
+    m_sidebar.update(m_score, static_cast<int>(m_Height), m_player.getLives());  // Update Sidebar
 }
 
-void GameLogic::isFail(sf::RenderWindow& window) 
+void GameLogic::isFail() 
 {
     if (m_player.hasFallen() || m_player.getLives() == 0) {
         m_EndGame = true;
