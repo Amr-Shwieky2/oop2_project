@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Singleton.h"
 
 class WingGift {
 public:
@@ -9,5 +10,5 @@ public:
     sf::FloatRect getGlobalBounds() const;
 
 private:
-    sf::RectangleShape WingGiftShape;
+    sf::Sprite m_wingGiftShape;
 };

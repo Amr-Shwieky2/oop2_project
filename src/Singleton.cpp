@@ -4,6 +4,8 @@
 
 Singleton::Singleton() {
     loadTextures();
+    loadCharacters();
+    loadEffects();
 }
 
 Singleton& Singleton::instance() {
@@ -16,6 +18,20 @@ sf::Texture* Singleton::getScreen(const int& screen) {
         throw GameException("Screen index out of range");
     }
     return &m_screens[screen];
+}
+
+sf::Texture* Singleton::getCharacter(const int& character) {
+    if (character < 0 || character >= NUM_OF_CHARACTERS) {
+        throw GameException("character index out of range");
+    }
+    return &m_charactersTexture[character];
+}
+
+sf::Texture* Singleton::getEffect(const int& effect) {
+    if (effect < 0 || effect >= NUM_OF_EFFECTS) {
+        throw GameException("effect index out of range");
+    }
+    return &m_effectsTexture[effect];
 }
 
 void Singleton::loadTextures() {
@@ -38,6 +54,50 @@ void Singleton::loadTextures() {
             throw GameException("Failed to load background.jpg");
     }
     catch (const std::exception& e) {
+        std::cerr << "Error loading textures: " << e.what() << std::endl;
+        throw;
+    }
+}
+
+void Singleton::loadCharacters()
+{
+    try
+    {
+        if(!m_charactersTexture[DARK_MAN_p].loadFromFile("dark.png"))
+            throw GameException("Failed to load dark.png");
+        if (!m_charactersTexture[DINASOR_p].loadFromFile("dinasor.png"))
+            throw GameException("Failed to load dinasor.png");
+        if (!m_charactersTexture[SHARP_p].loadFromFile("sharp.png"))
+            throw GameException("Failed to load sharp.png");
+        if (!m_charactersTexture[WITCH_p].loadFromFile("witch.png"))
+            throw GameException("Failed to load witch.png");
+
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error loading textures: " << e.what() << std::endl;
+        throw;
+    }
+}
+
+void Singleton::loadEffects()
+{
+    try
+    {
+        if (!m_effectsTexture[BAT_a].loadFromFile("bat.png"))
+            throw GameException("Failed to load bat.png");
+        if (!m_effectsTexture[HEART_a].loadFromFile("heart.png"))
+            throw GameException("Failed to load heart.png");
+        if (!m_effectsTexture[HOLE_a].loadFromFile("hole.png"))
+            throw GameException("Failed to load hole.png");
+        if (!m_effectsTexture[TRAMPOLINE_a].loadFromFile("trampoline.png"))
+            throw GameException("Failed to load trampoline.png");
+        if (!m_effectsTexture[WINGS_a].loadFromFile("wings.png"))
+            throw GameException("Failed to load wings.png");
+
+    }
+    catch (const std::exception& e)
+    {
         std::cerr << "Error loading textures: " << e.what() << std::endl;
         throw;
     }

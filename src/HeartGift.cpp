@@ -1,29 +1,40 @@
 #include "HeartGift.h"
 
-HeartGift::HeartGift(float startX, float startY) : appearanceInterval(10.0f)
+HeartGift::HeartGift(float startX, float startY) : m_appearanceInterval(10.0f)
 {
-    HeartGiftShape.setSize(sf::Vector2f(50, 50)); // Size can be adjusted
-    HeartGiftShape.setFillColor(sf::Color::Yellow);
-    HeartGiftShape.setPosition(startX, startY);
+    m_heartGiftShape.setTexture(*(Singleton::instance().getEffect(HEART_a)));
+    m_heartGiftShape.setPosition(startX, startY);
+
+    // Get the size of the texture
+    sf::Vector2u textureSize = m_heartGiftShape.getTexture()->getSize();
+
+    // Desired size in pixels
+    float desiredWidth = 100.0f;
+    float desiredHeight = 100.0f;
+
+    // Calculate the scale factors
+    float scaleX = desiredWidth / textureSize.x;
+    float scaleY = desiredHeight / textureSize.y;
+
+    m_heartGiftShape.setScale(scaleX, scaleY);
 }
 
 void HeartGift::draw(sf::RenderWindow& window)
 {
-    window.draw(HeartGiftShape);
+    window.draw(m_heartGiftShape);
 }
-
 
 void HeartGift::resetPosition(float x, float y)
 {
-    HeartGiftShape.setPosition(x, y);
+    m_heartGiftShape.setPosition(x, y);
 }
 
 sf::Vector2f HeartGift::getPosition() const
 {
-    return HeartGiftShape.getPosition();
+    return m_heartGiftShape.getPosition();
 }
 
 sf::FloatRect HeartGift::getGlobalBounds() const
 {
-    return HeartGiftShape.getGlobalBounds();
+    return m_heartGiftShape.getGlobalBounds();
 }

@@ -38,7 +38,8 @@ void Sidebar::update(int score, int height, int lives)
     {
         sf::RectangleShape life(sf::Vector2f(20, 20));
         life.setFillColor(sf::Color::Red);
-        life.setPosition(300 + i * 30, 20);
+        life.setPosition(static_cast<float>( 300 + i * 30),
+            static_cast<float>(20));
         m_livesRects.push_back(life);
     }
 

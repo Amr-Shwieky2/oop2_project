@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Platform.h"  // Ensure this include is correct
+#include "Singleton.h"
 
 class Trampoline {
 public:
@@ -10,9 +11,9 @@ public:
 
     sf::Vector2f getPosition() const;
     sf::FloatRect getGlobalBounds() const;
-    float getEnhancedJumpStrength();
+    float getEnhancedJumpStrength() const;
 
 private:
-    sf::RectangleShape TrampolineShape;
-    float enhancedJumpStrength;
+    sf::Sprite m_trampolineShape;
+    float m_enhancedJumpStrength;
 };

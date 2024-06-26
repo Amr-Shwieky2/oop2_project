@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Singleton.h"
 
 class HeartGift {
 public:
@@ -10,6 +11,6 @@ public:
     sf::FloatRect getGlobalBounds() const;
 
 private:
-    sf::RectangleShape HeartGiftShape;
-    float appearanceInterval; // Time interval for the black hole to appear
+    sf::Sprite m_heartGiftShape;
+    float m_appearanceInterval; // Time interval for the black hole to appear
 };

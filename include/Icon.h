@@ -11,6 +11,9 @@ enum Menu_c { PLAY_GAME_c, HELP_c, SETTINGS_c, HIGH_SCOORE_c, EXIT_c };
 // screens in the play mode
 enum Chooseen { ONE_PLAYER, TWO_PLAYERS, BACK };
 
+enum Characters{ DARK_MAN_p, DINASOR_p, SHARP_p, WITCH_p };
+
+enum GameEffects{ BAT_a, HEART_a, HOLE_a,TRAMPOLINE_a, WINGS_a };
 
 
 class Icon
