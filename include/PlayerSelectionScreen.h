@@ -16,4 +16,9 @@ private:
     sf::IntRect onePlayerButton;
     sf::IntRect twoPlayersButton;
     sf::IntRect backButton;
+    sf::Font m_font;
+    std::vector<sf::Text> m_Texts;
+    std::vector<sf::RectangleShape> m_Rectangles;
+
+
 };
