@@ -21,11 +21,11 @@ MenuScreen::MenuScreen() :
     titleText.setString("        Fell Fall");
     titleText.setCharacterSize(36); // Increased font size for the title
     titleText.setFillColor(sf::Color::Black);
-    titleText.setPosition(m_titleRect.left + 50, m_titleRect.top + 15); // Center text in the rectangle
+    titleText.setPosition(static_cast<float>(m_titleRect.left + 50.0), static_cast<float>(m_titleRect.top + 15.0)); // Center text in the rectangle
 
     sf::RectangleShape titleRect;
-    titleRect.setSize(sf::Vector2f(m_titleRect.width, m_titleRect.height));
-    titleRect.setPosition(m_titleRect.left, m_titleRect.top);
+    titleRect.setSize(sf::Vector2f(static_cast<float>(m_titleRect.width), static_cast<float>(m_titleRect.height)));
+    titleRect.setPosition(static_cast<float>(m_titleRect.left), static_cast<float>(m_titleRect.top));
     titleRect.setFillColor(sf::Color(180, 50, 50, 250)); // More vibrant color for distinction
 
     m_Texts.push_back(titleText);
@@ -46,11 +46,11 @@ MenuScreen::MenuScreen() :
         text.setString(button.second);
         text.setCharacterSize(24); // Consistent size for menu items
         text.setFillColor(sf::Color::White);
-        text.setPosition(button.first->left + 20, button.first->top + 10);
+        text.setPosition(static_cast<float>(button.first->left) + 20.0f, static_cast<float>(button.first->top) + 10.0f);
 
         sf::RectangleShape rect;
-        rect.setSize(sf::Vector2f(button.first->width, button.first->height));
-        rect.setPosition(button.first->left, button.first->top);
+        titleRect.setSize(sf::Vector2f(static_cast<float>(m_titleRect.width), static_cast<float>(m_titleRect.height)));
+        rect.setPosition(static_cast<float>(button.first->left), static_cast<float>(button.first->top));
         rect.setFillColor(sf::Color(100, 100, 100, 200));
 
         m_Texts.push_back(text);
