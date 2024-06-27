@@ -9,6 +9,8 @@ HighScoreScreen::HighScoreScreen() :
     if (!m_font.loadFromFile("arial.ttf")) {
         throw GameException("Failed to load font");
     }
+
+
     m_backButtonShape.setSize(sf::Vector2f(100, 50));  // Size based on your existing IntRect
     m_backButtonShape.setPosition(360, 495);  // Position
     m_backButtonShape.setFillColor(sf::Color::Black);  // Color
