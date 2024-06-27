@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScreen.h"
 #include "Singleton.h"
+#include <SFML/Graphics.hpp>
 
 class PlayerSelectionScreen : public BaseScreen {
 public:
@@ -9,11 +10,10 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    sf::Sprite m_screen;
     Chooseen getChooseButton(sf::Vector2i mousePos);
 
-    // Define the rectangles for play mode options
-    sf::IntRect onePlayerButton;
-    sf::IntRect twoPlayersButton;
-    sf::IntRect backButton;
+    sf::Sprite m_screen;
+    sf::IntRect m_onePlayerButton;
+    sf::IntRect m_twoPlayersButton;
+    sf::IntRect m_backButton;
 };

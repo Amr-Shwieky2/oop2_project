@@ -15,12 +15,16 @@ enum Characters{ DARK_MAN_p, DINASOR_p, SHARP_p, WITCH_p };
 
 enum GameEffects{ BAT_a, HEART_a, HOLE_a,TRAMPOLINE_a, WINGS_a };
 
-
-class Icon
-{
+class GameObject {
 public:
-	Icon() = default;
+    GameObject() {};
+    virtual ~GameObject() = default;
 
-private:
+    virtual void draw(sf::RenderWindow& window) = 0;
+    virtual void update(float deltaTime) = 0;
+    virtual void resetPosition(float x, float y) = 0;
+    virtual sf::FloatRect getBounds() const = 0;
 
+protected:
+    sf::Sprite m_sprite;
 };

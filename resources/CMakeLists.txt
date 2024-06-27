@@ -1,6 +1,6 @@
 ﻿configure_file ("./images/choose.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/help.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/highSccores.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./images/highScores.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/menu.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/setting.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/background.jpg" ${CMAKE_BINARY_DIR} COPYONLY)

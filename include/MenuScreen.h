@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScreen.h"
 #include "Singleton.h"
+#include <SFML/Graphics.hpp>
 
 class MenuScreen : public BaseScreen {
 public:
@@ -9,10 +10,9 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    sf::Sprite m_screen;
     Menu_c getMenuButton(sf::Vector2i mousePos);
 
-    // Define the rectangles for menu options
+    sf::Sprite m_screen;
     sf::IntRect m_playButton;
     sf::IntRect m_helpButton;
     sf::IntRect m_settingsButton;

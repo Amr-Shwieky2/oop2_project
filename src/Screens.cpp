@@ -1,33 +1,26 @@
 #include "Screens.h"
-#include <iostream>
 #include "GameException.h"
 #include "TwoPlayerCharacterScreen.h"
 #include "GameLogic.h"
+#include <iostream>
 
-Screens::Screens() : m_currentScreen(nullptr), m_firstPage(true) {
-
+Screens::Screens() : m_firstPage(true) {
     try {
-        m_screens[MENU_m] = new MenuScreen();
-        m_screens[PLAY_GAME_m] = new PlayerSelectionScreen();
-        m_screens[HELP_m] = new HelpScreen();
-        m_screens[SETTINGS_m] = new SettingsScreen();
-        m_screens[HIGH_SCOORE_m] = new HighScoreScreen();
-        m_screens[C1_m] = new OnePlayerCharacterScreen();
-        m_screens[C2_m] = new TwoPlayerCharacterScreen();
-        m_screens[GAME_m] = new GameLogic();
-        Singleton::instance().getSoundManager().playMusic(); // Start background music
-        
-        changeScreen(MENU_m); // Start with the menu screen
+        m_screens[MENU_m] = std::make_shared<MenuScreen>();
+        m_screens[PLAY_GAME_m] = std::make_shared<PlayerSelectionScreen>();
+        m_screens[HELP_m] = std::make_shared<HelpScreen>();
+        m_screens[SETTINGS_m] = std::make_shared<SettingsScreen>();
+        m_screens[HIGH_SCOORE_m] = std::make_shared<HighScoreScreen>();
+        m_screens[C1_m] = std::make_shared<OnePlayerCharacterScreen>();
+        m_screens[C2_m] = std::make_shared<TwoPlayerCharacterScreen>();
+        m_screens[GAME_m] = std::make_shared<GameLogic>();
+        Singleton::instance().getSoundManager().playMusic();
+
+        changeScreen(MENU_m);
     }
     catch (const GameException& e) {
         std::cerr << "Error initializing screens: " << e.what() << std::endl;
         throw;
-    }
-}
-
-Screens::~Screens() {
-    for (auto& screenPair : m_screens) {
-        delete screenPair.second;
     }
 }
 
@@ -39,7 +32,7 @@ void Screens::run() {
                 m_currentScreen->render(m_window);
                 m_window.display();
                 Screens_m nextScreen = m_currentScreen->handleEvents(m_window);
-                if (m_screens.find(nextScreen) != m_screens.end()) { // Ensure valid screen transitions
+                if (m_screens.find(nextScreen) != m_screens.end()) {
                     changeScreen(nextScreen);
                 }
             }
@@ -70,12 +63,13 @@ void Screens::adjustWindowSize(Screens_m screenType) {
             if (m_firstPage) {
                 m_window.create(sf::VideoMode(imageSize.x, imageSize.y), "Game Window");
                 m_firstPage = false;
-            }else{
-                if(screenType == GAME_m && m_window.isOpen())
+            }
+            else {
+                if (screenType == GAME_m && m_window.isOpen()) {
                     m_window.create(sf::VideoMode(imageSize.x, imageSize.y + 50), "Game Window");
-                m_window.setSize(sf::Vector2u(static_cast<unsigned int>(imageSize.x), static_cast<unsigned int>(imageSize.y)));
-                m_window.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
-        
+                }
+                m_window.setSize(sf::Vector2u(imageSize.x, imageSize.y));
+                m_window.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
             }
         }
     }

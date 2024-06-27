@@ -1,10 +1,8 @@
-#ifndef BREAKABLE_PLATFORM_H
-#define BREAKABLE_PLATFORM_H
+#pragma once
 
 #include "Platform.h"
 
-class BreakablePlatform : public Platform
-{
+class BreakablePlatform : public Platform {
 public:
     BreakablePlatform(float x, float y);
 
@@ -13,7 +11,5 @@ public:
     bool isBroken() const;
 
 private:
-    bool m_isBrokenPlatform;
+    bool m_isBroken;
 };
-
-#endif

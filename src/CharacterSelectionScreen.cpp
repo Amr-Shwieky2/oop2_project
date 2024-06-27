@@ -1,21 +1,15 @@
 #include "CharacterSelectionScreen.h"
 #include <iostream>
 
-CharacterSelectionScreen::CharacterSelectionScreen
- (Screens_m screenTexture,
-     const std::vector<sf::FloatRect>& characterBounds,
-    const sf::FloatRect& textInputBounds)
-    : m_characterBounds(characterBounds), 
-    m_textInputBounds1(textInputBounds),
-    m_textInputBounds2(727, 379, 154, 29)
-{
+CharacterSelectionScreen::CharacterSelectionScreen(Screens_m screenTexture, const std::vector<sf::FloatRect>& characterBounds, const sf::FloatRect& textInputBounds)
+    : m_characterBounds(characterBounds), m_textInputBounds1(textInputBounds), m_textInputBounds2(727, 379, 154, 29) {
 
     try {
         m_screen.setTexture(*(Singleton::instance().getScreen(screenTexture)));
     }
     catch (const GameException& e) {
         std::cerr << "Error setting texture in CharacterSelectionScreen: " << e.what() << std::endl;
-        throw;  // Rethrow the exception after logging it
+        throw;
     }
 
     m_selectionRectangle1.setOutlineThickness(5);

@@ -1,19 +1,12 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "Platform.h"  // Ensure this include is correct
-#include "Singleton.h"
 
-class Trampoline {
+#include "StaticObject.h"
+
+class Trampoline : public StaticObject {
 public:
     Trampoline(float startX, float startY);
-    void draw(sf::RenderWindow& window);
-    void resetPosition(Platform* platform);
-
-    sf::Vector2f getPosition() const;
-    sf::FloatRect getGlobalBounds() const;
-    float getEnhancedJumpStrength() const;
+    void onCollision(Collidable& other) override;
 
 private:
-    sf::Sprite m_trampolineShape;
     float m_enhancedJumpStrength;
 };

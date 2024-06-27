@@ -1,26 +1,24 @@
 #include "BreakablePlatform.h"
 
 BreakablePlatform::BreakablePlatform(float x, float y)
-    : Platform(x, y, Type::BREAKABLE), m_isBrokenPlatform(false)
-{
-    m_platformShape.setFillColor(sf::Color(0, 0, 255)); // RGB for blue
+    : Platform(x, y, Type::BREAKABLE), m_isBroken(false) {
+    m_sprite.setFillColor(sf::Color(0, 0, 255)); // Blue
 }
 
-void BreakablePlatform::update(float deltaTime)
-{
-    if (m_isBrokenPlatform)
-    {
-        m_broken = true;
+void BreakablePlatform::update(float deltaTime) {
+    if (m_isBroken) {
+        m_broken = true; // Mark platform as broken
     }
-    static_cast<void>(deltaTime);
 }
 
-void BreakablePlatform::breakPlatform()
-{
-    m_isBrokenPlatform = true;
+void BreakablePlatform::breakPlatform() {
+    m_isBroken = true;
 }
 
-bool BreakablePlatform::isBroken() const
-{
-    return m_isBrokenPlatform;
+bool BreakablePlatform::isBroken() const {
+    return m_isBroken;
+}
+
+void BreakablePlatform::onCollision(Collidable& other) {
+    breakPlatform();
 }

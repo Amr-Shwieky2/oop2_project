@@ -1,15 +1,12 @@
 #pragma once
 #include "BaseScreen.h"
 #include "Singleton.h"
-#include "GameException.h"
-#include <string>
 #include <SFML/Graphics.hpp>
 #include <vector>
 
 class CharacterSelectionScreen : public BaseScreen {
 public:
     CharacterSelectionScreen(Screens_m screenTexture, const std::vector<sf::FloatRect>& characterBounds, const sf::FloatRect& textInputBounds);
-
     void render(sf::RenderWindow& window) override;
     void updateSelection(sf::RectangleShape& selectionRectangle, const sf::FloatRect& characterBounds);
 

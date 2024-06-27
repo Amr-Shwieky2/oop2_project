@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScreen.h"
 #include "Singleton.h"
+#include <SFML/Graphics.hpp>
 
 class SettingsScreen : public BaseScreen {
 public:
@@ -9,6 +10,8 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
+    void updateVolume();
+
     sf::Sprite m_screen;
     sf::IntRect m_backButton;
     sf::RectangleShape m_musicBar;
@@ -17,6 +20,4 @@ private:
     sf::CircleShape m_effectsDot;
     float m_musicVolume;
     float m_effectsVolume;
-
-    void updateVolume();
 };

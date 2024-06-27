@@ -6,7 +6,7 @@
 class SoundManager {
 public:
     SoundManager();
-    ~SoundManager();
+    ~SoundManager() = default;
     void playSound(const std::string& name);
     void playMusic();
     void stopMusic();
@@ -16,8 +16,7 @@ public:
 private:
     void loadSound(const std::string& name, const std::string& filename);
 
-    std::map<std::string, sf::SoundBuffer> buffers;
-    std::map<std::string, sf::Sound> sounds;
-    sf::Music music;
+    std::map<std::string, sf::SoundBuffer> m_buffers;
+    std::map<std::string, sf::Sound> m_sounds;
+    sf::Music m_music;
 };
-

@@ -1,25 +1,21 @@
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#pragma once
 
-#include <SFML/Graphics.hpp>
+#include "Collidable.h"
 
-class Platform
-{
+class Platform : public Collidable {
 public:
     enum class Type { NORMAL, MOVING, BREAKABLE };
 
-    Platform(float x, float y, Type type = Type::NORMAL);
-    virtual ~Platform() = default;
-
-    virtual void update(float deltaTime);
-    void draw(sf::RenderWindow& window);
-    sf::FloatRect getBounds() const;
+    Platform(float x, float y, Type type);
+    void draw(sf::RenderWindow& window) override;
+    void update(float deltaTime) override;
+    void resetPosition(float x, float y) override;
+    sf::FloatRect getBounds() const override;
     bool isBreakable() const;
+    void onCollision(Collidable& other) override;
 
 protected:
     sf::RectangleShape m_platformShape;
     Type m_type;
     bool m_broken;
 };
-
-#endif

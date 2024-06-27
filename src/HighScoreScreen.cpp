@@ -1,37 +1,30 @@
 #include "HighScoreScreen.h"
 #include <iostream>
 
-HighScoreScreen::HighScoreScreen() :
-    m_backButton(230, 800, 465 - 230, 835 - 800) {
+HighScoreScreen::HighScoreScreen() : m_backButton(230, 800, 235, 35) {
     m_screen.setTexture(*(Singleton::instance().getScreen(HIGH_SCOORE_m)));
 
-    // Load the font
     if (!m_font.loadFromFile("arial.ttf")) {
         throw GameException("Failed to load font");
     }
-    update();
-    // Prepare text objects for high scores
-    
+    updateHighScores();
 }
 
-void HighScoreScreen::update()
-{
-
-    // Load the high scores
+void HighScoreScreen::updateHighScores() {
     auto highScores = Singleton::instance().loadHighScore();
     m_highScoreTexts.clear();
     float yPos = 349;
     for (const auto& score : highScores) {
         sf::Text nameText;
         nameText.setFont(m_font);
-        nameText.setString(score._name);
+        nameText.setString(score.name);
         nameText.setCharacterSize(24);
         nameText.setFillColor(sf::Color::White);
         nameText.setPosition(200, yPos);
 
         sf::Text scoreText;
         scoreText.setFont(m_font);
-        scoreText.setString(std::to_string(score._score));
+        scoreText.setString(std::to_string(score.score));
         scoreText.setCharacterSize(24);
         scoreText.setFillColor(sf::Color::White);
         scoreText.setPosition(450, yPos);
@@ -46,36 +39,25 @@ void HighScoreScreen::update()
 Screens_m HighScoreScreen::handleEvents(sf::RenderWindow& window) {
     sf::Event event;
     while (window.pollEvent(event)) {
-        switch (event.type) {
-        case sf::Event::Closed:
+        if (event.type == sf::Event::Closed) {
             window.close();
-            return HIGH_SCOORE_m;  // or a specific screen type for closing
-        case sf::Event::MouseButtonReleased:
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
-                std::cout << "x: " << mousePos.x << " y: " << mousePos.y;
-
-                if (m_backButton.contains(mousePos)) {
-                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
-                    return MENU_m;  // Return to menu screen
-                }
+            return HIGH_SCOORE_m;
+        }
+        if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
+            if (m_backButton.contains(mousePos)) {
+                Singleton::instance().getSoundManager().playSound("click");
+                return MENU_m;
             }
-            break;
         }
     }
     return HIGH_SCOORE_m;
 }
 
 void HighScoreScreen::render(sf::RenderWindow& window) {
-    update();
+    updateHighScores();
     window.draw(m_screen);
-
-    if (m_highScoreTexts.empty()) {
-        std::cout << "No high scores to display." << std::endl; // Debug output
-    }
-
     for (const auto& text : m_highScoreTexts) {
         window.draw(text);
     }
 }
-

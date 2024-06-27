@@ -2,20 +2,18 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <cstdlib>
-#include <ctime>
+#include <memory>
 #include "Player.h"
 #include "Platform.h"
 #include "MovingPlatform.h"
 #include "BreakablePlatform.h"
 #include "Bat.h"
 #include "BlackHole.h"
-#include "BaseScreen.h"
 #include "HeartGift.h"
 #include "Trampoline.h"
 #include "WingGift.h"
-#include "Singleton.h"
 #include "Sidebar.h"
+#include "BaseScreen.h"
 
 const int MEDIUM_HEIGHT = 30;
 const float BAT_SPAWN_INTERVAL = 5.0f;
@@ -33,42 +31,30 @@ public:
     void initialize(sf::RenderWindow& window);
     Screens_m handleEvents(sf::RenderWindow& window) override;
 
-    void levelsLogic(float deltaTime, sf::RenderWindow& window);
-    void collision();
     void update(float deltaTime, sf::RenderWindow& window);
-    void isFail();
-    void CenterView(sf::RenderWindow& window);
-    void updatePlatform(sf::RenderWindow& window);
-
     void render(sf::RenderWindow& window) override;
+
 private:
+    void handleCollisions();
+    void spawnObjects(float deltaTime);
     void addNewPlatform(sf::RenderWindow& window);
+    void centerView(sf::RenderWindow& window);
+    void checkGameOver();
+
     sf::Font m_font;
     sf::Clock m_clock;
-
-    std::vector<Platform*> m_platforms;
     Player m_player;
-    Bat m_bat;
-    BlackHole m_blackHole;
-    HeartGift m_heartGift;
-    Trampoline m_trampoline;
-    WingGift m_wingGift;
-    sf::Sprite m_screen;
+    Sidebar m_sidebar;
     bool m_isGamePaused;
+    bool m_isGameOver;
     int m_score;
-    float m_Height;
-    bool m_batActive;
+    float m_height;
     float m_batTimer;
     float m_blackHoleTimer;
-    float m_giftTimer;
+    float m_heartGiftTimer;
     float m_trampolineTimer;
     float m_wingGiftTimer;
-    float m_playerStartX;
-    float m_playerStartY;
-    Screens_m m_nextScreen;  // To store the next screen state
 
-    Sidebar m_sidebar;  // Add the Sidebar instance
-
-    bool m_EndGame;
-
+    std::vector<std::unique_ptr<Collidable>> m_objects;
+    std::vector<std::unique_ptr<Platform>> m_platforms;
 };
