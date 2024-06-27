@@ -19,7 +19,9 @@ PlayerSelectionScreen::PlayerSelectionScreen() :
         // Create a black rectangle below the text
         sf::RectangleShape rectangle(sf::Vector2f(200, 50)); // Set size of rectangle
         rectangle.setPosition(positions[i]); // Set position
-        rectangle.setFillColor(sf::Color::Black);
+        rectangle.setOutlineThickness(5);
+        rectangle.setFillColor(sf::Color::Black);  // Color
+        rectangle.setOutlineColor(sf::Color::White);  // Outline color for better visibility       
         m_Rectangles.push_back(rectangle);
         
         sf::Text text(menuItems[i], m_font, 35);

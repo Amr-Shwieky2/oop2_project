@@ -14,6 +14,8 @@ public:
 private:
     sf::Sprite m_screen;
     sf::IntRect m_backButton;
+    sf::RectangleShape m_backButtonShape;
     sf::Font m_font;
+    sf::Text m_backText;
     std::vector<sf::Text> m_highScoreTexts;  // Text objects for displaying high scores
 };
