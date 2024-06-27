@@ -21,6 +21,8 @@ private:
     int m_selectedCharacterIndex;///////saves the number for character
     sf::FloatRect m_textInputBounds;
     Screens_m m_returnScreen;
+    sf::RectangleShape m_Rectangle;
+    std::vector<sf::Text> m_Texts;
 
     void updateSelection();
 };

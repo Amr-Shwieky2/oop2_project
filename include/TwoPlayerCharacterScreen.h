@@ -39,7 +39,8 @@ private:
     sf::Font m_font;
 
     std::vector<sf::FloatRect> m_characterBounds;
-    
+    sf::RectangleShape m_Rectangle;
+    std::vector<sf::Text> m_Texts;
     bool m_isPlayerOneDone;
     bool m_isPlayerTwoDone;
 };

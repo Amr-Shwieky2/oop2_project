@@ -1,39 +1,35 @@
 #include "PlayerSelectionScreen.h"
 #include <iostream>
-PlayerSelectionScreen::PlayerSelectionScreen() :
-    onePlayerButton(58, 174, 200, 50),    // Set size directly based on visible rectangle size
-    twoPlayersButton(538, 163, 200, 50),  // Set size directly based on visible rectangle size
-    m_backButton(309, 309, 200, 50) {       // Set size directly based on visible rectangle size
-
-
+PlayerSelectionScreen::PlayerSelectionScreen()
+{
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Failed to load font\n";
     }
 
     m_screen.setTexture(*(Singleton::instance().getScreen(PLAY_GAME_m)));
 
-    std::vector<sf::Vector2f> positions = { sf::Vector2f(58, 177), sf::Vector2f(540, 165) ,sf::Vector2f(309, 310) }; // Positions for texts and rectangles
+    std::vector<sf::Vector2f> positions = { sf::Vector2f(70, 165), sf::Vector2f(555, 165) ,sf::Vector2f(570, 518) }; // Positions for texts and rectangles
 
-    std::string menuItems[] = { "  One Player", "  Two Players" ,"  Go Back"};
+    std::string menuItems[] = { "One Player", "Two Players" ,"Go Back"};
     for (int i = 0; i < 3; ++i) {
         // Create a black rectangle below the text
         sf::RectangleShape rectangle(sf::Vector2f(200, 50)); // Set size of rectangle
         rectangle.setPosition(positions[i]); // Set position
-        rectangle.setOutlineThickness(5);
+        rectangle.setOutlineThickness(8);
         rectangle.setFillColor(sf::Color::Black);  // Color
-        rectangle.setOutlineColor(sf::Color::White);  // Outline color for better visibility       
+        rectangle.setOutlineColor(sf::Color::Red);  // Outline color for better visibility       
         m_Rectangles.push_back(rectangle);
         
         sf::Text text(menuItems[i], m_font, 35);
         sf::FloatRect textBounds = text.getLocalBounds();
         //text.setOrigin(textBounds.width / 2, textBounds.height / 2);
         // Set position slightly above the rectangle
-        text.setPosition(positions[i]);
-        text.setFillColor(sf::Color::White);
+        text.setPosition(positions[i].x + 30 , positions[i].y);
+        text.setFillColor(sf::Color::Red);
         m_Texts.push_back(text);
 
-
     }
+
 }
 
 
@@ -46,25 +42,22 @@ Screens_m PlayerSelectionScreen::handleEvents(sf::RenderWindow& window) {
             break;  // Added a break here to prevent fall-through
         case sf::Event::MouseButtonReleased:
             if (event.mouseButton.button == sf::Mouse::Left) {
-                int mouseX = event.mouseButton.x;
-                int mouseY = event.mouseButton.y;
+                sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
 
-                std::cout << "Mouse Clicked at: X: " << mouseX << ", Y: " << mouseY << std::endl;
-
-                Chooseen button = getChooseButton(sf::Vector2i(mouseX, mouseY));
-                switch (button) {
-                case ONE_PLAYER:
-                    Singleton::instance().getSoundManager().playSound("click");
-                    return C1_m;
-                case TWO_PLAYERS:
-                    Singleton::instance().getSoundManager().playSound("click");
-                    return C2_m;
-                case BACK:
-                    Singleton::instance().getSoundManager().playSound("click");
-                    return MENU_m;
-                default:
-                    // Do nothing if no button was clicked
-                    break;
+                for (size_t i = 0; i < m_Rectangles.size(); ++i) {
+                    if (m_Rectangles[i].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                        Singleton::instance().getSoundManager().playSound("click");
+                        switch (i) {
+                        case 0:
+                            return C1_m;
+                        case 1:
+                            return C2_m;
+                        case 2:
+                            return MENU_m;
+                        default:
+                            break;
+                        }
+                    }
                 }
             }
             break;
@@ -72,6 +65,7 @@ Screens_m PlayerSelectionScreen::handleEvents(sf::RenderWindow& window) {
     }
     return PLAY_GAME_m;  // Stay on
 }
+
 
 void PlayerSelectionScreen::render(sf::RenderWindow& window) {
     window.draw(m_screen);
@@ -83,15 +77,18 @@ void PlayerSelectionScreen::render(sf::RenderWindow& window) {
     }
 }
 
-Chooseen PlayerSelectionScreen::getChooseButton(sf::Vector2i mousePos) {
-    if (onePlayerButton.contains(mousePos)) {
-        return ONE_PLAYER;
-    }
-    else if (twoPlayersButton.contains(mousePos)) {
-        return TWO_PLAYERS;
-    }
-    else if (m_backButton.contains(mousePos)) {
-        return BACK;
-    }
-    return Chooseen();
-}
+//Chooseen PlayerSelectionScreen::getChooseButton(sf::Vector2i mousePos) {
+//    if (onePlayerButton.contains(mousePos)) {
+//        return ONE_PLAYER;
+//    }
+//    else if (twoPlayersButton.contains(mousePos)) {
+//        return TWO_PLAYERS;
+//    }
+//    else if (m_backButton.contains(mousePos)) {
+//        return BACK;
+//    }
+//    return Chooseen();
+//}
+
+
+
