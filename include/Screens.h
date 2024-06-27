@@ -5,7 +5,7 @@
 #include "HelpScreen.h"
 #include "SettingsScreen.h"
 #include "HighScoreScreen.h"
-#include "CharacterScreen.h"
+#include "OnePlayerCharacterScreen.h"
 #include <map>
 
 class Screens {

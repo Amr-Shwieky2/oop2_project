@@ -12,8 +12,8 @@ Screens::Screens() : m_currentScreen(nullptr), m_firstPage(true) {
         m_screens[HELP_m] = new HelpScreen();
         m_screens[SETTINGS_m] = new SettingsScreen();
         m_screens[HIGH_SCOORE_m] = new HighScoreScreen();
-        m_screens[C1_m] = new CharacterScreen(C1_m);
-        m_screens[C2_m] = new TwoPlayerCharacterScreen(C2_m);
+        m_screens[C1_m] = new OnePlayerCharacterScreen();
+        m_screens[C2_m] = new TwoPlayerCharacterScreen();
         m_screens[GAME_m] = new GameLogic();
         Singleton::instance().getSoundManager().playMusic(); // Start background music
         
