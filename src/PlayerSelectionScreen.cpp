@@ -3,7 +3,7 @@
 PlayerSelectionScreen::PlayerSelectionScreen() :
     onePlayerButton(58, 174, 200, 50),    // Set size directly based on visible rectangle size
     twoPlayersButton(538, 163, 200, 50),  // Set size directly based on visible rectangle size
-    backButton(309, 309, 200, 50) {       // Set size directly based on visible rectangle size
+    m_backButton(309, 309, 200, 50) {       // Set size directly based on visible rectangle size
 
 
     if (!m_font.loadFromFile("arial.ttf")) {
@@ -88,7 +88,7 @@ Chooseen PlayerSelectionScreen::getChooseButton(sf::Vector2i mousePos) {
     else if (twoPlayersButton.contains(mousePos)) {
         return TWO_PLAYERS;
     }
-    else if (backButton.contains(mousePos)) {
+    else if (m_backButton.contains(mousePos)) {
         return BACK;
     }
     return Chooseen();

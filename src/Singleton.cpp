@@ -40,7 +40,7 @@ void Singleton::loadTextures() {
             throw GameException("Failed to load menu.jpg");
         if (!m_screens[PLAY_GAME_m].loadFromFile("newChoose.jpg"))
             throw GameException("Failed to load choose.jpg");
-        if (!m_screens[HELP_m].loadFromFile("help.jpg"))
+        if (!m_screens[HELP_m].loadFromFile("newHelp.jpg"))
             throw GameException("Failed to load help.jpg");
         if (!m_screens[SETTINGS_m].loadFromFile("setting.jpg"))
             throw GameException("Failed to load setting.jpg");

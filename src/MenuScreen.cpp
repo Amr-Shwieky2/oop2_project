@@ -10,6 +10,9 @@ MenuScreen::MenuScreen() :
     m_exitButton(300, 500, 200, 50) // Adjusted to Y = 500
 {
     m_screen.setTexture(*(Singleton::instance().getScreen(MENU_m)));
+
+
+
     m_font.loadFromFile("arial.ttf"); // Ensure the font file path is correct
 
     // Initialize title text and rectangle
@@ -58,6 +61,7 @@ MenuScreen::MenuScreen() :
 
 Screens_m MenuScreen::handleEvents(sf::RenderWindow& window) 
 {
+
     sf::Event event;
     while (window.pollEvent(event)) {
         switch (event.type) {
@@ -93,6 +97,7 @@ Screens_m MenuScreen::handleEvents(sf::RenderWindow& window)
                 default:
                     break;
                 }
+
             }
             break;
         }
