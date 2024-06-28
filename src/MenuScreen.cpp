@@ -38,7 +38,8 @@ MenuScreen::MenuScreen() :
         {&m_exitButton, "          Exit"}
     };
 
-    for (auto& button : buttons) {
+    for (auto& button : buttons) 
+    {
         sf::Text text;
         text.setFont(m_font);
         text.setString(button.second);
@@ -56,21 +57,25 @@ MenuScreen::MenuScreen() :
     }
 }
 
-Screens_m MenuScreen::handleEvents(sf::RenderWindow& window) {
+Screens_m MenuScreen::handleEvents(sf::RenderWindow& window) 
+{
     sf::Event event;
-    while (window.pollEvent(event)) {
+    while (window.pollEvent(event)) 
+    {
         switch (event.type) {
         case sf::Event::Closed:
             window.close();
             return MENU_m;
         case sf::Event::MouseButtonReleased:
-            if (event.mouseButton.button == sf::Mouse::Left) {
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
                 std::cout << "Mouse clicked at: (" << mousePos.x << ", " << mousePos.y << ")" << std::endl;
 
                 Menu_c button = getMenuButton(mousePos);
 
-                switch (button) {
+                switch (button) 
+                {
                 case PLAY_GAME_c:
                     Singleton::instance().getSoundManager().playSound("click");
                     return PLAY_GAME_m;
@@ -100,12 +105,15 @@ Screens_m MenuScreen::handleEvents(sf::RenderWindow& window) {
     return MENU_m;
 }
 
-void MenuScreen::updateWavingText(sf::Vector2i mousePos) {
+void MenuScreen::updateWavingText(sf::Vector2i mousePos)
+{
     static const float waveAmplitude = 5.0f;
     static const float waveFrequency = 10.0f; 
 
-    for (size_t i = 1; i < m_Texts.size(); ++i) { 
-        if (m_Rectangles[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+    for (size_t i = 1; i < m_Texts.size(); ++i) 
+    { 
+        if (m_Rectangles[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) 
+        {
             float time = m_waveClock.getElapsedTime().asSeconds();
             float waveOffset = waveAmplitude * std::sin(time * waveFrequency);
             m_Texts[i].setPosition(static_cast<float>(m_Rectangles[i].getPosition().x) + 20.0f, static_cast<float>(m_Rectangles[i].getPosition().y) + 10.0f + waveOffset);
@@ -116,15 +124,18 @@ void MenuScreen::updateWavingText(sf::Vector2i mousePos) {
     }
 }
 
-void MenuScreen::render(sf::RenderWindow& window) {
+void MenuScreen::render(sf::RenderWindow& window) 
+{
     window.draw(m_screen);
-    for (size_t i = 0; i < m_Rectangles.size(); ++i) {
+    for (size_t i = 0; i < m_Rectangles.size(); ++i) 
+    {
         window.draw(m_Rectangles[i]);
         window.draw(m_Texts[i]);
     }
 }
 
-Menu_c MenuScreen::getMenuButton(sf::Vector2i mousePos) {
+Menu_c MenuScreen::getMenuButton(sf::Vector2i mousePos)
+{
     if (m_playButton.contains(mousePos)) {
         return PLAY_GAME_c;
     }
