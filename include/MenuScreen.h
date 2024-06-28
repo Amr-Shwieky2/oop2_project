@@ -11,6 +11,7 @@ public:
 private:
     sf::Sprite m_screen;
     Menu_c getMenuButton(sf::Vector2i mousePos);
+    void updateWavingText(sf::Vector2i mousePos);
 
     // Define the rectangles for menu options
     sf::IntRect m_titleRect;
@@ -22,5 +23,6 @@ private:
     sf::Font m_font;
     std::vector<sf::Text> m_Texts;
     std::vector<sf::RectangleShape> m_Rectangles;
-
+    sf::Clock m_waveClock;
+    bool m_isWaving;
 };
