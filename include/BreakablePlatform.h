@@ -10,6 +10,8 @@ public:
     void breakPlatform();
     bool isBroken() const;
 
+    void onCollision(Collidable& other);
+
 private:
     bool m_isBroken;
 };

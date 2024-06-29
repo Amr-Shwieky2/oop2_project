@@ -45,6 +45,8 @@ private:
     sf::Clock m_clock;
     Player m_player;
     Sidebar m_sidebar;
+    sf::Sprite m_screen;
+
     bool m_isGamePaused;
     bool m_isGameOver;
     int m_score;

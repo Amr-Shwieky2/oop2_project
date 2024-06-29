@@ -1,7 +1,8 @@
 #include "WingGift.h"
+#include "Player.h"
 
 WingGift::WingGift(float startX, float startY)
-    : StaticObject(startX, startY, "WINGS_a") {}
+    : StaticObject(startX, startY, WINGS_a) {}
 
 void WingGift::onCollision(Collidable& other) {
     if (dynamic_cast<Player*>(&other)) {

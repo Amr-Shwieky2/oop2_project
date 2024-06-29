@@ -5,9 +5,9 @@ MovingPlatform::MovingPlatform(float x, float y)
 
 void MovingPlatform::update(float deltaTime) {
     float moveAmount = m_direction * m_speed * deltaTime;
-    m_sprite.move(moveAmount, 0);
+    m_platformShape.move(moveAmount, 0);
 
-    if (m_sprite.getPosition().x < 0 || m_sprite.getPosition().x + m_sprite.getSize().x > 800) {
+    if (m_platformShape.getPosition().x < 0 || m_platformShape.getPosition().x + m_platformShape.getSize().x > 800) {
         m_direction *= -1; // Reverse direction
     }
 }

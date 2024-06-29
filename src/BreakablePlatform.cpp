@@ -2,10 +2,10 @@
 
 BreakablePlatform::BreakablePlatform(float x, float y)
     : Platform(x, y, Type::BREAKABLE), m_isBroken(false) {
-    m_sprite.setFillColor(sf::Color(0, 0, 255)); // Blue
+    m_platformShape.setFillColor(sf::Color(0, 0, 255)); // Blue
 }
 
-void BreakablePlatform::update(float deltaTime) {
+void BreakablePlatform::update(float) {
     if (m_isBroken) {
         m_broken = true; // Mark platform as broken
     }
@@ -19,6 +19,6 @@ bool BreakablePlatform::isBroken() const {
     return m_isBroken;
 }
 
-void BreakablePlatform::onCollision(Collidable& other) {
+void BreakablePlatform::onCollision(Collidable&) {
     breakPlatform();
 }

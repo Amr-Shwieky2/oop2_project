@@ -1,6 +1,6 @@
 #include "StaticObject.h"
 
-StaticObject::StaticObject(float startX, float startY, const std::string& textureKey) {
+StaticObject::StaticObject(float startX, float startY, const GameEffects& textureKey) {
     setTexture(textureKey);
     m_sprite.setPosition(startX, startY);
 }
@@ -9,7 +9,7 @@ void StaticObject::draw(sf::RenderWindow& window) {
     window.draw(m_sprite);
 }
 
-void StaticObject::update(float deltaTime) {
+void StaticObject::update(float) {
     // Default implementation does nothing
 }
 
@@ -21,7 +21,7 @@ sf::FloatRect StaticObject::getBounds() const {
     return m_sprite.getGlobalBounds();
 }
 
-void StaticObject::setTexture(const std::string& textureKey) {
+void StaticObject::setTexture(const GameEffects& textureKey) {
     m_sprite.setTexture(*(Singleton::instance().getEffect(textureKey)));
 
     sf::Vector2u textureSize = m_sprite.getTexture()->getSize();

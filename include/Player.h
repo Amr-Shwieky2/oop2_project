@@ -9,9 +9,11 @@ public:
     void setPosition(float startX, float startY);
     void draw(sf::RenderWindow& window) override;
     void update(float deltaTime) override;
-    void resetPosition(float x, float y) override;
+    void resetPosition(float , float) {};
     sf::FloatRect getBounds() const override;
     void onCollision(Collidable& other) override;
+
+    sf::Vector2f getPosition() const;
 
     void jump();
     bool hasFallen() const;
@@ -35,4 +37,5 @@ private:
     bool m_isFlying;
     float m_flyingTimer;
     float m_invulnerabilityTimer;
+    sf::RectangleShape m_playerShape;
 };
