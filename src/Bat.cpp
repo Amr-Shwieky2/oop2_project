@@ -2,7 +2,7 @@
 #include "Player.h"
 
 Bat::Bat(float startX, float startY)
-    : StaticObject(startX, startY, BAT_a), m_speed(100.0f) {}
+    : MovableObject(startX, startY, BAT_a), m_speed(100.0f) {}
 
 void Bat::update(float deltaTime) {
     float movement = m_speed * deltaTime;

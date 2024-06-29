@@ -1,20 +1,11 @@
 #include "Player.h"
 #include "BreakablePlatform.h"
 
-Player::Player()
+Player::Player(const GameEffects& textureKey)
     : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
     m_jumpBoosted(false), m_isFlying(false), m_flyingTimer(0.0f),
-    m_lives(3), m_invulnerabilityTimer(0.0f) {
-    m_playerShape.setSize(sf::Vector2f(50, 50));
-    m_playerShape.setFillColor(sf::Color::Green);
-}
-
-void Player::setPosition(float startX, float startY) {
-    m_playerShape.setPosition(startX, startY);
-}
-
-void Player::draw(sf::RenderWindow& window) {
-    window.draw(m_playerShape);
+    m_lives(3), m_invulnerabilityTimer(0.0f), MovableObject(textureKey)
+{
 }
 
 void Player::update(float deltaTime) {
@@ -22,27 +13,23 @@ void Player::update(float deltaTime) {
     updateInvulnerability(deltaTime);
 
     m_velocity += m_gravity;
-    m_playerShape.move(0, m_velocity);
+    m_sprite.move(0, m_velocity);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        m_playerShape.move(-m_moveSpeed, 0);
+        m_sprite.move(-m_moveSpeed, 0);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        m_playerShape.move(m_moveSpeed, 0);
+        m_sprite.move(m_moveSpeed, 0);
     }
 
-    if (m_playerShape.getPosition().x + m_playerShape.getSize().x < 0) {
-        m_playerShape.setPosition(800, m_playerShape.getPosition().y);
+    if (m_sprite.getPosition().x + m_sprite.getGlobalBounds().width < 0) {
+        m_sprite.setPosition(800, m_sprite.getPosition().y);
     }
 
-    if (m_playerShape.getPosition().x > 800) {
-        m_playerShape.setPosition(-m_playerShape.getSize().x, m_playerShape.getPosition().y);
+    if (m_sprite.getPosition().x > 800) {
+        m_sprite.setPosition(-m_sprite.getGlobalBounds().width, m_sprite.getPosition().y);
     }
-}
-
-sf::FloatRect Player::getBounds() const {
-    return m_playerShape.getGlobalBounds();
 }
 
 void Player::onCollision(Collidable& other) {
@@ -50,16 +37,12 @@ void Player::onCollision(Collidable& other) {
     if (dynamic_cast<BreakablePlatform*>(&other)) {
         jump();
     }
+    jump();
     // Other collision responses can be added here
 }
 
-sf::Vector2f Player::getPosition() const
-{
-    return m_playerShape.getPosition();
-}
-
 bool Player::hasFallen() const {
-    return m_playerShape.getPosition().y > 600;
+    return m_sprite.getPosition().y > 600;
 }
 
 int Player::getLives() const {

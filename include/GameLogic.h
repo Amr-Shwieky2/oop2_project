@@ -30,13 +30,13 @@ public:
 
     void initialize(sf::RenderWindow& window);
     Screens_m handleEvents(sf::RenderWindow& window) override;
-
     void update(float deltaTime, sf::RenderWindow& window);
     void render(sf::RenderWindow& window) override;
 
 private:
     void handleCollisions();
-    void spawnObjects(float deltaTime);
+    void spawnObjects(float deltaTime, sf::RenderWindow& window);
+    void updatePlatform(sf::RenderWindow& window);
     void addNewPlatform(sf::RenderWindow& window);
     void centerView(sf::RenderWindow& window);
     void checkGameOver();

@@ -17,7 +17,7 @@ void Platform::update(float deltaTime) {
 }
 
 void Platform::resetPosition(float x, float y) {
-    m_sprite.setPosition(x, y);
+    m_platformShape.setPosition(x, y);
 }
 
 sf::FloatRect Platform::getBounds() const {

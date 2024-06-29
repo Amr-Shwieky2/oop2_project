@@ -4,7 +4,9 @@
 GameLogic::GameLogic()
     : m_isGamePaused(false), m_isGameOver(false), m_score(0), m_height(0),
     m_batTimer(0), m_blackHoleTimer(0), m_heartGiftTimer(0),
-    m_trampolineTimer(0), m_wingGiftTimer(0), m_sidebar(800, 50) {
+    m_trampolineTimer(0), m_wingGiftTimer(0), m_sidebar(800, 50),
+    m_player(Singleton::instance().getPlayerCharacter1())
+{
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
         std::exit(-1);
@@ -23,10 +25,10 @@ void GameLogic::initialize(sf::RenderWindow& window) {
     for (int i = 0; i < platformCount; ++i) {
         float x = static_cast<float>(std::rand() % (window.getSize().x - 60));
         float y = window.getSize().y - i * gap;
-        m_platforms.push_back(std::make_unique<Platform>(x, y, Platform::Type::NORMAL));
+        m_platforms.push_back(std::make_unique<Platform>(x, y, Type::NORMAL));
     }
 
-    m_player.setPosition(m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25,
+    m_player.resetPosition(m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25,
         m_platforms[1]->getBounds().top - 50);
 }
 
@@ -73,7 +75,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
     }
 
     handleCollisions();
-    spawnObjects(deltaTime);
+    spawnObjects(deltaTime, window);
     centerView(window);
     checkGameOver();
 
@@ -138,23 +140,79 @@ void GameLogic::handleCollisions() {
     }
 }
 
-void GameLogic::spawnObjects(float) {
-    // Implement object spawning logic
+void GameLogic::spawnObjects(float deltaTime, sf::RenderWindow& window) {
+    m_batTimer += deltaTime;
+    m_blackHoleTimer += deltaTime;
+    m_heartGiftTimer += deltaTime;
+    m_trampolineTimer += deltaTime;
+    m_wingGiftTimer += deltaTime;
+
+    if (m_batTimer >= BAT_SPAWN_INTERVAL) {
+        m_batTimer = 0;
+        m_objects.push_back(std::make_unique<Bat>(800.0f, m_player.getPosition().y - 300));
+    }
+
+    if (m_blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL) {
+        m_blackHoleTimer = 0;
+        m_objects.push_back(std::make_unique<BlackHole>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    }
+
+    if (m_heartGiftTimer >= GIFT_SPAWN_INTERVAL) {
+        m_heartGiftTimer = 0;
+        m_objects.push_back(std::make_unique<HeartGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    }
+
+    if (m_trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
+        m_trampolineTimer = 0;
+        if (!m_platforms.empty()) {
+            int randomIndex = std::rand() % m_platforms.size();
+            m_objects.push_back(std::make_unique<Trampoline>(m_platforms[randomIndex]->getPosition().x, m_platforms[randomIndex]->getPosition().y - 20));
+        }
+    }
+
+    if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
+        m_wingGiftTimer = 0;
+        m_objects.push_back(std::make_unique<WingGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    }
+
+    updatePlatform(window);
+}
+
+void GameLogic::updatePlatform(sf::RenderWindow& window) {
+    if (m_player.getPosition().y < m_platforms.back()->getBounds().top + 300) {
+        addNewPlatform(window);
+    }
+
+    if (!m_platforms.empty() &&
+        m_platforms[0]->getBounds().top > m_player.getPosition().y + 400) {
+        m_platforms.erase(m_platforms.begin());
+        m_score++;
+    }
+
+    auto it = m_platforms.begin();
+    while (it != m_platforms.end()) {
+        if ((*it)->isBreakable() && static_cast<BreakablePlatform*>(it->get())->isBroken()) {
+            it = m_platforms.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
 }
 
 void GameLogic::addNewPlatform(sf::RenderWindow& window) {
     float x = static_cast<float>(std::rand() % static_cast<int>(window.getSize().x - 60));
     float y = m_platforms.back()->getBounds().top - static_cast<float>(window.getSize().y / 2) / 6;
-    Platform::Type type = static_cast<Platform::Type>(std::rand() % 3);
+    Type type = static_cast<Type>(std::rand() % 3);
 
     switch (type) {
-    case Platform::Type::NORMAL:
-        m_platforms.push_back(std::make_unique<Platform>(x, y, Platform::Type::NORMAL));
+    case Type::NORMAL:
+        m_platforms.push_back(std::make_unique<Platform>(x, y, Type::NORMAL));
         break;
-    case Platform::Type::MOVING:
+    case Type::MOVING:
         m_platforms.push_back(std::make_unique<MovingPlatform>(x, y));
         break;
-    case Platform::Type::BREAKABLE:
+    case Type::BREAKABLE:
         m_platforms.push_back(std::make_unique<BreakablePlatform>(x, y));
         break;
     }

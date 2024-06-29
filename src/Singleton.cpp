@@ -21,13 +21,6 @@ sf::Texture* Singleton::getScreen(int screen) {
     return &m_screens[screen];
 }
 
-sf::Texture* Singleton::getCharacter(int character) {
-    if (character < 0 || character >= NUM_OF_CHARACTERS) {
-        throw GameException("Character index out of range");
-    }
-    return &m_charactersTexture[character];
-}
-
 sf::Texture* Singleton::getEffect(int effect) {
     if (effect < 0 || effect >= NUM_OF_EFFECTS) {
         throw GameException("Effect index out of range");
@@ -54,10 +47,10 @@ void Singleton::loadTextures() {
 
 void Singleton::loadCharacters() {
     try {
-        if (!m_charactersTexture[DARK_MAN_p].loadFromFile("dark.png")) throw GameException("Failed to load dark.png");
-        if (!m_charactersTexture[DINASOR_p].loadFromFile("dinasor.png")) throw GameException("Failed to load dinasor.png");
-        if (!m_charactersTexture[SHARP_p].loadFromFile("sharp.png")) throw GameException("Failed to load sharp.png");
-        if (!m_charactersTexture[WITCH_p].loadFromFile("witch.png")) throw GameException("Failed to load witch.png");
+        if (!m_effectsTexture[DARK_MAN_p].loadFromFile("dark.png")) throw GameException("Failed to load dark.png");
+        if (!m_effectsTexture[DINASOR_p].loadFromFile("dinasor.png")) throw GameException("Failed to load dinasor.png");
+        if (!m_effectsTexture[SHARP_p].loadFromFile("sharp.png")) throw GameException("Failed to load sharp.png");
+        if (!m_effectsTexture[WITCH_p].loadFromFile("witch.png")) throw GameException("Failed to load witch.png");
     }
     catch (const std::exception& e) {
         std::cerr << "Error loading character textures: " << e.what() << std::endl;
@@ -76,6 +69,27 @@ void Singleton::loadEffects() {
     catch (const std::exception& e) {
         std::cerr << "Error loading effect textures: " << e.what() << std::endl;
         throw;
+    }
+}
+
+void Singleton::fillCharacters(const int& Character, GameEffects& player)
+{
+
+    switch (Character)
+    {
+    case 0:
+        player = DARK_MAN_p;
+        break;
+    case 1:
+        player = DINASOR_p;
+        break;
+    case 2:
+        player = WITCH_p;
+    case 3:
+        player = SHARP_p;
+
+    default:
+        break;
     }
 }
 
@@ -153,4 +167,23 @@ std::string Singleton::getPlayerName1() const {
 
 std::string Singleton::getPlayerName2() const {
     return m_playerName2;
+}
+
+
+void Singleton::setPlayerCharacter1(const int& Character)
+{
+    fillCharacters(Character, m_playerCharacter1);
+}
+
+void Singleton::setPlayerCharacter2(const int& Character)
+{
+    fillCharacters(Character, m_playerCharacter2);
+}
+
+GameEffects Singleton::getPlayerCharacter1() const {
+    return m_playerCharacter1;
+}
+
+GameEffects Singleton::getPlayerCharacter2() const {
+    return m_playerCharacter2;
 }

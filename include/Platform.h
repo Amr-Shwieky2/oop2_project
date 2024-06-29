@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Collidable.h"
+#include "MovableObject.h"
 
-class Platform : public Collidable {
+class Platform : public MovableObject{
 public:
-    enum class Type { NORMAL, MOVING, BREAKABLE };
 
     Platform(float x, float y, Type type);
     void draw(sf::RenderWindow& window) override;
