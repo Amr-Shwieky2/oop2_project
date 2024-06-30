@@ -8,4 +8,5 @@ public:
     virtual ~BaseScreen() = default;
     virtual Screens_m handleEvents(sf::RenderWindow& window) = 0;
     virtual void render(sf::RenderWindow& window) = 0;
+
 };

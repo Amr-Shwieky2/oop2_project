@@ -46,7 +46,7 @@ TwoPlayerCharacterScreen::TwoPlayerCharacterScreen(Screens_m returnScreen) :
 
      
 
-    std::vector<sf::Vector2f> positions = { sf::Vector2f(440, 496), sf::Vector2f(200, 430) }; // Positions for texts and rectangles
+    std::vector<sf::Vector2f> positions = { sf::Vector2f(440, 496), sf::Vector2f(280, 430) }; // Positions for texts and rectangles
     std::string menuItems[] = { "BACK" ,  "PRESS ENTER TO START THE GAME" };
     for (int i = 0; i < 2; ++i) {
         sf::Text text(menuItems[i], m_font, 28);

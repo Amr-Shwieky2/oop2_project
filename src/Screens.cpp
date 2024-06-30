@@ -51,6 +51,7 @@ void Screens::run() {
     }
 }
 
+
 void Screens::changeScreen(Screens_m screenType) {
     try {
         adjustWindowSize(screenType);
@@ -67,6 +68,7 @@ void Screens::adjustWindowSize(Screens_m screenType) {
         sf::Texture* texture = Singleton::instance().getScreen(screenType);
         if (texture) {
             sf::Vector2u imageSize = texture->getSize();
+
             if (m_firstPage) {
                 m_window.create(sf::VideoMode(imageSize.x, imageSize.y), "Game Window");
                 m_firstPage = false;
@@ -84,3 +86,5 @@ void Screens::adjustWindowSize(Screens_m screenType) {
         throw;
     }
 }
+
+

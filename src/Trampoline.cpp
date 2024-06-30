@@ -11,11 +11,13 @@ Trampoline::Trampoline(float startX, float startY) : m_enhancedJumpStrength(-25.
     float desiredWidth = 100.0f;
     float desiredHeight = 100.0f;
 
-    // Calculate the scale factors
-    float scaleX = desiredWidth / textureSize.x;
-    float scaleY = desiredHeight / textureSize.y;
+    //// Calculate the scale factors
+    //float scaleX = desiredWidth / textureSize.x;
+    //float scaleY = desiredHeight / textureSize.y;
 
-    m_trampolineShape.setScale(scaleX, scaleY);
+    //m_trampolineShape.setScale(scaleX, scaleY);
+    m_trampolineShape.setScale(0.15f, 0.15f);
+
 }
 
 void Trampoline::draw(sf::RenderWindow& window) {
@@ -23,13 +25,25 @@ void Trampoline::draw(sf::RenderWindow& window) {
 }
 
 void Trampoline::resetPosition(Platform* platform) {
-    if (platform != nullptr) {
+    // Ensure the platform is normal
+    if (platform != nullptr && platform->getType() != Platform::Type::MOVING) {
+        platform = platform;
         sf::FloatRect bounds = platform->getBounds();
         float x = bounds.left + (bounds.width - m_trampolineShape.getGlobalBounds().width) / 2;
         float y = bounds.top - m_trampolineShape.getGlobalBounds().height;
         m_trampolineShape.setPosition(x, y);
     }
+    else {
+        platform = nullptr;  // If not normal, reset to nullptr
+    }
 }
+//    if (platform != nullptr) {
+//        sf::FloatRect bounds = platform->getBounds();
+//        float x = bounds.left + (bounds.width - m_trampolineShape.getGlobalBounds().width) / 2;
+//        float y = bounds.top - m_trampolineShape.getGlobalBounds().height;
+//        m_trampolineShape.setPosition(x, y);
+//    }
+//}
 
 sf::Vector2f Trampoline::getPosition() const {
     return m_trampolineShape.getPosition();

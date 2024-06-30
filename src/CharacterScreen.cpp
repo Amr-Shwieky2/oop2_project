@@ -39,7 +39,7 @@ CharacterScreen::CharacterScreen(Screens_m returnScreen) :
     m_playerNameText.setFillColor(sf::Color::White);
     m_playerNameText.setPosition(m_textInputBounds.left, m_textInputBounds.top);
 
-    std::vector<sf::Vector2f> positions = { sf::Vector2f(440, 496), sf::Vector2f(200, 430) }; // Positions for texts and rectangles
+    std::vector<sf::Vector2f> positions= { sf::Vector2f(440, 496), sf::Vector2f(310, 430) }; // Positions for texts and rectangles
     std::string menuItems[] = { "BACK" ,  "PRESS ENTER TO START THE GAME" };
     for (int i = 0; i < 2; ++i) {
         sf::Text text(menuItems[i], m_font, 28);
@@ -122,3 +122,7 @@ void CharacterScreen::updateSelection() {
     m_selectionRectangle.setPosition(m_characterBounds[m_selectedCharacterIndex].left, m_characterBounds[m_selectedCharacterIndex].top);
     m_selectionRectangle.setSize(sf::Vector2f(m_characterBounds[m_selectedCharacterIndex].width, m_characterBounds[m_selectedCharacterIndex].height));
 }
+
+
+
+//here to  deal with the a d left right  

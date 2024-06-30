@@ -13,8 +13,10 @@ PlayerSelectionScreen::PlayerSelectionScreen()
     std::string menuItems[] = { "One Player", "Two Players" ,"Go Back"};
     for (int i = 0; i < 3; ++i) {
         // Create a black rectangle below the text
-        sf::RectangleShape rectangle(sf::Vector2f(200, 50)); // Set size of rectangle
-        rectangle.setPosition(positions[i]); // Set position
+        sf::RectangleShape rectangle(sf::Vector2f(200, 300)); // Set size of rectangle
+        if(i == 2)
+            rectangle.setSize(sf::Vector2f(200, 50));
+        rectangle.setPosition(positions[i]); // Set positionsf::Vector2f(200, 300)
         rectangle.setOutlineThickness(8);
         rectangle.setFillColor(sf::Color::Black);  // Color
         rectangle.setOutlineColor(sf::Color::Red);  // Outline color for better visibility       
@@ -22,9 +24,11 @@ PlayerSelectionScreen::PlayerSelectionScreen()
         
         sf::Text text(menuItems[i], m_font, 35);
         sf::FloatRect textBounds = text.getLocalBounds();
-        //text.setOrigin(textBounds.width / 2, textBounds.height / 2);
         // Set position slightly above the rectangle
-        text.setPosition(positions[i].x + 30 , positions[i].y);
+        text.setPosition(positions[i].x + 30 , positions[i].y + 120);
+        if (i == 2)
+            text.setPosition(positions[i].x + 30, positions[i].y );
+
         text.setFillColor(sf::Color::Red);
         m_Texts.push_back(text);
 

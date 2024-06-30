@@ -88,6 +88,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
             Singleton::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_score);
 
             return Screens_m::HIGH_SCOORE_m;
+
         }
 
 
@@ -95,6 +96,8 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
     std::cout << "npopoop";
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
 }
+
+
 
 void GameLogic::levelsLogic(float deltaTime, sf::RenderWindow& window)
 {

@@ -28,3 +28,7 @@ bool Platform::isBreakable() const
 {
     return m_type == Type::BREAKABLE; 
 }
+
+Platform::Type Platform::getType() const {
+    return m_type;
+}

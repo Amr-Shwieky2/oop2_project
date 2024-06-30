@@ -11,11 +11,13 @@ Bat::Bat(float startX, float startY)
     float desiredWidth = 100.0f;
     float desiredHeight = 100.0f;
 
-    // Calculate the scale factors
-    float scaleX = desiredWidth / textureSize.x;
-    float scaleY = desiredHeight / textureSize.y;
+    //// Calculate the scale factors
+    //float scaleX = desiredWidth / textureSize.x;
+    //float scaleY = desiredHeight / textureSize.y;
 
-    m_batShape.setScale(scaleX, scaleY);
+    //m_batShape.setScale(scaleX, scaleY);
+    m_batShape.setScale(0.22f, 0.22f);
+
 }
 
 // Draw Bat on the screen

@@ -16,4 +16,5 @@ public:
 private:
     sf::Sprite m_trampolineShape;
     float m_enhancedJumpStrength;
+
 };

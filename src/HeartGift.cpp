@@ -16,7 +16,9 @@ HeartGift::HeartGift(float startX, float startY) : m_appearanceInterval(10.0f)
     float scaleX = desiredWidth / textureSize.x;
     float scaleY = desiredHeight / textureSize.y;
 
-    m_heartGiftShape.setScale(scaleX, scaleY);
+   // m_heartGiftShape.setScale(scaleX, scaleY);
+    m_heartGiftShape.setScale(0.19f, 0.19f);  
+
 }
 
 void HeartGift::draw(sf::RenderWindow& window)

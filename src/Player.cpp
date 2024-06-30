@@ -9,6 +9,8 @@ Player::Player()
 {
     m_playerShape.setSize(sf::Vector2f(50, 50));
     m_playerShape.setFillColor(sf::Color::Green);
+    m_playerShape.setScale(1.0f, 1.0f);
+
 }
 
 void Player::setPosition(float startX, float startY)

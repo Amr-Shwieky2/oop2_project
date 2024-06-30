@@ -8,8 +8,14 @@ Sidebar::Sidebar(float width, float height)
         std::cerr << "Couldn't load the font!" << std::endl;
         std::exit(-1);
     }
+
+    if (!m_lifeTexture.loadFromFile("heart.png")) {
+        std::cerr << "Couldn't load the heart texture!" << std::endl;
+        std::exit(-1);
+    }
+
     m_background.setSize(sf::Vector2f(width, height));
-    m_background.setFillColor(sf::Color(150, 150, 150, 255));  // Light grey
+    m_background.setFillColor(sf::Color(178, 34, 34));  // Dark fiery red
 
     m_scoreText.setFont(m_font);
     m_scoreText.setCharacterSize(24);
@@ -20,38 +26,37 @@ Sidebar::Sidebar(float width, float height)
     m_heightText.setFillColor(sf::Color::Black);
 
     m_pauseButton.setSize(sf::Vector2f(70, 30));
-    m_pauseButton.setFillColor(sf::Color::Black);
+    m_pauseButton.setFillColor(sf::Color::Transparent);
+    m_pauseButton.setOutlineThickness(5);
+    m_pauseButton.setOutlineColor(sf::Color::Black);  // Outline color for better visibility  
+
 
     m_pauseText.setFont(m_font);
     m_pauseText.setString("PAUSE");
     m_pauseText.setCharacterSize(24);
-    m_pauseText.setFillColor(sf::Color::White);
+    m_pauseText.setFillColor(sf::Color::Black);
 }
 
 void Sidebar::update(int score, int height, int lives)
 {
     m_scoreText.setString("Score: " + std::to_string(score));
-    if(static_cast<float>(height) >= 0 )
-        m_heightText.setString("Height: " + std::to_string(height));
-    else
-        m_heightText.setString("Height: " + std::to_string(0));
+    m_heightText.setString("Height: " + std::to_string(std::max(0, height)));
 
-
-    m_livesRects.clear();
+    m_livesSprites.clear();
     for (int i = 0; i < lives; ++i)
     {
-        sf::RectangleShape life(sf::Vector2f(20, 20));
-        life.setFillColor(sf::Color::Red);
-        life.setPosition(static_cast<float>( 300 + i * 30),
-            static_cast<float>(20));
-        m_livesRects.push_back(life);
+        sf::Sprite lifeSprite;
+        lifeSprite.setTexture(m_lifeTexture);
+        lifeSprite.setScale(0.1f, 0.1f);  // Scale down the heart image to 10% of its original size
+        lifeSprite.setPosition(static_cast<float>(300 + i * 50), 0.f);
+        m_livesSprites.push_back(lifeSprite);
     }
 
     m_background.setPosition(0, 0);
     m_scoreText.setPosition(10, 10);
     m_heightText.setPosition(100, 10);
     m_pauseButton.setPosition(700, 10);
-    m_pauseText.setPosition(705, 15);
+    m_pauseText.setPosition(705, 12);
 }
 
 void Sidebar::draw(sf::RenderWindow& window)
@@ -61,9 +66,9 @@ void Sidebar::draw(sf::RenderWindow& window)
     window.draw(m_heightText);
     window.draw(m_pauseButton);
     window.draw(m_pauseText);
-    for (auto& rect : m_livesRects)
+    for (auto& sprite : m_livesSprites)
     {
-        window.draw(rect);
+        window.draw(sprite);
     }
 }
 
@@ -71,4 +76,3 @@ bool Sidebar::isPaused(sf::Vector2i mousePos)
 {
     return m_pauseButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
-
