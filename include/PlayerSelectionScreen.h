@@ -10,10 +10,14 @@ public:
 
 private:
     sf::Sprite m_screen;
-    Chooseen getChooseButton(sf::Vector2i mousePos);
-
+    //Chooseen getChooseButton(sf::Vector2i mousePos);
     // Define the rectangles for play mode options
     sf::IntRect onePlayerButton;
     sf::IntRect twoPlayersButton;
-    sf::IntRect backButton;
+    sf::IntRect m_backButton;
+    sf::Font m_font;
+    std::vector<sf::Text> m_Texts;
+    std::vector<sf::RectangleShape> m_Rectangles;
+
+
 };

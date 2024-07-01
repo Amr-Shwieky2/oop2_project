@@ -10,5 +10,9 @@ public:
 
 private:
     sf::Sprite m_screen;
-    sf::IntRect m_backButton;
+    sf::RectangleShape m_backButton;
+
+
+    sf::Font m_font;
+    std::vector<sf::Text> m_Texts;
 };

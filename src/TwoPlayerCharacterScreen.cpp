@@ -2,7 +2,7 @@
 #include <iostream>
 
 TwoPlayerCharacterScreen::TwoPlayerCharacterScreen()
-    : CharacterSelectionScreen(C2_m, {
+   : CharacterSelectionScreen(C2_m, {
         {19, 88, 171, 224},
         {252, 89, 164, 215},
         {471, 98, 175, 212},
@@ -81,12 +81,26 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
                 m_playerNameText2.setString(m_playerName2);
             }
             break;
+        case sf::Event::MouseButtonReleased:
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
+                if (m_Rectangle.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
+                    return PLAY_GAME_m;  // Return to menu screen
+                }
+            }
+            break;
         }
+        
     }
     return C2_m;
 }
+
 
 void TwoPlayerCharacterScreen::updateSelection() {
     CharacterSelectionScreen::updateSelection(m_selectionRectangle1, m_characterBounds[m_selectedCharacterIndex1]);
     CharacterSelectionScreen::updateSelection(m_selectionRectangle2, m_characterBounds[m_selectedCharacterIndex2]);
 }
+
+
+//the handle is good but the rectangles of the back needs to be better 

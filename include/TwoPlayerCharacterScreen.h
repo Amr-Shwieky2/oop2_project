@@ -11,6 +11,7 @@ private:
     void updateSelection();
     int m_selectedCharacterIndex1;
     int m_selectedCharacterIndex2;
+
     bool m_isPlayerOneDone;
     bool m_isPlayerTwoDone;
 };

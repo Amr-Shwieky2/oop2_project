@@ -64,6 +64,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
@@ -75,6 +76,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
                 }
             }
         }
+
 
         float deltaTime = m_clock.restart().asSeconds();
         m_Height = m_playerStartY - m_player.getPosition().y;
