@@ -1,5 +1,10 @@
 #include "Player.h"
 #include "BreakablePlatform.h"
+#include "HeartGift.h"
+#include "BlackHole.h"
+#include "Trampoline.h"
+#include "WingGift.h"
+#include "Bat.h"
 
 Player::Player(const GameEffects& textureKey)
     : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
@@ -29,16 +34,71 @@ void Player::update(float deltaTime) {
 
     if (m_sprite.getPosition().x > 800) {
         m_sprite.setPosition(-m_sprite.getGlobalBounds().width, m_sprite.getPosition().y);
-    }
+    } // v
+
+    /*std::vector<Platform*>::iterator it = platforms.begin();
+
+    for (auto platform : platforms)
+    {
+        sf::FloatRect platformBounds = platform->getBounds();
+        sf::FloatRect playerBounds = m_playerShape.getGlobalBounds();
+
+        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
+            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
+            m_velocity > 0)
+        {
+            float minX = platformBounds.left - playerBounds.width;
+            float maxX = platformBounds.left + platformBounds.width;
+            if (playerBounds.left >= minX && playerBounds.left <= maxX)
+            {
+                if (platform->isBreakable())
+                {
+                    static_cast<BreakablePlatform*>(platform)->breakPlatform();
+                }
+                jump();
+            }
+        }
+
+        platform->update(deltaTime);
+    }*/
+
+
 }
 
 void Player::onCollision(Collidable& other) {
     // Implement specific collision responses
+    if (dynamic_cast<HeartGift*>(&other)) {
+        increaseLife();
+    }
+
+    if (dynamic_cast<BlackHole*>(&other)) {
+        m_lives = -1;
+    }
+
+    if (dynamic_cast<Trampoline*>(&other)) {
+        boostJump();
+    }
+
+    if (dynamic_cast<WingGift*>(&other)) {
+        activateFlying(1.0f);
+        other.resetPosition(m_sprite.getPosition().x, m_sprite.getPosition().y);
+    }
+
+    if (dynamic_cast<Bat*>(&other)) {
+        decrementLife();
+    }
+    // Other collision responses can be added here
+}
+
+void Player::onCollision(Platform& other)
+{
     if (dynamic_cast<BreakablePlatform*>(&other)) {
         jump();
     }
-    jump();
-    // Other collision responses can be added here
+
+    if (dynamic_cast<Platform*>(&other)) {
+        jump();
+    }
 }
 
 bool Player::hasFallen() const {
@@ -50,6 +110,7 @@ int Player::getLives() const {
 }
 
 void Player::decrementLife() {
+    
     if (m_invulnerabilityTimer <= 0) {
         m_lives--;
         m_invulnerabilityTimer = 1.0f;  // Reset invulnerability timer
@@ -77,6 +138,11 @@ void Player::activateFlying(float) {
         m_flyingTimer = 0;
         m_invulnerabilityTimer = 1.0f;  // Reset invulnerability timer
     }
+}
+
+float Player::getVelocity() const
+{
+    return m_velocity;
 }
 
 void Player::jump() {

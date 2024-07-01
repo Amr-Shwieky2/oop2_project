@@ -12,7 +12,7 @@ GameLogic::GameLogic()
         std::exit(-1);
     }
     std::srand(static_cast<unsigned>(std::time(nullptr)));
-    m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
+    m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m))); //v
 }
 
 GameLogic::~GameLogic() {}
@@ -20,16 +20,16 @@ GameLogic::~GameLogic() {}
 void GameLogic::initialize(sf::RenderWindow& window) {
     window.setFramerateLimit(60);
     const int platformCount = 6;
-    const float gap = static_cast<float>(window.getSize().y / 2) / platformCount;
+    const float gap = static_cast<float>(window.getSize().y / 2) / platformCount; //v
 
     for (int i = 0; i < platformCount; ++i) {
         float x = static_cast<float>(std::rand() % (window.getSize().x - 60));
         float y = window.getSize().y - i * gap;
-        m_platforms.push_back(std::make_unique<Platform>(x, y, Type::NORMAL));
+        m_platforms.push_back(std::make_unique<Platform>(x, y, Type::NORMAL)); // v
     }
 
     m_player.resetPosition(m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25,
-        m_platforms[1]->getBounds().top - 50);
+        m_platforms[1]->getBounds().top - 50);//v
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
@@ -39,7 +39,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-            }
+            }//v
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
@@ -48,9 +48,10 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
                     }
                 }
             }
-        }
+        }//v
 
         float deltaTime = m_clock.restart().asSeconds();
+        //m_Height = m_playerStartY - m_player.getPosition().y;
         update(deltaTime, window);
         render(window);
 
@@ -64,9 +65,9 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
 void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
     if (m_isGamePaused) {
         return;
-    }
+    }// new
 
-    m_player.update(deltaTime);
+    m_player.update(deltaTime); // v have a code does not added
     for (auto& platform : m_platforms) {
         platform->update(deltaTime);
     }
@@ -128,7 +129,7 @@ void GameLogic::render(sf::RenderWindow& window) {
 void GameLogic::handleCollisions() {
     for (auto& object : m_objects) {
         if (object->checkCollision(m_player)) {
-            object->onCollision(m_player);
+            //object->onCollision(m_player);
             m_player.onCollision(*object);
         }
     }
@@ -225,7 +226,7 @@ void GameLogic::centerView(sf::RenderWindow& window) {
 }
 
 void GameLogic::checkGameOver() {
-    if (m_player.hasFallen() || m_player.getLives() == 0) {
+    if (m_player.hasFallen() || m_player.getLives() <= 0) {
         m_isGameOver = true;
     }
 }

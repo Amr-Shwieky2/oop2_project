@@ -1,4 +1,5 @@
 #include "Platform.h"
+#include "Player.h"
 
 Platform::Platform(float x, float y, Type type)
     : m_type(type), m_broken(false) {
@@ -16,6 +17,11 @@ void Platform::update(float deltaTime) {
     static_cast<void>(deltaTime);
 }
 
+bool Platform::checkCollision(Collidable& other)
+{
+    return this->getBounds().intersects(other.getBounds());
+}
+
 void Platform::resetPosition(float x, float y) {
     m_platformShape.setPosition(x, y);
 }
@@ -28,6 +34,11 @@ bool Platform::isBreakable() const {
     return m_type == Type::BREAKABLE;
 }
 
-void Platform::onCollision(Collidable&) {
+void Platform::onCollision(Collidable& other) {
     // No specific collision response for basic platforms
+}
+
+sf::Vector2f Platform::getPosition() const
+{
+    return m_platformShape.getPosition();
 }

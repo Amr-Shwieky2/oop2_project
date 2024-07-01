@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MovableObject.h"
+#include "Platform.h"
 #include <vector>
 
 class Player : public MovableObject {
@@ -8,6 +9,7 @@ public:
     Player(const GameEffects&);
     void update(float deltaTime) override;
     void onCollision(Collidable& other) override;
+    void onCollision(Platform& other);
 
 
     void jump();
@@ -17,6 +19,8 @@ public:
     void increaseLife();
     void boostJump();
     void activateFlying(float duration);
+
+    float getVelocity() const;
 
 private:
     void resetJumpStrength();
