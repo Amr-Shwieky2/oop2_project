@@ -37,15 +37,15 @@ SettingsScreen::SettingsScreen() :
     m_BackGround.setFillColor(sf::Color::Black);
     m_BackGround.setPosition(150, 150);
 
-    m_backButtonShape.setSize(sf::Vector2f(100, 50));  // Size based on your existing IntRect
-    m_backButtonShape.setPosition(540, 495);  // Position
+    m_backButtonShape.setSize(sf::Vector2f(180, 50));  // Size based on your existing IntRect
+    m_backButtonShape.setPosition(460, 495);  // Position
     m_backButtonShape.setFillColor(sf::Color::Red);  // Color
     m_backButtonShape.setOutlineColor(sf::Color::White);  // Outline color for better visibility
     m_backButtonShape.setOutlineThickness(2);  // Outline thickness
 
-    std::vector<sf::Vector2f> positions = { sf::Vector2f(290, 200), sf::Vector2f(160, 300) ,sf::Vector2f(185, 410) ,sf::Vector2f(560, 505 )}; // Positions for texts and rectangles
+    std::vector<sf::Vector2f> positions = { sf::Vector2f(290, 200), sf::Vector2f(160, 300) ,sf::Vector2f(185, 410) ,sf::Vector2f(467, 505 )}; // Positions for texts and rectangles
 
-    std::string menuItems[] = { "--SOUND SETTINGS--", "SOUND EFFECTS" ,"MUSIC" , "BACK"};
+    std::string menuItems[] = { "--SOUND SETTINGS--", "SOUND EFFECTS" ,"MUSIC" , "BACK TO MENU"};
     for (int i = 0; i < 4; ++i) {
         sf::Text text(menuItems[i], m_font, 25);
         sf::FloatRect textBounds = text.getLocalBounds();

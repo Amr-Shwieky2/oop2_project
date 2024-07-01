@@ -6,7 +6,7 @@
 #include "Icon.h"
 #include "SoundManager.h"
 
-const int NUM_OF_SCREENS = 8;
+const int NUM_OF_SCREENS = 10;
 const int NUM_OF_HIGH_SCORES = 5;
 const int NUM_OF_CHARACTERS = 4;
 const int NUM_OF_EFFECTS = 5;

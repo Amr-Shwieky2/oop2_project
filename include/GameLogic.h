@@ -16,6 +16,7 @@
 #include "WingGift.h"
 #include "Singleton.h"
 #include "Sidebar.h"
+#include"pauseScreen.h"
 
 const int MEDIUM_HEIGHT = 30;
 const float BAT_SPAWN_INTERVAL = 5.0f;
@@ -54,7 +55,6 @@ private:
     Trampoline m_trampoline;
     WingGift m_wingGift;
     sf::Sprite m_screen;
-    bool m_isGamePaused;
     int m_score;
     float m_Height;
     bool m_batActive;
@@ -68,7 +68,7 @@ private:
     Screens_m m_nextScreen;  // To store the next screen state
 
     Sidebar m_sidebar;  // Add the Sidebar instance
-
+    bool m_isGamePaused;
     bool m_EndGame;
 
 };

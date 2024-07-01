@@ -1,3 +1,4 @@
+
 #include "GameLogic.h"
 #include <iostream>
 
@@ -70,8 +71,10 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
                     sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                     sf::Vector2i transformedMousePos = static_cast<sf::Vector2i>(worldPos);
                     if (m_sidebar.isPaused(transformedMousePos)) {
+                        std::cout << "it was paused ";
                         m_isGamePaused = !m_isGamePaused;  // Toggle pause state
-                        std::cout << (m_isGamePaused ? "Game Paused" : "Game Resumed") << std::endl;
+                        Singleton::instance().getSoundManager().playSound("click");
+                        return PAUSE_m;
                     }
                 }
             }

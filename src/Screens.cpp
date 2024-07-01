@@ -1,3 +1,41 @@
+
+//
+//void Screens::adjustWindowSize(Screens_m screenType) {
+//    try {
+//        sf::Texture* texture = Singleton::instance().getScreen(screenType);
+//        if (texture) {
+//            sf::Vector2u imageSize = texture->getSize();
+//            m_backgroundSprite.setTexture(*texture); // Set the texture for the background sprite
+//
+//            if (m_firstPage) {
+//                m_window.create(sf::VideoMode(imageSize.x, imageSize.y), "Game Window");
+//                m_firstPage = false;
+//            }
+//            else {
+//                if (screenType == GAME_m && m_window.isOpen())
+//                    m_window.create(sf::VideoMode(imageSize.x, imageSize.y + 50), "Game Window");
+//                m_window.setSize(sf::Vector2u(static_cast<unsigned int>(imageSize.x), static_cast<unsigned int>(imageSize.y)));
+//                m_window.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
+//            }
+//
+//            // Scale the background sprite to fit the new window size
+//            float scaleX = static_cast<float>(m_window.getSize().x) / m_backgroundSprite.getLocalBounds().width;
+//            float scaleY = static_cast<float>(m_window.getSize().y) / m_backgroundSprite.getLocalBounds().height;
+//            m_backgroundSprite.setScale(scaleX, scaleY);
+//
+//            // Adjust current screen elements
+//            if (m_currentScreen) {
+//                m_currentScreen->adjustElements(m_window.getSize().x, m_window.getSize().y);
+//            }
+//        }
+//    }
+//    catch (const GameException& e) {
+//        std::cerr << "Error adjusting window size: " << e.what() << std::endl;
+//        throw;
+//    }
+//}
+
+
 #include "Screens.h"
 #include <iostream>
 #include "GameException.h"
@@ -15,6 +53,8 @@ Screens::Screens() : m_currentScreen(nullptr), m_firstPage(true) {
         m_screens[C1_m] = new CharacterScreen(C1_m);
         m_screens[C2_m] = new TwoPlayerCharacterScreen(C2_m);
         m_screens[GAME_m] = new GameLogic();
+        m_screens[PAUSE_m] = new PauseScreen();
+
         Singleton::instance().getSoundManager().playMusic(); // Start background music
         
         changeScreen(MENU_m); // Start with the menu screen
@@ -68,7 +108,6 @@ void Screens::adjustWindowSize(Screens_m screenType) {
         sf::Texture* texture = Singleton::instance().getScreen(screenType);
         if (texture) {
             sf::Vector2u imageSize = texture->getSize();
-
             if (m_firstPage) {
                 m_window.create(sf::VideoMode(imageSize.x, imageSize.y), "Game Window");
                 m_firstPage = false;
