@@ -14,4 +14,7 @@ private:
 
     bool m_isPlayerOneDone;
     bool m_isPlayerTwoDone;
+
+    sf::RectangleShape m_Rectangle;
+    std::vector<sf::Text> m_Texts;
 };
