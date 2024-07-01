@@ -46,6 +46,15 @@ Screens_m OnePlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
             }
             m_playerNameText1.setString(m_playerName1);
             break;
+        case sf::Event::MouseButtonReleased:
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
+                if (m_Rectangle.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    Singleton::instance().getSoundManager().playSound("click"); // Play click sound
+                    return PLAY_GAME_m;  // Return to menu screen
+                }
+            }
+            break;
         }
     }
     return C1_m;

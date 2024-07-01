@@ -27,4 +27,6 @@ protected:
     sf::FloatRect m_textInputBounds1;
     sf::FloatRect m_textInputBounds2;
     std::vector<sf::FloatRect> m_characterBounds;
+    sf::RectangleShape m_Rectangle;
+    std::vector<sf::Text> m_Texts;
 };
