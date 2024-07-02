@@ -40,7 +40,7 @@ public:
 private:
     void addNewPlatform(sf::RenderWindow& window);
     void spawnObjects(float deltaTime, sf::RenderWindow& window);
-    void levelsLogic(float deltaTime, sf::RenderWindow& window);
+    void updateObjects(float deltaTime, sf::RenderWindow& window);
     void collision(float deltaTime);
     void update(float deltaTime, sf::RenderWindow& window);
     void isFail();

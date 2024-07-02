@@ -140,6 +140,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window)
     collision(deltaTime);
 
     updatePlatform(window);
+    updateObjects(deltaTime, window);
 
     CenterView(window);
     isFail();
@@ -289,3 +290,16 @@ void GameLogic::spawnObjects(float deltaTime, sf::RenderWindow& window)
     }
 
 }
+
+void GameLogic::updateObjects(float deltaTime, sf::RenderWindow& window) {
+    // Ensure that m_objects is not empty before accessing the back element
+    if (!m_objects.empty() && m_player.getPosition().y < m_objects.back()->getBounds().top + 300) {
+        spawnObjects(deltaTime, window);
+    }
+
+    if (!m_objects.empty() && m_objects[0]->getBounds().top > m_player.getPosition().y + 400) {
+        m_objects.erase(m_objects.begin());
+        m_score++;
+    }
+}
+

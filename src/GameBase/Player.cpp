@@ -7,7 +7,7 @@
 #include "Bat.h"
 
 Player::Player(const Characters& textureKey)
-    : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
+    : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(7.0f),
     m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
     m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3),
      m_invulnerabilityTimer(0), m_invulnerabilityPeriod(1.0f), MovableObject(textureKey)
