@@ -5,9 +5,10 @@
 #include "Trampoline.h"
 #include "WingGift.h"
 #include "Bat.h"
+#include <iostream>
 
 Player::Player(const Characters& textureKey)
-    : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(7.0f),
+    : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(8.0f),
     m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
     m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3),
      m_invulnerabilityTimer(0), m_invulnerabilityPeriod(1.0f), MovableObject(textureKey)
@@ -33,14 +34,14 @@ void Player::update(float deltaTime)
         m_sprite.move(m_moveSpeed, 0);
     }
 
-    if (m_sprite.getPosition().x + m_sprite.getLocalBounds().width < 0)
+    if (m_sprite.getPosition().x < 0)
     {
         m_sprite.setPosition(800, m_sprite.getPosition().y);
     }
 
     if (m_sprite.getPosition().x > 800)
     {
-        m_sprite.setPosition(-m_sprite.getLocalBounds().width, m_sprite.getPosition().y);
+        m_sprite.setPosition(0, m_sprite.getPosition().y);
     }
 
     
@@ -56,7 +57,7 @@ sf::FloatRect Player::getBounds() const
     return m_sprite.getGlobalBounds();
 }
 
-void Player::onCollision(Collidable& other)
+void Player::onCollision(GameObject& other)
 {
     if (dynamic_cast<HeartGift*>(&other)) {
         increaseLife();

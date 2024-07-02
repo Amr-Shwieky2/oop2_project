@@ -11,7 +11,7 @@ sf::FloatRect WingGift::getBounds() const {
     return m_sprite.getGlobalBounds();
 }
 
-void WingGift::onCollision(Collidable& other)
+void WingGift::onCollision(GameObject& other)
 {
     if (dynamic_cast<Player*>(&other)) {
         other.onCollision(*this);

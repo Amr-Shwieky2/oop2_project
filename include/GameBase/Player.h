@@ -3,16 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include "Platform.h"
 #include <vector>
-#include "Collidable.h"
 #include "MovableObject.h"
 
-class Player : public Collidable, public MovableObject
+class Player : public MovableObject
 {
 public:
     Player(const Characters&);
 
     sf::FloatRect getBounds() const override;
-    void onCollision(Collidable& other) override;
+    void onCollision(GameObject& other) override;
     void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) override;
 

@@ -18,7 +18,8 @@ GameLogic::GameLogic()
     m_playerStartY(0),
     m_nextScreen(GAME_m),
     m_EndGame(false),
-    m_player(Singleton::instance().getPlayerCharacter1())
+    m_player(Singleton::instance().getPlayerCharacter1()),
+    m_bat(-100, -100)
 {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
@@ -47,13 +48,8 @@ void GameLogic::initialize(sf::RenderWindow& window)
     m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
     m_playerStartY = m_platforms[1]->getBounds().top - 100;
 
-    m_objects.push_back(std::make_unique<BlackHole>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350)); m_player.resetPosition(m_playerStartX, m_playerStartY);
-    m_objects.push_back(std::make_unique<HeartGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
-    int randomIndex = std::rand() % m_platforms.size();
-    m_objects.push_back(std::make_unique<Trampoline>(m_platforms[randomIndex]->getPosition().x, m_platforms[randomIndex]->getPosition().y - 20));
-    m_objects.push_back(std::make_unique<WingGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
-    m_objects.push_back(std::make_unique<Bat>(800.0f, m_player.getPosition().y - 300));
-    
+    m_player.resetPosition(m_playerStartX, m_playerStartY);
+
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
@@ -196,6 +192,7 @@ void GameLogic::render(sf::RenderWindow& window) {
     }
 
     m_player.draw(window);
+    m_bat.draw(window);
     for (auto& object : m_objects) {
         object->draw(window);
     }
@@ -256,8 +253,9 @@ void GameLogic::spawnObjects(float deltaTime, sf::RenderWindow& window)
         m_batTimer += deltaTime;
         if (m_batTimer >= BAT_SPAWN_INTERVAL) {
             m_batTimer = 0;
-            m_objects.push_back(std::make_unique<Bat>(800.0f, m_player.getPosition().y - 300));
+            m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(m_player.getPosition().y - 300));
         }
+        m_bat.update(deltaTime);
     }
 
     if (m_player.getPosition().y < HARD_HEIGHT) {
@@ -292,11 +290,8 @@ void GameLogic::spawnObjects(float deltaTime, sf::RenderWindow& window)
 }
 
 void GameLogic::updateObjects(float deltaTime, sf::RenderWindow& window) {
-    // Ensure that m_objects is not empty before accessing the back element
-    if (!m_objects.empty() && m_player.getPosition().y < m_objects.back()->getBounds().top + 300) {
-        spawnObjects(deltaTime, window);
-    }
-
+    
+    spawnObjects(deltaTime, window);
     if (!m_objects.empty() && m_objects[0]->getBounds().top > m_player.getPosition().y + 400) {
         m_objects.erase(m_objects.begin());
         m_score++;

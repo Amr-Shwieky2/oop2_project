@@ -9,7 +9,7 @@ BlackHole::BlackHole(float startX, float startY)
 }
 
 
-void BlackHole::onCollision(Collidable& other)
+void BlackHole::onCollision(GameObject& other)
 {
     if (dynamic_cast<Player*>(&other)) {
         other.onCollision(*this);

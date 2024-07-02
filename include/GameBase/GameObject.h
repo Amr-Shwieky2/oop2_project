@@ -24,6 +24,13 @@ public:
 
     virtual void resetPosition(float x, float y) = 0;
     virtual sf::Vector2f getPosition() const = 0;
+    virtual void draw(sf::RenderWindow& window) = 0;
+    virtual void onCollision(GameObject& other) = 0;
+    virtual sf::FloatRect getBounds() const = 0;
+    virtual bool checkCollision(GameObject& other)
+    {
+        return this->getBounds().intersects(other.getBounds());
+    };
 
 protected:
     sf::Sprite m_sprite;

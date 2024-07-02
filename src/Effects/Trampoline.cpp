@@ -18,7 +18,7 @@ sf::FloatRect Trampoline::getBounds() const
     return m_sprite.getGlobalBounds();
 }
 
-void Trampoline::onCollision(Collidable& other)
+void Trampoline::onCollision(GameObject& other)
 {
     if (dynamic_cast<Player*>(&other)) {
         other.onCollision(*this);

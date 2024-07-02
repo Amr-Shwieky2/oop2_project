@@ -2,16 +2,15 @@
 #include <SFML/Graphics.hpp>
  
 #include "Singleton.h"
-#include "Collidable.h"
 #include "StaticObject.h"
 
 
-class Trampoline : public Collidable, public StaticObject {
+class Trampoline : public StaticObject {
 public:
     Trampoline(float startX, float startY);
     void resetPosition(Platform platform);
     sf::FloatRect getBounds() const override;
-    void onCollision(Collidable& other) override;
+    void onCollision(GameObject& other) override;
     float getEnhancedJumpStrength() const;
     void draw(sf::RenderWindow& window) override;
 

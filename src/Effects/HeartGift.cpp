@@ -12,7 +12,7 @@ sf::FloatRect HeartGift::getBounds() const
     return m_sprite.getGlobalBounds();
 }
 
-void HeartGift::onCollision(Collidable& other)
+void HeartGift::onCollision(GameObject& other)
 {
     if (dynamic_cast<Player*>(&other)) {
         other.onCollision(*this);

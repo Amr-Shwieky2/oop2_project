@@ -26,7 +26,7 @@ sf::FloatRect Bat::getBounds() const
     return m_sprite.getGlobalBounds();
 }
 
-void Bat::onCollision(Collidable& other) {
+void Bat::onCollision(GameObject& other) {
     if (dynamic_cast<Player*>(&other)) {
         other.onCollision(*this);
     }

@@ -20,7 +20,7 @@
 
 const int MEDIUM_HEIGHT = 30;
 const float BAT_SPAWN_INTERVAL = 5.0f;
-const int HARD_HEIGHT = 100;
+const int HARD_HEIGHT = 50;
 const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f;
 const float GIFT_SPAWN_INTERVAL = 3.0f;
 const float TRAMPOLINE_SPAWN_INTERVAL = 3.0f;
@@ -50,7 +50,10 @@ private:
     sf::Font m_font;
     sf::Clock m_clock;
     std::vector<std::unique_ptr<Platform>> m_platforms;
+    std::vector<std::unique_ptr<StaticObject>> m_objects;
+
     Player m_player;
+    Bat m_bat;
     
     sf::Sprite m_screen;
     bool m_isGamePaused;
@@ -72,6 +75,5 @@ private:
 
     bool m_EndGame;
 
-    std::vector<std::unique_ptr<Collidable>> m_objects;
 
 };
