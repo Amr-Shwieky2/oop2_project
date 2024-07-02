@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "GameException.h"
-#include "Icon.h"
+#include "GameObject.h"
 #include "SoundManager.h"
 
 const int NUM_OF_SCREENS = 8;
@@ -29,14 +29,25 @@ public:
     void setPlayerName2(const std::string& name) { m_playerName2 = name; }
     std::string getPlayerName1() const { return m_playerName1; }
     std::string getPlayerName2() const { return m_playerName2; }
+
+    void setPlayerCharacter1(const int& Character = 1);
+    void setPlayerCharacter2(const int& Character = 2);
+    Characters getPlayerCharacter1() const { return m_playerCharacter1; };
+    Characters getPlayerCharacter2() const { return m_playerCharacter2; };
 private:
     Singleton();
     void loadTextures();
     void loadCharacters();
     void loadEffects();
 
+    void fillCharacters(const int&, Characters&);
+
     std::string m_playerName1;
     std::string m_playerName2;
+    Characters m_playerCharacter1;
+    Characters m_playerCharacter2;
+
+
     sf::Texture m_screens[NUM_OF_SCREENS];
     sf::Texture m_charactersTexture[NUM_OF_CHARACTERS];
     sf::Texture m_effectsTexture[NUM_OF_EFFECTS];

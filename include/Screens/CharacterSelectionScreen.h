@@ -1,10 +1,11 @@
 #pragma once
 #include "BaseScreen.h"
-#include "Singleton.h"
-#include "GameException.h"
+#include "../Tools/Singleton.h"
+#include "../Exceptions/GameException.h"
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "../GameBase/GameObject.h"
 
 class CharacterSelectionScreen : public BaseScreen {
 public:

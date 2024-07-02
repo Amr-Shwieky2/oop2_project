@@ -115,25 +115,25 @@ void GameLogic::levelsLogic(float deltaTime, sf::RenderWindow& window)
 
 void GameLogic::collision()
 {
-    if (m_blackHole.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+    if (m_blackHole.getBounds().intersects(m_player.getBounds())) {
         //window.close();
         m_EndGame = true;
     }
 
-    if (m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+    if (m_heartGift.getBounds().intersects(m_player.getBounds())) {
         m_player.increaseLife();
     }
 
-    if (m_trampoline.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+    if (m_trampoline.getBounds().intersects(m_player.getBounds())) {
         m_player.boostJump();
     }
 
-    if (m_wingGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+    if (m_wingGift.getBounds().intersects(m_player.getBounds())) {
         m_player.activateFlying(1.0f);
         m_wingGift.resetPosition(m_player.getPosition().x, m_player.getPosition().y);
     }
 
-    if (m_bat.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+    if (m_bat.getBounds().intersects(m_player.getBounds())) {
         m_player.decrementLife();
     }
 }
@@ -154,7 +154,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window)
 
     m_giftTimer += deltaTime;
     if (m_giftTimer >= GIFT_SPAWN_INTERVAL || 
-        m_heartGift.getGlobalBounds().intersects(m_player.getGlobalBounds())) {
+        m_heartGift.getBounds().intersects(m_player.getBounds())) {
         m_giftTimer = 0;
         m_heartGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
             static_cast<float>(m_player.getPosition().y - 350));

@@ -2,6 +2,16 @@
 #include <fstream>
 #include <iostream>
 
+void Singleton::setPlayerCharacter1(const int& Character)
+{
+    fillCharacters(Character, m_playerCharacter1);
+}
+
+void Singleton::setPlayerCharacter2(const int& Character)
+{
+    fillCharacters(Character, m_playerCharacter2);
+}
+
 Singleton::Singleton() {
     loadTextures();
     loadCharacters();
@@ -103,6 +113,28 @@ void Singleton::loadEffects()
     }
 }
 
+void Singleton::fillCharacters(const int& Character, Characters& player)
+{
+    switch (Character)
+    {
+    case 0:
+        player = DARK_MAN_p;
+        break;
+    case 1:
+        player = DINASOR_p;
+        break;
+    case 2:
+        player = WITCH_p;
+        break;
+    case 3:
+        player = SHARP_p;
+        break;
+
+    default:
+        break;
+    }
+}
+
 const std::vector<high_score>& Singleton::loadHighScore() {
     std::string file = "highScore.txt";
     std::ifstream input_score(file);//input file 
@@ -125,11 +157,6 @@ const std::vector<high_score>& Singleton::loadHighScore() {
 
     input_score.close();
 
-    // Debugging output
-    for (const auto& hs : m_listScore) {
-        std::cout << "Loaded high score: " << hs._name << " " << hs._score << std::endl;
-    }
-
     return m_listScore;
 }
 
@@ -141,18 +168,14 @@ void Singleton::updateHighScore(const std::string& playerName, int playerScore) 
         // Insert new score
         m_listScore.push_back(high_score{ playerName, playerScore }); //////v
 
-        for (const auto& hs : m_listScore) {
-            std::cout << "Loaded high score: " << hs._name << hs._score << std::endl;
-        }
+        
 
         // Sort the m_listScore in descending order
         std::sort(m_listScore.begin(), m_listScore.end(), [](const high_score& a, const high_score& b) {
             return a._score > b._score; // Descending order
             });
 
-        for (const auto& hs : m_listScore) {
-            std::cout << "Loaded high score: " << hs._name << " " << hs._score << std::endl;///v
-        }
+        
 
         // If we have more than the maximum number of high scores, remove the lowest one
         if (m_listScore.size() >= NUM_OF_HIGH_SCORES) {
@@ -175,7 +198,6 @@ void Singleton::updateHighScore(const std::string& playerName, int playerScore) 
 
 
         output_score.close();
-        std::cout << "High scores updated successfully." << std::endl;
     }
     catch (const std::exception& e) {
         std::cerr << "Error updating high scores: " << e.what() << std::endl;

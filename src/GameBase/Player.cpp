@@ -1,14 +1,19 @@
 #include "Player.h"
 #include "BreakablePlatform.h"
+#include "HeartGift.h"
+#include "BlackHole.h"
+#include "Trampoline.h"
+#include "WingGift.h"
+#include "Bat.h"
 
-Player::Player()
+Player::Player(const Characters& textureKey)
     : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
     m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
     m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3),
      m_invulnerabilityTimer(0), m_invulnerabilityPeriod(1.0f)
 {
-    m_playerShape.setSize(sf::Vector2f(50, 50));
-    m_playerShape.setFillColor(sf::Color::Green);
+    m_playerShape.setTexture(*(Singleton::instance().getCharacter(textureKey)));
+    m_playerShape.setScale(0.15f, 0.15f);
 }
 
 void Player::setPosition(float startX, float startY)
@@ -76,9 +81,32 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
     }
 }
 
-sf::FloatRect Player::getGlobalBounds() const
+sf::FloatRect Player::getBounds() const
 {
     return m_playerShape.getGlobalBounds();
+}
+
+void Player::onCollision(Collidable& other)
+{
+    if (dynamic_cast<HeartGift*>(&other)) {
+        increaseLife();
+    }
+
+    if (dynamic_cast<BlackHole*>(&other)) {
+        m_lives = -1;
+    }
+
+    if (dynamic_cast<Trampoline*>(&other)) {
+        boostJump();
+    }
+
+    if (dynamic_cast<WingGift*>(&other)) {
+        activateFlying(1.0f);
+    }
+
+    if (dynamic_cast<Bat*>(&other)) {
+        decrementLife();
+    }
 }
 
 void Player::jump()
