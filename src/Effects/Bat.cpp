@@ -31,3 +31,10 @@ void Bat::onCollision(Collidable& other) {
         other.onCollision(*this);
     }
 }
+
+void Bat::draw(sf::RenderWindow& window)
+{
+    window.draw(m_sprite);
+}
+
+

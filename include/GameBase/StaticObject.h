@@ -9,9 +9,9 @@ public:
     StaticObject(float startX, float startY,
         const GameEffects& textureKey);
 
-    void draw(sf::RenderWindow& window) override;
+    void draw(sf::RenderWindow& window);
     void resetPosition(float x, float y) override;
-    virtual void resetPosition(Platform*) {}
+    virtual void resetPosition(Platform) {}
     sf::Vector2f getPosition() const override;
 
 protected:

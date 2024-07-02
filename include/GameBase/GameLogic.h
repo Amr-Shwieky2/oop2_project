@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <memory>
 #include <cstdlib>
 #include <ctime>
 #include "Player.h"
@@ -28,47 +29,49 @@ const float WING_GIFT_SPAWN_INTERVAL = 9.0f;
 class GameLogic : public BaseScreen {
 public:
     GameLogic();
-    ~GameLogic();
+    ~GameLogic() = default;
 
     void initialize(sf::RenderWindow& window);
     Screens_m handleEvents(sf::RenderWindow& window) override;
 
+    
+
+    void render(sf::RenderWindow& window) override;
+private:
+    void addNewPlatform(sf::RenderWindow& window);
+    void spawnObjects(float deltaTime, sf::RenderWindow& window);
     void levelsLogic(float deltaTime, sf::RenderWindow& window);
-    void collision();
+    void collision(float deltaTime);
     void update(float deltaTime, sf::RenderWindow& window);
     void isFail();
     void CenterView(sf::RenderWindow& window);
     void updatePlatform(sf::RenderWindow& window);
 
-    void render(sf::RenderWindow& window) override;
-private:
-    void addNewPlatform(sf::RenderWindow& window);
     sf::Font m_font;
     sf::Clock m_clock;
-
-    std::vector<Platform*> m_platforms;
+    std::vector<std::unique_ptr<Platform>> m_platforms;
     Player m_player;
-    Bat m_bat;
-    BlackHole m_blackHole;
-    HeartGift m_heartGift;
-    Trampoline m_trampoline;
-    WingGift m_wingGift;
+    
     sf::Sprite m_screen;
     bool m_isGamePaused;
     int m_score;
     float m_Height;
     bool m_batActive;
+    bool m_blackHoleActive;
     float m_batTimer;
     float m_blackHoleTimer;
     float m_giftTimer;
     float m_trampolineTimer;
     float m_wingGiftTimer;
+    float m_heartGiftTimer;
     float m_playerStartX;
     float m_playerStartY;
-    Screens_m m_nextScreen;  // To store the next screen state
+    Screens_m m_nextScreen;
 
-    Sidebar m_sidebar;  // Add the Sidebar instance
+    Sidebar m_sidebar;
 
     bool m_EndGame;
+
+    std::vector<std::unique_ptr<Collidable>> m_objects;
 
 };

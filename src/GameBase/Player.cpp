@@ -15,7 +15,7 @@ Player::Player(const Characters& textureKey)
    
 }
 
-void Player::update(std::vector<Platform*>& platforms, float deltaTime)
+void Player::update(float deltaTime)
 {
     updateFlying(deltaTime);
     updateInvulnerability(deltaTime);
@@ -43,31 +43,12 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
         m_sprite.setPosition(-m_sprite.getLocalBounds().width, m_sprite.getPosition().y);
     }
 
-    std::vector<Platform*>::iterator it = platforms.begin();
+    
+}
 
-   for (auto platform : platforms)
-    {
-        sf::FloatRect platformBounds = platform->getBounds();
-        sf::FloatRect playerBounds = m_sprite.getGlobalBounds();
-
-        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
-            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
-            m_velocity > 0)
-        {
-            float minX = platformBounds.left - playerBounds.width;
-            float maxX = platformBounds.left + platformBounds.width;
-            if (playerBounds.left >= minX && playerBounds.left <= maxX)
-            {
-                if (platform->isBreakable())
-                {
-                    static_cast<BreakablePlatform*>(platform)->breakPlatform();
-                }
-                jump();
-            }
-        }
-
-        platform->update(deltaTime);
-    }
+void Player::draw(sf::RenderWindow& window)
+{
+    window.draw(m_sprite);
 }
 
 sf::FloatRect Player::getBounds() const
@@ -90,12 +71,17 @@ void Player::onCollision(Collidable& other)
     }
 
     if (dynamic_cast<WingGift*>(&other)) {
-        activateFlying(1.0f);
+        activateFlying(3.0f);
     }
 
     if (dynamic_cast<Bat*>(&other)) {
         decrementLife();
     }
+}
+
+float Player::getVelocity() const
+{
+    return m_velocity;
 }
 
 void Player::jump()

@@ -2,19 +2,16 @@
 #include <iostream>
 
 GameLogic::GameLogic()
-    : m_bat(-100, -100),
-    m_blackHole(-100, -100),
-    m_heartGift(-100, -100),
-    m_trampoline(-100, -100),
-    m_wingGift(-100, -100),
-    m_score(0),
+    : m_score(0),
     m_Height(0),
     m_batActive(false),
+    m_blackHoleActive(false),
     m_batTimer(0),
     m_blackHoleTimer(0),
     m_giftTimer(0),
     m_trampolineTimer(0),
     m_wingGiftTimer(0),
+    m_heartGiftTimer(0),
     m_sidebar(800, 50),
     m_isGamePaused(false),
     m_playerStartX(0),
@@ -32,11 +29,6 @@ GameLogic::GameLogic()
     m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
 }
 
-GameLogic::~GameLogic() {
-    for (auto platform : m_platforms) {
-        delete platform;
-    }
-}
 
 void GameLogic::initialize(sf::RenderWindow& window)
 {
@@ -49,12 +41,19 @@ void GameLogic::initialize(sf::RenderWindow& window)
     for (int i = 0; i < platformCount; ++i) {
         float x = static_cast<float>(std::rand() % (window.getSize().x - 60));
         float y = window.getSize().y - i * gap;
-        m_platforms.push_back(new Platform(x, y));
+        m_platforms.push_back(std::make_unique<Platform>(x, y));
     }
 
-    m_playerStartX = m_platforms[0]->getBounds().left + m_platforms[0]->getBounds().width / 2 - 25;
-    m_playerStartY = m_platforms[0]->getBounds().top - 100;
-     m_player.resetPosition(m_playerStartX, m_playerStartY);
+    m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
+    m_playerStartY = m_platforms[1]->getBounds().top - 100;
+
+    m_objects.push_back(std::make_unique<BlackHole>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350)); m_player.resetPosition(m_playerStartX, m_playerStartY);
+    m_objects.push_back(std::make_unique<HeartGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    int randomIndex = std::rand() % m_platforms.size();
+    m_objects.push_back(std::make_unique<Trampoline>(m_platforms[randomIndex]->getPosition().x, m_platforms[randomIndex]->getPosition().y - 20));
+    m_objects.push_back(std::make_unique<WingGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    m_objects.push_back(std::make_unique<Bat>(800.0f, m_player.getPosition().y - 300));
+    
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
@@ -91,109 +90,66 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
             return Screens_m::HIGH_SCOORE_m;
         }
 
-
     }
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
 }
 
-void GameLogic::levelsLogic(float deltaTime, sf::RenderWindow& window)
+void GameLogic::collision(float deltaTime)
 {
-    if (m_player.getPosition().y < MEDIUM_HEIGHT) {
-        m_batActive = true;
-    }
-
-    if (m_player.getPosition().y < HARD_HEIGHT) {
-        m_blackHoleTimer += deltaTime;
-        if (m_blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL) {
-            m_blackHoleTimer = 0;
-            m_blackHole.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
-                static_cast<float>(m_player.getPosition().y - 350));
+    for (auto& object : m_objects) {
+        if (object->checkCollision(m_player)) {
+            object->onCollision(m_player);
         }
     }
 
-}
+    std::vector<std::unique_ptr<Platform>>::iterator it = m_platforms.begin();
 
-void GameLogic::collision()
-{
-    if (m_blackHole.getBounds().intersects(m_player.getBounds())) {
-        //window.close();
-        m_EndGame = true;
-    }
+    for (auto& platform : m_platforms)
+    {
+        sf::FloatRect platformBounds = platform->getBounds();
+        sf::FloatRect playerBounds = m_player.getBounds();
 
-    if (m_heartGift.getBounds().intersects(m_player.getBounds())) {
-        m_player.increaseLife();
-    }
+        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
+            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
+            m_player.getVelocity() > 0)
+        {
+            float minX = platformBounds.left - playerBounds.width;
+            float maxX = platformBounds.left + platformBounds.width;
+            if (playerBounds.left >= minX && playerBounds.left <= maxX)
+            {
+                if (platform->isBreakable())
+                {
+                    // Properly cast to BreakablePlatform* using dynamic_cast
+                    BreakablePlatform* breakable = dynamic_cast<BreakablePlatform*>(platform.get());
+                    if (breakable) { // Check if the dynamic_cast was successful
+                        breakable->breakPlatform();
+                    }
+                }
+                m_player.jump();
+            }
+        }
 
-    if (m_trampoline.getBounds().intersects(m_player.getBounds())) {
-        m_player.boostJump();
-    }
-
-    if (m_wingGift.getBounds().intersects(m_player.getBounds())) {
-        m_player.activateFlying(1.0f);
-        m_wingGift.resetPosition(m_player.getPosition().x, m_player.getPosition().y);
-    }
-
-    if (m_bat.getBounds().intersects(m_player.getBounds())) {
-        m_player.decrementLife();
+        platform->update(deltaTime);
     }
 }
 
 void GameLogic::update(float deltaTime, sf::RenderWindow& window)
 {
-    levelsLogic(deltaTime, window);
 
-    if (m_batActive) {
-        m_batTimer += deltaTime;
-        if (m_batTimer >= BAT_SPAWN_INTERVAL) {
-            m_batTimer = 0;
-            m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(m_player.getPosition().y - 300));
-        }
-        m_bat.update(deltaTime);
-        
-    }
+    m_player.update(deltaTime);
+    collision(deltaTime);
 
-    m_giftTimer += deltaTime;
-    if (m_giftTimer >= GIFT_SPAWN_INTERVAL || 
-        m_heartGift.getBounds().intersects(m_player.getBounds())) {
-        m_giftTimer = 0;
-        m_heartGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
-            static_cast<float>(m_player.getPosition().y - 350));
-    }
-
-    m_trampolineTimer += deltaTime;
-    if (m_trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
-        m_trampolineTimer = 0;
-        if (!m_platforms.empty()) {
-            int randomIndex = std::rand() % m_platforms.size();
-            m_trampoline.resetPosition(m_platforms[randomIndex]);
-        }
-    }
-
-    m_wingGiftTimer += deltaTime;
-    if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
-        m_wingGiftTimer = 0;
-        m_wingGift.resetPosition(static_cast<float>(std::rand() % window.getSize().x),
-                                  static_cast<float>(m_player.getPosition().y - 350));
-    }
-
-    
-    collision();
-    m_player.update(m_platforms, deltaTime);
-
-    isFail();
+    updatePlatform(window);
 
     CenterView(window);
-
+    isFail();
     
-    updatePlatform(window);
-    
-
-    m_sidebar.update(m_score, static_cast<int>(m_Height), m_player.getLives());  // Update Sidebar
+    m_sidebar.update(m_score, static_cast<int>(m_Height), m_player.getLives());  
 }
 
 void GameLogic::isFail() 
 {
-    if (m_player.hasFallen() || m_player.getLives() == 0) {
+    if (m_player.hasFallen() || m_player.getLives() <= 0) {
         m_EndGame = true;
     }
 }
@@ -207,30 +163,24 @@ void GameLogic::CenterView(sf::RenderWindow& window)
 
 void GameLogic::updatePlatform(sf::RenderWindow& window)
 {
-    if (m_player.getPosition().y < m_platforms.back()->getBounds().top + 300)
-    {
+    if (m_player.getPosition().y < m_platforms.back()->getBounds().top + 300) {
         addNewPlatform(window);
     }
 
-    if (!m_platforms.empty() &&
-        m_platforms[0]->getBounds().top > m_player.getPosition().y + 400) {
-        delete m_platforms[0];
+    if (!m_platforms.empty() && m_platforms[0]->getBounds().top > m_player.getPosition().y + 400) {
         m_platforms.erase(m_platforms.begin());
         m_score++;
     }
 
     auto it = m_platforms.begin();
     while (it != m_platforms.end()) {
-        if ((*it)->isBreakable() && static_cast<BreakablePlatform*>(*it)->isBroken()) {
-            delete* it;  // Free memory if you're using raw pointers
+        if ((*it)->isBreakable() && static_cast<BreakablePlatform*>(it->get())->isBroken()) {
             it = m_platforms.erase(it);  // Remove from the vector
         }
         else {
             ++it;
         }
     }
-
-    m_sidebar.update(m_score, static_cast<int>(m_Height), m_player.getLives());  // Update Sidebar
 }
 
 void GameLogic::render(sf::RenderWindow& window) {
@@ -245,13 +195,11 @@ void GameLogic::render(sf::RenderWindow& window) {
     }
 
     m_player.draw(window);
-    m_bat.draw(window);
-    m_blackHole.draw(window);
-    m_heartGift.draw(window);
-    m_trampoline.draw(window);
-    m_wingGift.draw(window);
+    for (auto& object : m_objects) {
+        object->draw(window);
+    }
 
-    for (auto platform : m_platforms) {
+    for (auto &platform : m_platforms) {
         platform->draw(window);
     }
 
@@ -290,13 +238,54 @@ void GameLogic::addNewPlatform(sf::RenderWindow& window) {
 
     switch (type) {
     case Platform::Type::NORMAL:
-        m_platforms.push_back(new Platform(x, y));
+        m_platforms.push_back(std::make_unique<Platform>(x, y));
         break;
     case Platform::Type::MOVING:
-        m_platforms.push_back(new MovingPlatform(x, y));
+        m_platforms.push_back(std::make_unique<MovingPlatform>(x, y));
         break;
     case Platform::Type::BREAKABLE:
-        m_platforms.push_back(new BreakablePlatform(x, y));
+        m_platforms.push_back(std::make_unique<BreakablePlatform>(x, y));
         break;
     }
+}
+
+void GameLogic::spawnObjects(float deltaTime, sf::RenderWindow& window)
+{
+    if (m_player.getPosition().y < MEDIUM_HEIGHT) {
+        m_batTimer += deltaTime;
+        if (m_batTimer >= BAT_SPAWN_INTERVAL) {
+            m_batTimer = 0;
+            m_objects.push_back(std::make_unique<Bat>(800.0f, m_player.getPosition().y - 300));
+        }
+    }
+
+    if (m_player.getPosition().y < HARD_HEIGHT) {
+        m_blackHoleTimer += deltaTime;
+        if (m_blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL) {
+            m_blackHoleTimer = 0;
+            m_objects.push_back(std::make_unique<BlackHole>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+        }
+    }
+
+    m_heartGiftTimer += deltaTime;
+    if (m_heartGiftTimer >= GIFT_SPAWN_INTERVAL) {
+        m_heartGiftTimer = 0;
+        m_objects.push_back(std::make_unique<HeartGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    }
+
+    m_trampolineTimer += deltaTime;
+    if (m_trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
+        m_trampolineTimer = 0;
+        if (!m_platforms.empty()) {
+            int randomIndex = std::rand() % m_platforms.size();
+            m_objects.push_back(std::make_unique<Trampoline>(m_platforms[randomIndex]->getPosition().x, m_platforms[randomIndex]->getPosition().y - 20));
+        }
+    }
+
+    m_wingGiftTimer += deltaTime;
+    if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
+        m_wingGiftTimer = 0;
+        m_objects.push_back(std::make_unique<WingGift>(static_cast<float>(std::rand() % window.getSize().x), m_player.getPosition().y - 350));
+    }
+
 }

@@ -28,3 +28,8 @@ bool Platform::isBreakable() const
 {
     return m_type == Type::BREAKABLE; 
 }
+
+sf::Vector2f Platform::getPosition() const
+{
+    return m_platformShape.getPosition();
+}

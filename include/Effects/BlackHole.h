@@ -10,6 +10,8 @@ public:
     sf::FloatRect getBounds() const override;
 
     void onCollision(Collidable& other) override;
+    void draw(sf::RenderWindow& window) override;
+
 
 private:
     float m_appearanceInterval; // Time interval for the black hole to appear

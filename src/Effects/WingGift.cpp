@@ -17,3 +17,9 @@ void WingGift::onCollision(Collidable& other)
         other.onCollision(*this);
     }
 }
+
+void WingGift::draw(sf::RenderWindow& window)
+{
+    window.draw(m_sprite);
+
+}

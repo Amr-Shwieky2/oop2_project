@@ -19,3 +19,8 @@ void HeartGift::onCollision(Collidable& other)
     }
 }
 
+void HeartGift::draw(sf::RenderWindow& window)
+{
+    window.draw(m_sprite);
+}
+

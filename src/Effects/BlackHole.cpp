@@ -16,6 +16,12 @@ void BlackHole::onCollision(Collidable& other)
     }
 }
 
+void BlackHole::draw(sf::RenderWindow& window)
+{
+    window.draw(m_sprite);
+
+}
+
 sf::FloatRect BlackHole::getBounds() const
 {
     return m_sprite.getGlobalBounds();

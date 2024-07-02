@@ -9,10 +9,12 @@
 class Trampoline : public Collidable, public StaticObject {
 public:
     Trampoline(float startX, float startY);
-    void resetPosition(Platform* platform);
+    void resetPosition(Platform platform);
     sf::FloatRect getBounds() const override;
     void onCollision(Collidable& other) override;
     float getEnhancedJumpStrength() const;
+    void draw(sf::RenderWindow& window) override;
+
 
 private:
     float m_enhancedJumpStrength;

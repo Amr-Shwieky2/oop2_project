@@ -10,6 +10,8 @@ public:
     
     sf::FloatRect getBounds() const override;
     void onCollision(Collidable& other) override;
+    void draw(sf::RenderWindow& window) override;
+
 
 private:
     sf::Sprite m_wingGiftShape;

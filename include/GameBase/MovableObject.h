@@ -12,9 +12,10 @@ public:
 	MovableObject(const Characters& textureKey);
 
 	virtual ~MovableObject() = default;
-	void draw(sf::RenderWindow& window) override;
+	void draw(sf::RenderWindow& window);
 	void resetPosition(float x, float y) override;
 	sf::Vector2f getPosition() const override;
+	virtual void update(float deltaTime) = 0;
 
 protected:
 	void setTexture(const GameEffects& textureKey);

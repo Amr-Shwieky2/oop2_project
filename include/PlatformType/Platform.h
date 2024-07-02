@@ -1,5 +1,4 @@
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -15,6 +14,8 @@ public:
     void draw(sf::RenderWindow& window);
     sf::FloatRect getBounds() const;
     bool isBreakable() const;
+    sf::Vector2f getPosition() const;
+
 
 protected:
     sf::RectangleShape m_platformShape;
@@ -22,4 +23,3 @@ protected:
     bool m_broken;
 };
 
-#endif

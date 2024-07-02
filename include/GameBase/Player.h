@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "Platform.h"
@@ -14,10 +13,11 @@ public:
 
     sf::FloatRect getBounds() const override;
     void onCollision(Collidable& other) override;
+    void update(float deltaTime) override;
+    void draw(sf::RenderWindow& window) override;
 
-    void update(std::vector<Platform*>& platforms, float deltaTime);
+    float getVelocity() const;
     void jump();
-    
     bool hasFallen() const;
     int getLives() const;
     void decrementLife();
@@ -48,4 +48,3 @@ private:
     float m_invulnerabilityPeriod; // Period of invulnerability after being hit
 };
 
-#endif
