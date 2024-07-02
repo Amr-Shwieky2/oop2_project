@@ -37,7 +37,7 @@ void MovableObject::setTexture(const GameEffects& textureKey)
 
 void MovableObject::setTexture(const Characters& textureKey)
 {
-    m_sprite.setTexture(*(Singleton::instance().getEffect(textureKey)));
+    m_sprite.setTexture(*(Singleton::instance().getCharacter(textureKey)));
     m_sprite.setScale(0.15f, 0.15f);
 };
 

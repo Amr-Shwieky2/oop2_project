@@ -38,21 +38,22 @@ GameLogic::~GameLogic() {
     }
 }
 
-void GameLogic::initialize(sf::RenderWindow& window) {
-    
+void GameLogic::initialize(sf::RenderWindow& window)
+{
 
-    window.setFramerateLimit(65);
+    window.setFramerateLimit(60);
     const int platformCount = 6;
     const float gap = static_cast<float>(window.getSize().y / 2) / platformCount;
 
+    
     for (int i = 0; i < platformCount; ++i) {
         float x = static_cast<float>(std::rand() % (window.getSize().x - 60));
         float y = window.getSize().y - i * gap;
         m_platforms.push_back(new Platform(x, y));
     }
 
-     m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
-     m_playerStartY = m_platforms[1]->getBounds().top - 50;
+    m_playerStartX = m_platforms[0]->getBounds().left + m_platforms[0]->getBounds().width / 2 - 25;
+    m_playerStartY = m_platforms[0]->getBounds().top - 100;
      m_player.resetPosition(m_playerStartX, m_playerStartY);
 }
 

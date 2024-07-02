@@ -33,14 +33,14 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
         m_sprite.move(m_moveSpeed, 0);
     }
 
-    if (m_sprite.getPosition().x + m_sprite.getGlobalBounds().width < 0)
+    if (m_sprite.getPosition().x + m_sprite.getLocalBounds().width < 0)
     {
         m_sprite.setPosition(800, m_sprite.getPosition().y);
     }
 
     if (m_sprite.getPosition().x > 800)
     {
-        m_sprite.setPosition(-m_sprite.getGlobalBounds().width, m_sprite.getPosition().y);
+        m_sprite.setPosition(-m_sprite.getLocalBounds().width, m_sprite.getPosition().y);
     }
 
     std::vector<Platform*>::iterator it = platforms.begin();
