@@ -7,17 +7,17 @@
 #include "Collidable.h"
 #include "MovableObject.h"
 
-class Player : Collidable, MovableObject
+class Player : public Collidable, public MovableObject
 {
 public:
     Player(const Characters&);
-    void setPosition(float startX, float startY);
-    void draw(sf::RenderWindow& window);
-    void update(std::vector<Platform*>& platforms, float deltaTime);
-    void jump();
-    sf::Vector2f getPosition() const;
+
     sf::FloatRect getBounds() const override;
     void onCollision(Collidable& other) override;
+
+    void update(std::vector<Platform*>& platforms, float deltaTime);
+    void jump();
+    
     bool hasFallen() const;
     int getLives() const;
     void decrementLife();
@@ -34,7 +34,6 @@ public:
 private:
     int m_lives;
     bool m_currentlyColliding;
-    sf::Sprite m_playerShape;
     float m_velocity;
     float m_gravity;
     float m_jumpStrength;

@@ -12,8 +12,6 @@ void StaticObject::draw(sf::RenderWindow& window)
     window.draw(m_sprite);
 }
 
-
-
 // Reset BlackHole's position to appear again
 void StaticObject::resetPosition(float x, float y)
 {

@@ -2,15 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "Singleton.h"
 #include "Collidable.h"
-#include "GameObject.h"
+#include "MovableObject.h"
 
-class Bat : public Collidable, public GameObject {
+class Bat : public Collidable, public MovableObject {
 public:
     Bat(float startX, float startY);
-    void draw(sf::RenderWindow& window) override;
-    void update(float deltaTime) override;
-    void resetPosition(float x, float y) override;
-    sf::Vector2f getPosition() const override;
+    void update(float deltaTime);
     sf::FloatRect getBounds() const override;
     void onCollision(Collidable& other) override;
 private:

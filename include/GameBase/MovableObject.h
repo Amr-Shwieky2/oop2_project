@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Singleton.h"
 
 class MovableObject :public GameObject
 {
@@ -18,6 +19,5 @@ public:
 protected:
 	void setTexture(const GameEffects& textureKey);
 	void setTexture(const Characters& textureKey);
-
 };
 

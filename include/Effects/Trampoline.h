@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Platform.h" 
+ 
 #include "Singleton.h"
 #include "Collidable.h"
 #include "StaticObject.h"

@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Singleton.h"
+#include "Platform.h"
 
 class StaticObject : public GameObject {
 public:
@@ -10,6 +11,7 @@ public:
 
     void draw(sf::RenderWindow& window) override;
     void resetPosition(float x, float y) override;
+    virtual void resetPosition(Platform*) {}
     sf::Vector2f getPosition() const override;
 
 protected:

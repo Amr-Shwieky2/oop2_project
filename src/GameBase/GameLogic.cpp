@@ -20,8 +20,8 @@ GameLogic::GameLogic()
     m_playerStartX(0),
     m_playerStartY(0),
     m_nextScreen(GAME_m),
-    m_EndGame(false)
-
+    m_EndGame(false),
+    m_player(Singleton::instance().getPlayerCharacter1())
 {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
@@ -53,7 +53,7 @@ void GameLogic::initialize(sf::RenderWindow& window) {
 
      m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
      m_playerStartY = m_platforms[1]->getBounds().top - 50;
-     m_player.setPosition(m_playerStartX, m_playerStartY);
+     m_player.resetPosition(m_playerStartX, m_playerStartY);
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
@@ -92,7 +92,6 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
 
 
     }
-    std::cout << "npopoop";
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
 }
 

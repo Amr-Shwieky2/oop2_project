@@ -10,20 +10,9 @@ Player::Player(const Characters& textureKey)
     : m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(5.0f),
     m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
     m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3),
-     m_invulnerabilityTimer(0), m_invulnerabilityPeriod(1.0f)
+     m_invulnerabilityTimer(0), m_invulnerabilityPeriod(1.0f), MovableObject(textureKey)
 {
-    m_playerShape.setTexture(*(Singleton::instance().getCharacter(textureKey)));
-    m_playerShape.setScale(0.15f, 0.15f);
-}
-
-void Player::setPosition(float startX, float startY)
-{
-    m_playerShape.setPosition(startX, startY);
-}
-
-void Player::draw(sf::RenderWindow& window)
-{
-    window.draw(m_playerShape);
+   
 }
 
 void Player::update(std::vector<Platform*>& platforms, float deltaTime)
@@ -32,26 +21,26 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
     updateInvulnerability(deltaTime);
 
     m_velocity += m_gravity;
-    m_playerShape.move(0, m_velocity);
+    m_sprite.move(0, m_velocity);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        m_playerShape.move(-m_moveSpeed, 0);
+        m_sprite.move(-m_moveSpeed, 0);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        m_playerShape.move(m_moveSpeed, 0);
+        m_sprite.move(m_moveSpeed, 0);
     }
 
-    if (m_playerShape.getPosition().x + m_playerShape.getSize().x < 0)
+    if (m_sprite.getPosition().x + m_sprite.getGlobalBounds().width < 0)
     {
-        m_playerShape.setPosition(800, m_playerShape.getPosition().y);
+        m_sprite.setPosition(800, m_sprite.getPosition().y);
     }
 
-    if (m_playerShape.getPosition().x > 800)
+    if (m_sprite.getPosition().x > 800)
     {
-        m_playerShape.setPosition(-m_playerShape.getSize().x, m_playerShape.getPosition().y);
+        m_sprite.setPosition(-m_sprite.getGlobalBounds().width, m_sprite.getPosition().y);
     }
 
     std::vector<Platform*>::iterator it = platforms.begin();
@@ -59,7 +48,7 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
    for (auto platform : platforms)
     {
         sf::FloatRect platformBounds = platform->getBounds();
-        sf::FloatRect playerBounds = m_playerShape.getGlobalBounds();
+        sf::FloatRect playerBounds = m_sprite.getGlobalBounds();
 
         if (playerBounds.top + playerBounds.height >= platformBounds.top &&
             playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
@@ -83,7 +72,7 @@ void Player::update(std::vector<Platform*>& platforms, float deltaTime)
 
 sf::FloatRect Player::getBounds() const
 {
-    return m_playerShape.getGlobalBounds();
+    return m_sprite.getGlobalBounds();
 }
 
 void Player::onCollision(Collidable& other)
@@ -118,14 +107,9 @@ void Player::jump()
     }
 }
 
-sf::Vector2f Player::getPosition() const
-{
-    return m_playerShape.getPosition();
-}
-
 bool Player::hasFallen() const
 {
-    return m_playerShape.getPosition().y > 600;
+    return m_sprite.getPosition().y > 600;
 }
 
 int Player::getLives() const

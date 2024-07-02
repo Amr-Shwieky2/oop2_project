@@ -71,12 +71,11 @@ Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
 
                 if (m_effectsBar.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    m_effectsVolume = (mousePos.x - m_effectsBar.getPosition().x) / (m_effectsBar.getSize().x * 0.01);
-                    m_effectsDot.setPosition(m_effectsBar.getPosition().x + m_effectsVolume * 2 - 10, m_effectsBar.getPosition().y - 5);
+                    m_effectsVolume = static_cast<float>((mousePos.x - m_effectsBar.getPosition().x) / (m_effectsBar.getSize().x * 0.01));                    m_effectsDot.setPosition(m_effectsBar.getPosition().x + m_effectsVolume * 2 - 10, m_effectsBar.getPosition().y - 5);
                     updateVolume();
                 }
                 if (m_musicBar.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    m_musicVolume = (mousePos.x - m_musicBar.getPosition().x) / (m_musicBar.getSize().x * 0.01);
+                    m_musicVolume = static_cast<float>((mousePos.x - m_musicBar.getPosition().x) / (m_musicBar.getSize().x * 0.01));
                     m_musicDot.setPosition(m_musicBar.getPosition().x + m_musicVolume * 2 - 10, m_musicBar.getPosition().y - 5);
                     updateVolume();
                 }

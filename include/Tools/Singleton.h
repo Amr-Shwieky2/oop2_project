@@ -44,8 +44,8 @@ private:
 
     std::string m_playerName1;
     std::string m_playerName2;
-    Characters m_playerCharacter1;
-    Characters m_playerCharacter2;
+    Characters m_playerCharacter1 = DARK_MAN_p;
+    Characters m_playerCharacter2 = DARK_MAN_p;
 
 
     sf::Texture m_screens[NUM_OF_SCREENS];
