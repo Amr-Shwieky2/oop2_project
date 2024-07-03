@@ -73,6 +73,7 @@ void Player::onCollision(GameObject& other)
 
     if (dynamic_cast<WingGift*>(&other)) {
         activateFlying(3.0f);
+       // other.resetPosition(getPosition().x, getPosition().y);
     }
 
     if (dynamic_cast<Bat*>(&other)) {

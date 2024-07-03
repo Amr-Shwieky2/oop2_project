@@ -2,7 +2,7 @@
 #include "Player.h"
 
 HeartGift::HeartGift(float startX, float startY) 
-    : m_appearanceInterval(10.0f), StaticObject(startX, startY, HEART_a)
+    : m_appearanceInterval(10.0f), StaticObject(startX, startY, HEART_a), m_hide(false)
 {
    
 }
@@ -16,11 +16,13 @@ void HeartGift::onCollision(GameObject& other)
 {
     if (dynamic_cast<Player*>(&other)) {
         other.onCollision(*this);
+        m_hide = true;
     }
 }
 
 void HeartGift::draw(sf::RenderWindow& window)
 {
-    window.draw(m_sprite);
+    if(!m_hide)
+        window.draw(m_sprite);
 }
 

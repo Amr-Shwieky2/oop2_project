@@ -13,4 +13,5 @@ public:
 
 private:
     float m_appearanceInterval; // Time interval for the black hole to appear
+    bool m_hide;
 };

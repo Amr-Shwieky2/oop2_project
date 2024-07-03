@@ -79,54 +79,12 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
         update(deltaTime, window);
         render(window);
         if(m_EndGame) {
-            //std::cout << Singleton::instance().getPlayerName1();
-            //
             Singleton::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_score);
-
             return Screens_m::HIGH_SCOORE_m;
         }
 
     }
     return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
-}
-
-void GameLogic::collision(float deltaTime)
-{
-    for (auto& object : m_objects) {
-        if (object->checkCollision(m_player)) {
-            object->onCollision(m_player);
-        }
-    }
-
-    std::vector<std::unique_ptr<Platform>>::iterator it = m_platforms.begin();
-
-    for (auto& platform : m_platforms)
-    {
-        sf::FloatRect platformBounds = platform->getBounds();
-        sf::FloatRect playerBounds = m_player.getBounds();
-
-        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
-            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
-            m_player.getVelocity() > 0)
-        {
-            float minX = platformBounds.left - playerBounds.width;
-            float maxX = platformBounds.left + platformBounds.width;
-            if (playerBounds.left >= minX && playerBounds.left <= maxX)
-            {
-                if (platform->isBreakable())
-                {
-                    // Properly cast to BreakablePlatform* using dynamic_cast
-                    BreakablePlatform* breakable = dynamic_cast<BreakablePlatform*>(platform.get());
-                    if (breakable) { // Check if the dynamic_cast was successful
-                        breakable->breakPlatform();
-                    }
-                }
-                m_player.jump();
-            }
-        }
-
-        platform->update(deltaTime);
-    }
 }
 
 void GameLogic::update(float deltaTime, sf::RenderWindow& window)
@@ -298,3 +256,44 @@ void GameLogic::updateObjects(float deltaTime, sf::RenderWindow& window) {
     }
 }
 
+void GameLogic::collision(float deltaTime)
+{
+    for (auto& object : m_objects) {
+        if (object->checkCollision(m_player)) {
+            object->onCollision(m_player);
+        }
+    }
+    if (m_bat.checkCollision(m_player)) {
+        m_bat.onCollision(m_player);
+    }
+
+    std::vector<std::unique_ptr<Platform>>::iterator it = m_platforms.begin();
+
+    for (auto& platform : m_platforms)
+    {
+        sf::FloatRect platformBounds = platform->getBounds();
+        sf::FloatRect playerBounds = m_player.getBounds();
+
+        if (playerBounds.top + playerBounds.height >= platformBounds.top &&
+            playerBounds.top + playerBounds.height <= platformBounds.top + platformBounds.height &&
+            m_player.getVelocity() > 0)
+        {
+            float minX = platformBounds.left - playerBounds.width;
+            float maxX = platformBounds.left + platformBounds.width;
+            if (playerBounds.left >= minX && playerBounds.left <= maxX)
+            {
+                if (platform->isBreakable())
+                {
+                    // Properly cast to BreakablePlatform* using dynamic_cast
+                    BreakablePlatform* breakable = dynamic_cast<BreakablePlatform*>(platform.get());
+                    if (breakable) { // Check if the dynamic_cast was successful
+                        breakable->breakPlatform();
+                    }
+                }
+                m_player.jump();
+            }
+        }
+
+        platform->update(deltaTime);
+    }
+}
