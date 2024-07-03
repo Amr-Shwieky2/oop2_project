@@ -10,21 +10,25 @@ PlayerSelectionScreen::PlayerSelectionScreen()
 
     std::vector<sf::Vector2f> positions = { sf::Vector2f(70, 165), sf::Vector2f(555, 165) ,sf::Vector2f(570, 518) }; // Positions for texts and rectangles
 
-    std::string menuItems[] = { "One Player", "Two Players" ,"Go Back"};
+    std::string menuItems[] = { "One Player", "Two Players" ,"Go Back" };
     for (int i = 0; i < 3; ++i) {
         // Create a black rectangle below the text
-        sf::RectangleShape rectangle(sf::Vector2f(200, 50)); // Set size of rectangle
-        rectangle.setPosition(positions[i]); // Set position
+        sf::RectangleShape rectangle(sf::Vector2f(200, 300)); // Set size of rectangle
+        if (i == 2)
+            rectangle.setSize(sf::Vector2f(200, 50));
+        rectangle.setPosition(positions[i]); // Set positionsf::Vector2f(200, 300)
         rectangle.setOutlineThickness(8);
         rectangle.setFillColor(sf::Color::Black);  // Color
         rectangle.setOutlineColor(sf::Color::Red);  // Outline color for better visibility       
         m_Rectangles.push_back(rectangle);
-        
+
         sf::Text text(menuItems[i], m_font, 35);
         sf::FloatRect textBounds = text.getLocalBounds();
-        //text.setOrigin(textBounds.width / 2, textBounds.height / 2);
         // Set position slightly above the rectangle
-        text.setPosition(positions[i].x + 30 , positions[i].y);
+        text.setPosition(positions[i].x + 30, positions[i].y + 120);
+        if (i == 2)
+            text.setPosition(positions[i].x + 30, positions[i].y);
+
         text.setFillColor(sf::Color::Red);
         m_Texts.push_back(text);
 
@@ -76,19 +80,5 @@ void PlayerSelectionScreen::render(sf::RenderWindow& window) {
         window.draw(m_Texts[i]);
     }
 }
-
-//Chooseen PlayerSelectionScreen::getChooseButton(sf::Vector2i mousePos) {
-//    if (onePlayerButton.contains(mousePos)) {
-//        return ONE_PLAYER;
-//    }
-//    else if (twoPlayersButton.contains(mousePos)) {
-//        return TWO_PLAYERS;
-//    }
-//    else if (m_backButton.contains(mousePos)) {
-//        return BACK;
-//    }
-//    return Chooseen();
-//}
-
 
 
