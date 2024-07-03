@@ -13,7 +13,7 @@ public:
     sf::FloatRect getBounds() const;
     bool isBreakable() const;
     sf::Vector2f getPosition() const;
-    Type getType() const; // Add this method to get the platform type
+    Type getType() const;
 
     // Methods to save and restore state
     virtual std::string getTypeAsString() const;
