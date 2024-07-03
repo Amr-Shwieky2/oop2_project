@@ -53,7 +53,11 @@ void GameLogic::initialize(sf::RenderWindow& window)
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
-    initialize(window);
+    if(!m_isGamePaused)
+        initialize(window);
+    else
+        m_isGamePaused = !m_isGamePaused;
+
     sf::Event event;
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
@@ -67,7 +71,8 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
                     sf::Vector2i transformedMousePos = static_cast<sf::Vector2i>(worldPos);
                     if (m_sidebar.isPaused(transformedMousePos)) {
                         m_isGamePaused = !m_isGamePaused;  // Toggle pause state
-                        std::cout << (m_isGamePaused ? "Game Paused" : "Game Resumed") << std::endl;
+                        Singleton::instance().getSoundManager().playSound("click");
+                        return PAUSE_m;
                     }
                 }
             }
@@ -84,7 +89,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
         }
 
     }
-    return Screens_m::GAME_m; // Adjust this return value based on your screen management logic
+    return Screens_m::GAME_m; 
 }
 
 void GameLogic::update(float deltaTime, sf::RenderWindow& window)

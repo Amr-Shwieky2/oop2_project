@@ -1,5 +1,4 @@
-#ifndef SIDEBAR_H
-#define SIDEBAR_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -18,11 +17,10 @@ private:
     sf::Text m_heightText;
     sf::Text m_pauseText;
     sf::RectangleShape m_pauseButton;
-    std::vector<sf::RectangleShape> m_livesRects;
-
+    std::vector<sf::Sprite> m_livesSprites;
+    sf::Texture m_lifeTexture;
     sf::Font m_font;
     float m_sidebarWidth;
     float m_sidebarHeight;
 };
 
-#endif // SIDEBAR_H

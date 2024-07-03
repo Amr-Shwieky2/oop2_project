@@ -2,6 +2,7 @@
 #include "GameException.h"
 #include "TwoPlayerCharacterScreen.h"
 #include "GameLogic.h"
+#include "PauseScreen.h"
 #include <iostream>
 
 Screens::Screens() : m_firstPage(true) {
@@ -14,6 +15,7 @@ Screens::Screens() : m_firstPage(true) {
         m_screens[C1_m] = std::make_shared<OnePlayerCharacterScreen>();
         m_screens[C2_m] = std::make_shared<TwoPlayerCharacterScreen>();
         m_screens[GAME_m] = std::make_shared<GameLogic>();
+        m_screens[PAUSE_m] = std::make_shared<PauseScreen>();
         Singleton::instance().getSoundManager().playMusic();
 
         changeScreen(MENU_m);

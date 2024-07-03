@@ -2,16 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-void Singleton::setPlayerCharacter1(const int& Character)
-{
-    fillCharacters(Character, m_playerCharacter1);
-}
-
-void Singleton::setPlayerCharacter2(const int& Character)
-{
-    fillCharacters(Character, m_playerCharacter2);
-}
-
 Singleton::Singleton() {
     loadTextures();
     loadCharacters();
@@ -21,6 +11,16 @@ Singleton::Singleton() {
 Singleton& Singleton::instance() {
     static Singleton instance;
     return instance;
+}
+
+void Singleton::setPlayerCharacter1(const int& Character)
+{
+    fillCharacters(Character, m_playerCharacter1);
+}
+
+void Singleton::setPlayerCharacter2(const int& Character)
+{
+    fillCharacters(Character, m_playerCharacter2);
 }
 
 sf::Texture* Singleton::getScreen(const int& screen) {
@@ -62,6 +62,8 @@ void Singleton::loadTextures() {
             throw GameException("Failed to load chooseCharacters2.jpg");
         if (!m_screens[GAME_m].loadFromFile("background.jpg"))
             throw GameException("Failed to load background.jpg");
+        if (!m_screens[PAUSE_m].loadFromFile("pause.jpg"))
+            throw GameException("Failed to load pause.jpg");
     }
     catch (const std::exception& e) {
         std::cerr << "Error loading textures: " << e.what() << std::endl;
