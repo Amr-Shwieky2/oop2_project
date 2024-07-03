@@ -10,6 +10,7 @@ public:
     void onCollision(GameObject& other) override;
     void draw(sf::RenderWindow& window) override;
 
+    std::string getType() const override { return "HeartGift"; }
 
 private:
     float m_appearanceInterval; // Time interval for the black hole to appear

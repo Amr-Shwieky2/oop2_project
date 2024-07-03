@@ -31,6 +31,8 @@ public:
     void updateFlying(float deltaTime);
     void updateInvulnerability(float deltaTime);
     bool getIsFlying() const;
+
+    std::string getType() const override { return "Player"; }
 private:
     int m_lives;
     bool m_currentlyColliding;

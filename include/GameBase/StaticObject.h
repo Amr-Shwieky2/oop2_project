@@ -13,6 +13,7 @@ public:
     void resetPosition(float x, float y) override;
     virtual void resetPosition(Platform) {}
     sf::Vector2f getPosition() const override;
+    std::string getType() const;
 
 protected:
     void setTexture(const GameEffects& textureKey);

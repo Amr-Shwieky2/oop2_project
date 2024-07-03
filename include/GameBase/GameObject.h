@@ -25,10 +25,9 @@ const float TRAMPOLINE_SPAWN_INTERVAL = 3.0f;
 const float WING_GIFT_SPAWN_INTERVAL = 9.0f;
 
 
-class GameObject
-{
+class GameObject {
 public:
-	GameObject() = default;
+    GameObject() = default;
     virtual ~GameObject() = default;
 
     virtual void resetPosition(float x, float y) = 0;
@@ -36,12 +35,12 @@ public:
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual void onCollision(GameObject& other) = 0;
     virtual sf::FloatRect getBounds() const = 0;
-    virtual bool checkCollision(GameObject& other)
-    {
+    virtual bool checkCollision(GameObject& other) {
         return this->getBounds().intersects(other.getBounds());
-    };
+    }
+
+    virtual std::string getType() const = 0; 
 
 protected:
     sf::Sprite m_sprite;
-
 };

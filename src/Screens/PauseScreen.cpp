@@ -1,4 +1,5 @@
 #include "PauseScreen.h"
+#include "GameLogic.h"
 
 PauseScreen::PauseScreen()
 {
@@ -64,9 +65,9 @@ Screens_m PauseScreen::handleEvents(sf::RenderWindow& window) {
                     if (m_Rectangles[i].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                         Singleton::instance().getSoundManager().playSound("click");
                         switch (i) {
-                        case 1:
+                        case 1: // CONTINUE button
+                            Singleton::instance().getCurrentGameLogic().resumeGame(); // Ensure this method gets the current GameLogic instance
                             return GAME_m;
-                           
                         case 2:
                             return SETTINGS_m;
                         case 3:
@@ -80,9 +81,6 @@ Screens_m PauseScreen::handleEvents(sf::RenderWindow& window) {
             break;
         case sf::Event::MouseMoved:
             updateWavingText(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
-            break;
-        case sf::Event::Resized:
-            std::cout << "yessssssss!";
             break;
         default:
             break;

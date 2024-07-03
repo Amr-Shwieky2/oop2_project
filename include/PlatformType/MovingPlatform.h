@@ -9,6 +9,7 @@ public:
     MovingPlatform(float x, float y);
 
     void update(float deltaTime) override;
+    void restoreState(float x, float y, bool broken, float direction, float speed);
 
 private:
     float m_direction;

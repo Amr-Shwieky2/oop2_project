@@ -23,6 +23,9 @@ private:
     void CenterView(sf::RenderWindow& window);
     void isFail();
 
+    void saveState();
+    void restoreState();
+
     sf::Font m_font;
     sf::Clock m_clock;
 
@@ -31,6 +34,8 @@ private:
 
     bool m_isGamePaused;
     bool m_EndGame;
+    int m_score;
+    float m_Height;
     Screens_m m_nextScreen;
 
     Sidebar m_sidebar;
@@ -39,4 +44,7 @@ private:
     // Saved states for pause/resume functionality
     sf::Vector2f m_savedPlayerPosition;
     float m_savedPlayerVelocity;
+    float m_savedClockTime;
+    std::vector<Map::PlatformState> m_savedPlatformStates;
+    std::vector<Map::ObjectState> m_savedObjectStates;
 };

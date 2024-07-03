@@ -6,7 +6,7 @@
 Map::Map()
     : m_height(0), m_score(0), m_batTimer(0), m_blackHoleTimer(0), m_giftTimer(0),
     m_trampolineTimer(0), m_wingGiftTimer(0), m_heartGiftTimer(0), m_batActive(false),
-    m_blackHoleActive(false), m_bat(-100, -100) {
+    m_blackHoleActive(false), m_bat(-100, -100), m_playerStartX(0), m_playerStartY(0) {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 }
 
@@ -166,5 +166,69 @@ void Map::collision(Player& player, float deltaTime) {
             }
         }
         platform->update(deltaTime);
+    }
+}
+std::vector<Map::PlatformState> Map::getPlatformStates() const {
+    std::vector<PlatformState> states;
+    for (const auto& platform : m_platforms) {
+        PlatformState state;
+        state.position = platform->getPosition();
+        state.type = platform->getType();
+        state.isBroken = platform->isBreakable() && dynamic_cast<BreakablePlatform*>(platform.get())->isBroken();
+        states.push_back(state);
+    }
+    return states;
+}
+
+void Map::setPlatformStates(const std::vector<PlatformState>& states) {
+    m_platforms.clear();
+    for (const auto& state : states) {
+        switch (state.type) {
+        case Platform::Type::NORMAL:
+            m_platforms.push_back(std::make_unique<Platform>(state.position.x, state.position.y));
+            break;
+        case Platform::Type::MOVING:
+            m_platforms.push_back(std::make_unique<MovingPlatform>(state.position.x, state.position.y));
+            break;
+        case Platform::Type::BREAKABLE:
+            auto platform = std::make_unique<BreakablePlatform>(state.position.x, state.position.y);
+            if (state.isBroken) {
+                platform->breakPlatform();
+            }
+            m_platforms.push_back(std::move(platform));
+            break;
+        }
+    }
+}
+
+std::vector<Map::ObjectState> Map::getObjectStates() const {
+    std::vector<ObjectState> states;
+    for (const auto& object : m_objects) {
+        ObjectState state;
+        state.position = object->getPosition();
+        state.type = object->getType();
+        states.push_back(state);
+    }
+    return states;
+}
+
+void Map::setObjectStates(const std::vector<ObjectState>& states) {
+    m_objects.clear();
+    for (const auto& state : states) {
+        if (state.type == "Bat") {
+            m_bat.resetPosition(state.position.x, state.position.y);
+        }
+        else if (state.type == "BlackHole") {
+            m_objects.push_back(std::make_unique<BlackHole>(state.position.x, state.position.y));
+        }
+        else if (state.type == "HeartGift") {
+            m_objects.push_back(std::make_unique<HeartGift>(state.position.x, state.position.y));
+        }
+        else if (state.type == "Trampoline") {
+            m_objects.push_back(std::make_unique<Trampoline>(state.position.x, state.position.y));
+        }
+        else if (state.type == "WingGift") {
+            m_objects.push_back(std::make_unique<WingGift>(state.position.x, state.position.y));
+        }
     }
 }

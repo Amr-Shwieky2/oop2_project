@@ -20,7 +20,6 @@ void GameLogic::initialize(sf::RenderWindow& window) {
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
-    initialize(window);
     sf::Event event;
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
@@ -34,6 +33,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
                     sf::Vector2i transformedMousePos = static_cast<sf::Vector2i>(worldPos);
                     if (m_sidebar.isPaused(transformedMousePos)) {
                         Singleton::instance().getSoundManager().playSound("click");
+                        pauseGame();
                         return PAUSE_m;
                     }
                 }
@@ -41,7 +41,9 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
         }
 
         float deltaTime = m_clock.restart().asSeconds();
-        update(deltaTime, window);
+        if (!m_isGamePaused) {
+            update(deltaTime, window);
+        }
         render(window);
         if (m_EndGame) {
             Singleton::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_map.getScore());
@@ -55,7 +57,7 @@ void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
     m_player.update(deltaTime);
     m_map.collision(m_player, deltaTime);
     m_map.update(deltaTime, window, m_player);
-    
+
     CenterView(window);
     isFail();
     m_sidebar.update(m_map.getScore(), static_cast<int>(m_map.getHeight()), m_player.getLives());
@@ -111,12 +113,28 @@ void GameLogic::render(sf::RenderWindow& window) {
     window.display();
 }
 
-void GameLogic::pauseGame() {
+void GameLogic::saveState() {
     m_savedPlayerPosition = m_player.getPosition();
     m_savedPlayerVelocity = m_player.getVelocity();
+    m_savedClockTime = m_clock.getElapsedTime().asSeconds();
+    m_savedPlatformStates = m_map.getPlatformStates();
+    m_savedObjectStates = m_map.getObjectStates();
+}
+
+void GameLogic::restoreState() {
+    m_player.resetPosition(m_savedPlayerPosition.x, m_savedPlayerPosition.y);
+    m_player.setVelocity(m_savedPlayerVelocity);
+
+    m_map.setPlatformStates(m_savedPlatformStates);
+    m_map.setObjectStates(m_savedObjectStates);
+}
+
+void GameLogic::pauseGame() {
+    m_isGamePaused = true;
+    saveState();
 }
 
 void GameLogic::resumeGame() {
-    m_player.resetPosition(m_savedPlayerPosition.x, m_savedPlayerPosition.y);
-    m_player.setVelocity(m_savedPlayerVelocity);
+    m_isGamePaused = false;
+    restoreState();
 }

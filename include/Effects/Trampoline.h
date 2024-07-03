@@ -14,7 +14,7 @@ public:
     float getEnhancedJumpStrength() const;
     void draw(sf::RenderWindow& window) override;
 
-
+    std::string getType() const override { return "Trampoline"; }
 private:
     float m_enhancedJumpStrength;
 };

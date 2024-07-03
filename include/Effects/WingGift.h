@@ -11,7 +11,7 @@ public:
     void onCollision(GameObject& other) override;
     void draw(sf::RenderWindow& window) override;
 
-
+    std::string getType() const override { return "WingGift"; }
 private:
     sf::Sprite m_wingGiftShape;
 };

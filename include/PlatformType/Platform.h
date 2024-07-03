@@ -1,9 +1,7 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 
-class Platform
-{
+class Platform {
 public:
     enum class Type { NORMAL, MOVING, BREAKABLE };
 
@@ -15,11 +13,14 @@ public:
     sf::FloatRect getBounds() const;
     bool isBreakable() const;
     sf::Vector2f getPosition() const;
+    Type getType() const; // Add this method to get the platform type
 
+    // Methods to save and restore state
+    virtual std::string getTypeAsString() const;
+    virtual void restoreState(float x, float y, bool broken);
 
 protected:
     sf::RectangleShape m_platformShape;
     Type m_type;
     bool m_broken;
 };
-

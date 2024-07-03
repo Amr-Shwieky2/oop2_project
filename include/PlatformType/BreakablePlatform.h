@@ -1,5 +1,4 @@
-#ifndef BREAKABLE_PLATFORM_H
-#define BREAKABLE_PLATFORM_H
+#pragma once
 
 #include "Platform.h"
 
@@ -12,8 +11,10 @@ public:
     void breakPlatform();
     bool isBroken() const;
 
+    void restoreState(float x, float y, bool broken);
+
 private:
     bool m_isBrokenPlatform;
 };
 
-#endif
+

@@ -10,6 +10,9 @@ public:
     sf::FloatRect getBounds() const override;
     void onCollision(GameObject& other) override;
     void draw(sf::RenderWindow& window) override;
+
+    std::string getType() const override { return "Bat"; } 
+
 private:
     float m_speed = 100.0f;  // Speed of the bat across the screen
 };

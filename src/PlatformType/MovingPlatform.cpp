@@ -14,3 +14,10 @@ void MovingPlatform::update(float deltaTime)
         m_direction *= -1; // Reverse direction
     }
 }
+
+void MovingPlatform::restoreState(float x, float y, bool broken, float direction, float speed)
+{
+    Platform::restoreState(x, y, broken);
+    m_direction = direction;
+    m_speed = speed;
+}

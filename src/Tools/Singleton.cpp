@@ -207,6 +207,12 @@ void Singleton::updateHighScore(const std::string& playerName, int playerScore) 
     }
 }
 
+void Singleton::setCurrentGameLogic(std::shared_ptr<GameLogic> gameLogic)
+{
+    m_currentGameLogic = gameLogic;
+}
+
+
 SoundManager& Singleton::getSoundManager() {
     return m_soundManager;
 }

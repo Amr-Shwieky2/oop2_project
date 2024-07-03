@@ -6,13 +6,12 @@ BreakablePlatform::BreakablePlatform(float x, float y)
     m_platformShape.setFillColor(sf::Color(0, 0, 255)); // RGB for blue
 }
 
-void BreakablePlatform::update(float deltaTime)
+void BreakablePlatform::update(float)
 {
     if (m_isBrokenPlatform)
     {
         m_broken = true;
     }
-    static_cast<void>(deltaTime);
 }
 
 void BreakablePlatform::breakPlatform()
@@ -23,4 +22,10 @@ void BreakablePlatform::breakPlatform()
 bool BreakablePlatform::isBroken() const
 {
     return m_isBrokenPlatform;
+}
+
+void BreakablePlatform::restoreState(float x, float y, bool broken)
+{
+    Platform::restoreState(x, y, broken);
+    m_isBrokenPlatform = broken;
 }
