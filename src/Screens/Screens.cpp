@@ -70,8 +70,10 @@ void Screens::adjustWindowSize(Screens_m screenType) {
                 if (screenType == GAME_m && m_window.isOpen()) {
                     m_window.create(sf::VideoMode(imageSize.x, imageSize.y + 50), "Game Window");
                 }
-                m_window.setSize(sf::Vector2u(imageSize.x, imageSize.y));
-                m_window.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
+                else {
+                    m_window.setSize(sf::Vector2u(imageSize.x, imageSize.y));
+                    m_window.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(imageSize.x), static_cast<float>(imageSize.y))));
+                }
             }
         }
     }

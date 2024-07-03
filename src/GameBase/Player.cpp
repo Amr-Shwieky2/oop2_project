@@ -86,6 +86,11 @@ float Player::getVelocity() const
     return m_velocity;
 }
 
+void Player::setVelocity(const float& v)
+{
+    m_velocity = v;
+}
+
 void Player::jump()
 {
     if (m_velocity > 0)

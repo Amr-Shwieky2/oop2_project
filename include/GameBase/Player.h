@@ -16,6 +16,7 @@ public:
     void draw(sf::RenderWindow& window) override;
 
     float getVelocity() const;
+    void setVelocity(const float&);
     void jump();
     bool hasFallen() const;
     int getLives() const;

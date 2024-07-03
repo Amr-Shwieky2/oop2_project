@@ -30,18 +30,18 @@ PauseScreen::PauseScreen()
 
     };
 
-    for (int i = 0; i < buttons.size(); i++)
+    for (size_t i = 0; i < buttons.size(); i++)
     {
         sf::Text text;
         text.setFont(m_font);
         text.setString(buttons.at(i).second);
         text.setCharacterSize(24);
         text.setFillColor(sf::Color::White);
-        text.setPosition(320, 200 + 120 * i);
+        text.setPosition(static_cast<float>(320), static_cast <float>(200 + 120 * i));
 
         sf::RectangleShape rect;
         rect.setSize(sf::Vector2f(200, 50));
-        rect.setPosition(300, 100 + 120 * i);
+        rect.setPosition(static_cast<float>(300), static_cast<float>(100 + 120 * i));
         rect.setFillColor(sf::Color(100, 100, 100, 200));
 
         m_PauseScreenTexts.push_back(text);
