@@ -4,6 +4,7 @@
 GameLogic::GameLogic()
     : m_isGamePaused(false), m_savedPlayerVelocity(0),
     m_EndGame(false), m_sidebar(800, 50), m_nextScreen(GAME_m),
+    m_savedClockTime(0),
     m_player(Singleton::instance().getPlayerCharacter1()) {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
@@ -20,6 +21,7 @@ void GameLogic::initialize(sf::RenderWindow& window) {
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
+    m_player.setTexture(Singleton::instance().getPlayerCharacter1());
     sf::Event event;
     while (window.isOpen()) {
         while (window.pollEvent(event)) {

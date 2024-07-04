@@ -34,8 +34,6 @@ private:
 
     bool m_isGamePaused;
     bool m_EndGame;
-    int m_score;
-    float m_Height;
     Screens_m m_nextScreen;
 
     Sidebar m_sidebar;
