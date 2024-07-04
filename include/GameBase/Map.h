@@ -6,12 +6,14 @@
 #include "Platform.h"
 #include "MovingPlatform.h"
 #include "BreakablePlatform.h"
+#include "MovingBreakablePlatform.h"
 #include "Bat.h"
 #include "BlackHole.h"
 #include "HeartGift.h"
 #include "Trampoline.h"
 #include "WingGift.h"
 #include "Player.h"
+
 class Map {
 public:
     struct PlatformState {
@@ -38,7 +40,6 @@ public:
 
     std::vector<ObjectState> getObjectStates() const;
     void setObjectStates(const std::vector<ObjectState>& states);
-
 
     float getHeight() const { return m_height; }
     int getScore() const { return m_score; }
@@ -71,4 +72,6 @@ private:
     // Initial player start position
     float m_playerStartX;
     float m_playerStartY;
+
+    int m_platformCount;
 };

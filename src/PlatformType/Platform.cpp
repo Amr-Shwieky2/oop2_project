@@ -8,9 +8,7 @@ Platform::Platform(float x, float y, Type type)
     m_platformShape.setPosition(x, y);
 }
 
-void Platform::update(float)
-{
-}
+void Platform::update(float) {}
 
 void Platform::draw(sf::RenderWindow& window)
 {
@@ -48,6 +46,8 @@ std::string Platform::getTypeAsString() const
         return "MOVING";
     case Type::BREAKABLE:
         return "BREAKABLE";
+    case Type::MOVING_BREAKABLE:
+        return "MOVING_BREAKABLE";
     default:
         return "UNKNOWN";
     }

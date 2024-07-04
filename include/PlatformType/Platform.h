@@ -1,9 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <string>
 
 class Platform {
 public:
-    enum class Type { NORMAL, MOVING, BREAKABLE };
+    enum class Type { NORMAL, MOVING, BREAKABLE, MOVING_BREAKABLE };
 
     Platform(float x, float y, Type type = Type::NORMAL);
     virtual ~Platform() = default;
@@ -17,7 +18,7 @@ public:
 
     // Methods to save and restore state
     virtual std::string getTypeAsString() const;
-    virtual void restoreState(float x, float y, bool broken);
+    void restoreState(float x, float y, bool broken);
 
 protected:
     sf::RectangleShape m_platformShape;

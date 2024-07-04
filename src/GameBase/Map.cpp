@@ -1,12 +1,11 @@
 #include "Map.h"
-#include "Map.h"
-#include "Map.h"
 #include <iostream>
 
 Map::Map()
     : m_height(0), m_score(0), m_batTimer(0), m_blackHoleTimer(0), m_giftTimer(0),
     m_trampolineTimer(0), m_wingGiftTimer(0), m_heartGiftTimer(0), m_batActive(false),
-    m_blackHoleActive(false), m_bat(-100, -100), m_playerStartX(0), m_playerStartY(0) {
+    m_blackHoleActive(false), m_bat(-100, -100), m_playerStartX(0), m_playerStartY(0)
+    , m_platformCount(0){
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 }
 
@@ -45,7 +44,81 @@ void Map::render(sf::RenderWindow& window) {
 void Map::addNewPlatform(sf::RenderWindow& window) {
     float x = static_cast<float>(std::rand() % static_cast<int>(window.getSize().x - 60));
     float y = m_platforms.back()->getBounds().top - static_cast<float>(window.getSize().y / 2) / 6;
-    Platform::Type type = static_cast<Platform::Type>(std::rand() % 3);
+
+    Platform::Type type;
+
+    if (m_height < 1000) {
+        type = Platform::Type::NORMAL;
+    }
+    else if (m_height < 2000) {
+        if (m_platformCount % 2 == 0) {
+            type = Platform::Type::NORMAL;
+        }
+        else {
+            type = Platform::Type::MOVING;
+        }
+    }
+    else if (m_height < 3000) {
+        type = Platform::Type::MOVING;
+    }
+    else if (m_height < 4000) {
+        if (m_platformCount % 3 == 0) {
+            type = Platform::Type::NORMAL;
+        }
+        else if (m_platformCount % 3 == 1) {
+            type = Platform::Type::MOVING;
+        }
+        else {
+            type = Platform::Type::BREAKABLE;
+        }
+    }
+    else if (m_height < 5000) {
+        if (m_platformCount % 2 == 0) {
+            type = Platform::Type::MOVING;
+        }
+        else {
+            type = Platform::Type::BREAKABLE;
+        }
+    }
+    else if (m_height < 6000) {
+        if (m_platformCount % 4 == 0) {
+            type = Platform::Type::NORMAL;
+        }
+        else if (m_platformCount % 4 == 1) {
+            type = Platform::Type::MOVING;
+        }
+        else if (m_platformCount % 4 == 2) {
+            type = Platform::Type::BREAKABLE;
+        }
+        else {
+            type = Platform::Type::MOVING_BREAKABLE;
+        }
+    }
+    else if (m_height < 7000) {
+        if (m_platformCount % 3 == 0) {
+            type = Platform::Type::MOVING;
+        }
+        else if (m_platformCount % 3 == 1) {
+            type = Platform::Type::BREAKABLE;
+        }
+        else {
+            type = Platform::Type::MOVING_BREAKABLE;
+        }
+    }
+    else if (m_height < 8000) {
+        type = Platform::Type::BREAKABLE;
+    }
+    else if (m_height < 9000) {
+        if (m_platformCount % 2 == 0) {
+            type = Platform::Type::BREAKABLE;
+        }
+        else {
+            type = Platform::Type::MOVING_BREAKABLE;
+        }
+    }
+    else {
+        type = Platform::Type::MOVING_BREAKABLE;
+    }
 
     switch (type) {
     case Platform::Type::NORMAL:
@@ -57,12 +130,16 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
     case Platform::Type::BREAKABLE:
         m_platforms.push_back(std::make_unique<BreakablePlatform>(x, y));
         break;
+    case Platform::Type::MOVING_BREAKABLE:
+        m_platforms.push_back(std::make_unique<MovingBreakablePlatform>(x, y));
+        break;
     }
+
+    m_platformCount++;
 }
-
-
-
 void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& player) {
+    
+
     if (m_height > MEDIUM_HEIGHT) {
         m_batTimer += deltaTime;
         if (m_batTimer >= BAT_SPAWN_INTERVAL) {
@@ -93,8 +170,11 @@ void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& 
         m_trampolineTimer = 0;
         if (!m_platforms.empty()) {
             int randomIndex = std::rand() % m_platforms.size();
-            m_objects.push_back(std::make_unique<Trampoline>
-                (m_platforms[randomIndex]->getPosition().x, m_platforms[randomIndex]->getPosition().y - 20));
+            auto& platform = m_platforms[randomIndex];
+            if (platform->getType() != Platform::Type::MOVING) {
+                m_objects.push_back(std::make_unique<Trampoline>
+                    (platform->getPosition().x, platform->getPosition().y - 20));
+            }
         }
     }
 
@@ -119,7 +199,7 @@ void Map::updatePlatform(sf::RenderWindow& window, const Player& player)
 
     auto it = m_platforms.begin();
     while (it != m_platforms.end()) {
-        if ((*it)->isBreakable() && static_cast<BreakablePlatform*>(it->get())->isBroken()) {
+        if ((*it)->isBreakable() && dynamic_cast<BreakablePlatform*>(it->get())->isBroken()) {
             it = m_platforms.erase(it);
         }
         else {
@@ -168,6 +248,8 @@ void Map::collision(Player& player, float deltaTime) {
         platform->update(deltaTime);
     }
 }
+
+
 std::vector<Map::PlatformState> Map::getPlatformStates() const {
     std::vector<PlatformState> states;
     for (const auto& platform : m_platforms) {
@@ -191,12 +273,23 @@ void Map::setPlatformStates(const std::vector<PlatformState>& states) {
             m_platforms.push_back(std::make_unique<MovingPlatform>(state.position.x, state.position.y));
             break;
         case Platform::Type::BREAKABLE:
+        {
             auto platform = std::make_unique<BreakablePlatform>(state.position.x, state.position.y);
             if (state.isBroken) {
                 platform->breakPlatform();
             }
             m_platforms.push_back(std::move(platform));
-            break;
+        }
+        break;
+        case Platform::Type::MOVING_BREAKABLE:
+        {
+            auto movingBreakablePlatform = std::make_unique<MovingBreakablePlatform>(state.position.x, state.position.y);
+            if (state.isBroken) {
+                movingBreakablePlatform->breakPlatform();
+            }
+            m_platforms.push_back(std::move(movingBreakablePlatform));
+        }
+        break;
         }
     }
 }

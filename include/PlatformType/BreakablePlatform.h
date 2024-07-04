@@ -2,7 +2,7 @@
 
 #include "Platform.h"
 
-class BreakablePlatform : public Platform
+class BreakablePlatform : public virtual Platform
 {
 public:
     BreakablePlatform(float x, float y);
@@ -13,8 +13,6 @@ public:
 
     void restoreState(float x, float y, bool broken);
 
-private:
+protected:
     bool m_isBrokenPlatform;
 };
-
-
