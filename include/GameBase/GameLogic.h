@@ -18,7 +18,7 @@ public:
     void pauseGame();
     void resumeGame();
 
-private:
+protected:
     void update(float deltaTime, sf::RenderWindow& window);
     void CenterView(sf::RenderWindow& window);
     void isFail();
@@ -29,7 +29,7 @@ private:
     sf::Font m_font;
     sf::Clock m_clock;
 
-    Player m_player;
+    Player m_player1;
     sf::Sprite m_screen;
 
     bool m_isGamePaused;

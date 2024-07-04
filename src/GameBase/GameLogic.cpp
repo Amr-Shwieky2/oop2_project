@@ -5,7 +5,7 @@ GameLogic::GameLogic()
     : m_isGamePaused(false), m_savedPlayerVelocity(0),
     m_EndGame(false), m_sidebar(800, 50), m_nextScreen(GAME_m),
     m_savedClockTime(0),
-    m_player(Singleton::instance().getPlayerCharacter1()) {
+    m_player1(Singleton::instance().getPlayerCharacter1()) {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
         std::exit(-1);
@@ -17,11 +17,11 @@ GameLogic::GameLogic()
 void GameLogic::initialize(sf::RenderWindow& window) {
     window.setFramerateLimit(60);
     m_map.initialize(window);
-    m_player.resetPosition(m_map.getPlayerStartX(), m_map.getPlayerStartY());
+    m_player1.resetPosition(m_map.getPlayerStartX(), m_map.getPlayerStartY());
 }
 
 Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
-    m_player.setTexture(Singleton::instance().getPlayerCharacter1());
+    m_player1.setTexture(Singleton::instance().getPlayerCharacter1());
     sf::Event event;
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
@@ -56,24 +56,24 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
 }
 
 void GameLogic::update(float deltaTime, sf::RenderWindow& window) {
-    m_player.update(deltaTime);
-    m_map.collision(m_player, deltaTime);
-    m_map.update(deltaTime, window, m_player);
+    m_player1.update(deltaTime);
+    m_map.collision(m_player1, deltaTime);
+    m_map.update(deltaTime, window, m_player1);
 
     CenterView(window);
     isFail();
-    m_sidebar.update(m_map.getScore(), static_cast<int>(m_map.getHeight()), m_player.getLives());
+    m_sidebar.update(m_map.getScore(), static_cast<int>(m_map.getHeight()), m_player1.getLives());
 }
 
 void GameLogic::isFail() {
-    if (m_player.hasFallen() || m_player.getLives() <= 0) {
+    if (m_player1.hasFallen() || m_player1.getLives() <= 0) {
         m_EndGame = true;
     }
 }
 
 void GameLogic::CenterView(sf::RenderWindow& window) {
     sf::View view = window.getView();
-    view.setCenter(view.getCenter().x, m_player.getPosition().y);
+    view.setCenter(view.getCenter().x, m_player1.getPosition().y);
     window.setView(view);
 }
 
@@ -88,7 +88,7 @@ void GameLogic::render(sf::RenderWindow& window) {
         window.draw(m_screen);
     }
 
-    m_player.draw(window);
+    m_player1.draw(window);
     m_map.render(window);
 
     window.setView(window.getDefaultView());
@@ -116,16 +116,16 @@ void GameLogic::render(sf::RenderWindow& window) {
 }
 
 void GameLogic::saveState() {
-    m_savedPlayerPosition = m_player.getPosition();
-    m_savedPlayerVelocity = m_player.getVelocity();
+    m_savedPlayerPosition = m_player1.getPosition();
+    m_savedPlayerVelocity = m_player1.getVelocity();
     m_savedClockTime = m_clock.getElapsedTime().asSeconds();
     m_savedPlatformStates = m_map.getPlatformStates();
     m_savedObjectStates = m_map.getObjectStates();
 }
 
 void GameLogic::restoreState() {
-    m_player.resetPosition(m_savedPlayerPosition.x, m_savedPlayerPosition.y);
-    m_player.setVelocity(m_savedPlayerVelocity);
+    m_player1.resetPosition(m_savedPlayerPosition.x, m_savedPlayerPosition.y);
+    m_player1.setVelocity(m_savedPlayerVelocity);
 
     m_map.setPlatformStates(m_savedPlatformStates);
     m_map.setObjectStates(m_savedObjectStates);
