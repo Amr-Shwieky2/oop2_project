@@ -67,7 +67,7 @@ Screens_m PauseScreen::handleEvents(sf::RenderWindow& window) {
                         switch (i) {
                         case 1: // CONTINUE button
                             Singleton::instance().getCurrentGameLogic().resumeGame(); // Ensure this method gets the current GameLogic instance
-                            return GAME_m;
+                            return GAME_FOR_ONE_m;
                         case 2:
                             return SETTINGS_m;
                         case 3:
@@ -119,4 +119,3 @@ void PauseScreen::render(sf::RenderWindow& window)
         window.draw(m_PauseScreenTexts[i]);
     }
 }
- 

@@ -2,7 +2,7 @@
 #include <iostream>
 
 TwoPlayerCharacterScreen::TwoPlayerCharacterScreen()
-   : CharacterSelectionScreen(C2_m, {
+   : CharacterSelectionScreen(CHOOSE2_m, {
         {19, 88, 171, 224},
         {252, 89, 164, 215},
         {471, 98, 175, 212},
@@ -57,7 +57,7 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
                     m_isPlayerTwoDone = true;
                     Singleton::instance().setPlayerName2(m_playerName2);
                     Singleton::instance().setPlayerCharacter1(m_selectedCharacterIndex2);
-                    return GAME_m;
+                    return GAME_FOR_TWO_m;
                 }
             }
             break;
@@ -95,7 +95,7 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
         }
         
     }
-    return C2_m;
+    return CHOOSE2_m;
 }
 
 

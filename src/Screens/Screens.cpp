@@ -4,6 +4,7 @@
 #include "GameLogic.h"
 #include "PauseScreen.h"
 #include <iostream>
+#include <TwoPlayerLogic.h>
 
 Screens::Screens() : m_firstPage(true) {
     try {
@@ -12,9 +13,10 @@ Screens::Screens() : m_firstPage(true) {
         m_screens[HELP_m] = std::make_shared<HelpScreen>();
         m_screens[SETTINGS_m] = std::make_shared<SettingsScreen>();
         m_screens[HIGH_SCOORE_m] = std::make_shared<HighScoreScreen>();
-        m_screens[C1_m] = std::make_shared<OnePlayerCharacterScreen>();
-        m_screens[C2_m] = std::make_shared<TwoPlayerCharacterScreen>();
-        m_screens[GAME_m] = std::make_shared<GameLogic>();
+        m_screens[CHOOSE1_m] = std::make_shared<OnePlayerCharacterScreen>();
+        m_screens[CHOOSE2_m] = std::make_shared<TwoPlayerCharacterScreen>();
+        m_screens[GAME_FOR_ONE_m] = std::make_shared<GameLogic>();
+        m_screens[GAME_FOR_TWO_m] = std::make_shared<TwoPlayerLogic>();
         m_screens[PAUSE_m] = std::make_shared<PauseScreen>();
         Singleton::instance().getSoundManager().playMusic();
 
@@ -50,10 +52,10 @@ void Screens::changeScreen(Screens_m screenType) {
     try {
         adjustWindowSize(screenType);
         m_currentScreen = m_screens[screenType];
-        if (screenType == GAME_m) {
+        if (screenType == GAME_FOR_ONE_m) {
             auto gameLogic = std::dynamic_pointer_cast<GameLogic>(m_currentScreen);
             gameLogic->initialize(m_window);
-            Singleton::instance().setCurrentGameLogic(gameLogic); 
+            Singleton::instance().setCurrentGameLogic(gameLogic);
         }
     }
     catch (const GameException& e) {
@@ -61,6 +63,7 @@ void Screens::changeScreen(Screens_m screenType) {
         throw;
     }
 }
+
 
 void Screens::adjustWindowSize(Screens_m screenType) {
     try {
@@ -72,7 +75,7 @@ void Screens::adjustWindowSize(Screens_m screenType) {
                 m_firstPage = false;
             }
             else {
-                if (screenType == GAME_m && m_window.isOpen()) {
+                if (screenType == GAME_FOR_ONE_m && m_window.isOpen()) {
                     m_window.create(sf::VideoMode(imageSize.x, imageSize.y + 50), "Game Window");
                 }
                 else {

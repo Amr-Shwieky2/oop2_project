@@ -46,11 +46,13 @@ void LoadingManager::loadTextures() {
             throw GameException("Failed to load setting.jpg");
         if (!m_screens[HIGH_SCOORE_m].loadFromFile("highSccores.jpg"))
             throw GameException("Failed to load highScores.jpg");
-        if (!m_screens[C1_m].loadFromFile("chooseCharacters1.jpg"))
+        if (!m_screens[CHOOSE1_m].loadFromFile("chooseCharacters1.jpg"))
             throw GameException("Failed to load chooseCharacters1.jpg");
-        if (!m_screens[C2_m].loadFromFile("chooseCharacters2.jpg"))
+        if (!m_screens[CHOOSE2_m].loadFromFile("chooseCharacters2.jpg"))
             throw GameException("Failed to load chooseCharacters2.jpg");
-        if (!m_screens[GAME_m].loadFromFile("background.jpg"))
+        if (!m_screens[GAME_FOR_ONE_m].loadFromFile("background.jpg"))
+            throw GameException("Failed to load background.jpg");
+        if (!m_screens[GAME_FOR_TWO_m].loadFromFile("background.jpg"))
             throw GameException("Failed to load background.jpg");
         if (!m_screens[PAUSE_m].loadFromFile("pause.jpg"))
             throw GameException("Failed to load pause.jpg");

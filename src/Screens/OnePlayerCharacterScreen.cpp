@@ -2,7 +2,7 @@
 #include <iostream>
 
 OnePlayerCharacterScreen::OnePlayerCharacterScreen()
-    : CharacterSelectionScreen(C1_m, {
+    : CharacterSelectionScreen(CHOOSE1_m, {
         {19, 88, 171, 224},
         {252, 89, 164, 215},
         {471, 98, 175, 212},
@@ -34,7 +34,7 @@ Screens_m OnePlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
             else if (event.key.code == sf::Keyboard::Enter) {
                 Singleton::instance().setPlayerName1(m_playerName1);
                 Singleton::instance().setPlayerCharacter1(m_selectedCharacterIndex);
-                return GAME_m;
+                return GAME_FOR_ONE_m;
             }
             break;
         case sf::Event::TextEntered:
@@ -58,7 +58,7 @@ Screens_m OnePlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
             break;
         }
     }
-    return C1_m;
+    return CHOOSE1_m;
 }
 
 void OnePlayerCharacterScreen::updateSelection() {

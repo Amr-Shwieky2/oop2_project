@@ -3,7 +3,7 @@
 
 GameLogic::GameLogic()
     : m_isGamePaused(false), m_savedPlayerVelocity(0),
-    m_EndGame(false), m_sidebar(800, 50), m_nextScreen(GAME_m),
+    m_EndGame(false), m_sidebar(800, 50),
     m_savedClockTime(0),
     m_player1(Singleton::instance().getPlayerCharacter1()) {
     if (!m_font.loadFromFile("arial.ttf")) {
@@ -11,7 +11,7 @@ GameLogic::GameLogic()
         std::exit(-1);
     }
     std::srand(static_cast<unsigned>(std::time(nullptr)));
-    m_screen.setTexture(*(LoadingManager::instance().getScreen(GAME_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(GAME_FOR_ONE_m)));
 }
 
 void GameLogic::initialize(sf::RenderWindow& window) {
@@ -52,7 +52,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
             return Screens_m::HIGH_SCOORE_m;
         }
     }
-    return Screens_m::GAME_m;
+    return Screens_m::GAME_FOR_ONE_m;
 }
 
 void GameLogic::update(float deltaTime, sf::RenderWindow& window) {

@@ -53,9 +53,9 @@ Screens_m PlayerSelectionScreen::handleEvents(sf::RenderWindow& window) {
                         Singleton::instance().getSoundManager().playSound("click");
                         switch (i) {
                         case 0:
-                            return C1_m;
+                            return CHOOSE1_m;
                         case 1:
-                            return C2_m;
+                            return CHOOSE2_m;
                         case 2:
                             return MENU_m;
                         default:

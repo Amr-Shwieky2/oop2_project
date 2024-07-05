@@ -3,7 +3,7 @@
 #include <iostream>
 
 Singleton::Singleton() {
-    
+
 }
 
 Singleton& Singleton::instance() {
@@ -52,4 +52,3 @@ void Singleton::setCurrentGameLogic(std::shared_ptr<GameLogic> gameLogic)
 SoundManager& Singleton::getSoundManager() {
     return m_soundManager;
 }
-

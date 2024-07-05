@@ -17,9 +17,10 @@ public:
     void render(sf::RenderWindow& window) override;
     void pauseGame();
     void resumeGame();
+    void update(float deltaTime, sf::RenderWindow& window);
+
 
 protected:
-    void update(float deltaTime, sf::RenderWindow& window);
     void CenterView(sf::RenderWindow& window);
     void isFail();
 
@@ -34,7 +35,6 @@ protected:
 
     bool m_isGamePaused;
     bool m_EndGame;
-    Screens_m m_nextScreen;
 
     Sidebar m_sidebar;
     Map m_map;

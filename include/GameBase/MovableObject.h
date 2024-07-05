@@ -15,7 +15,7 @@ public:
 	void draw(sf::RenderWindow& window);
 	void resetPosition(float x, float y) override;
 	sf::Vector2f getPosition() const override;
-	virtual void update(float deltaTime) = 0;
+	virtual void update(float) {};
 	std::string getType() const override { return "MovableObject"; }
 	void setTexture(const GameEffects& textureKey);
 	void setTexture(const Characters& textureKey);
