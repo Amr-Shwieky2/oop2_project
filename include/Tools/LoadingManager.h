@@ -5,7 +5,7 @@
 #include "GameException.h"
 #include "GameObject.h"
 
-const int NUM_OF_SCREENS = 9;
+const int NUM_OF_SCREENS = 10;
 const int NUM_OF_CHARACTERS = 4;
 const int NUM_OF_EFFECTS = 5;
 const int NUM_OF_HIGH_SCORES = 5;

@@ -52,6 +52,8 @@ void LoadingManager::loadTextures() {
             throw GameException("Failed to load chooseCharacters2.jpg");
         if (!m_screens[GAME_m].loadFromFile("background.jpg"))
             throw GameException("Failed to load background.jpg");
+        if (!m_screens[GAME_FOR_TWO_m].loadFromFile("background.jpg"))
+            throw GameException("Failed to load background.jpg");
         if (!m_screens[PAUSE_m].loadFromFile("pause.jpg"))
             throw GameException("Failed to load pause.jpg");
     }
