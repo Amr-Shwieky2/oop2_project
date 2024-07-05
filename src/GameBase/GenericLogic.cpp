@@ -1,7 +1,6 @@
 #include "GenericLogic.h"
 #include <iostream>
 
-
 GenericLogic::GenericLogic(): m_scoreBackground(sf::Vector2f(300.0f, 100.0f))
 {
     if (!m_font.loadFromFile("arial.ttf")) {
