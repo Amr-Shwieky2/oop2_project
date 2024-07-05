@@ -23,6 +23,5 @@ private:
     float m_effectsVolume;
     sf::Font m_font;
     std::vector<sf::Text> m_Texts;
-    Screens_m m_previousScreen;  // Store the previous screen
     void updateVolume();
 };

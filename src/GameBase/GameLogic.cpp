@@ -11,7 +11,7 @@ GameLogic::GameLogic()
         std::exit(-1);
     }
     std::srand(static_cast<unsigned>(std::time(nullptr)));
-    m_screen.setTexture(*(Singleton::instance().getScreen(GAME_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(GAME_m)));
 }
 
 void GameLogic::initialize(sf::RenderWindow& window) {
@@ -48,7 +48,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window) {
         }
         render(window);
         if (m_EndGame) {
-            Singleton::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_map.getScore());
+            LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_map.getScore());
             return Screens_m::HIGH_SCOORE_m;
         }
     }

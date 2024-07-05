@@ -6,7 +6,7 @@ PlayerSelectionScreen::PlayerSelectionScreen()
         std::cerr << "Failed to load font\n";
     }
 
-    m_screen.setTexture(*(Singleton::instance().getScreen(PLAY_GAME_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(PLAY_GAME_m)));
 
     std::vector<sf::Vector2f> positions = { sf::Vector2f(70, 165), sf::Vector2f(555, 165) ,sf::Vector2f(570, 518) }; // Positions for texts and rectangles
 

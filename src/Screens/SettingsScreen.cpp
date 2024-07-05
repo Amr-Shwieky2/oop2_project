@@ -9,7 +9,7 @@ SettingsScreen::SettingsScreen() :
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Failed to load font\n";
     }
-    m_screen.setTexture(*(Singleton::instance().getScreen(SETTINGS_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(SETTINGS_m)));
 
     // Initialize the effects volume bar
     m_effectsBar.setSize(sf::Vector2f(200, 10)); // Increased height

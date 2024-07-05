@@ -64,7 +64,7 @@ void Screens::changeScreen(Screens_m screenType) {
 
 void Screens::adjustWindowSize(Screens_m screenType) {
     try {
-        sf::Texture* texture = Singleton::instance().getScreen(screenType);
+        sf::Texture* texture = LoadingManager::instance().getScreen(screenType);
         if (texture) {
             sf::Vector2u imageSize = texture->getSize();
             if (m_firstPage) {

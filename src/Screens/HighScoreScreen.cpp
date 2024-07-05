@@ -3,7 +3,7 @@
 
 HighScoreScreen::HighScoreScreen() :
     m_backButton(230, 800, 465 - 230, 835 - 800) {
-    m_screen.setTexture(*(Singleton::instance().getScreen(HIGH_SCOORE_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(HIGH_SCOORE_m)));
 
     // Load the font
     if (!m_font.loadFromFile("arial.ttf")) {
@@ -28,9 +28,8 @@ HighScoreScreen::HighScoreScreen() :
 
 void HighScoreScreen::update()
 {
-
     // Load the high scores
-    auto highScores = Singleton::instance().loadHighScore();
+    auto highScores = LoadingManager::instance().loadHighScore();
     m_highScoreTexts.clear();
     float yPos = 210;
     for (const auto& score : highScores) {

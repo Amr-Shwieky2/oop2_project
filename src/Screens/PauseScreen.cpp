@@ -3,7 +3,7 @@
 
 PauseScreen::PauseScreen()
 {
-    m_screen.setTexture(*(Singleton::instance().getScreen(PAUSE_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(PAUSE_m)));
 
     m_font.loadFromFile("arial.ttf");
 
