@@ -2,12 +2,14 @@
 #include <Player.h>
 #include <Sidebar.h>
 #include <Map.h>
+#include "GenericLogic.h"
 
-class Logic
+
+class LogicBase
 {
 public:
-    Logic();
-    virtual ~Logic() = default;
+    LogicBase();
+    virtual ~LogicBase() = default;
 
     bool mouseEvent(sf::RenderWindow& window);
     void pauseGame();
@@ -18,21 +20,22 @@ public:
 
 
 protected:
-    virtual void isFail() = 0;
     virtual void saveState() = 0;
     virtual void restoreState() = 0;
     virtual void showEndBadge(sf::RenderWindow& window) = 0;
     virtual Screens_m updateScore() = 0;
 
+    GenericLogic m_logic;
 
     Player m_player1;
     Sidebar m_sidebar;
 
-    sf::Font m_font;
     sf::Clock m_clock;
 
     bool m_isGamePaused;
     bool m_EndGame;
+
+    
 
     // Saved states for pause/resume functionality
     sf::Vector2f m_savedPlayerPosition1;

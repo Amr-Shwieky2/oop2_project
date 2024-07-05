@@ -6,9 +6,10 @@
 #include "BaseScreen.h"
 #include "Sidebar.h"
 #include "Singleton.h"
-#include "Logic.h"
+#include "LogicBase.h"
 
-class GameLogic : public BaseScreen, public Logic {
+
+class GameLogic : public BaseScreen, public LogicBase {
 public:
     GameLogic();
     ~GameLogic() = default;
@@ -21,8 +22,7 @@ public:
 
 private:
     void showEndBadge(sf::RenderWindow& window) override;
-    void CenterView(sf::RenderWindow& window);
-    void isFail() override;
+    
 
     void saveState() override;
     void restoreState() override;

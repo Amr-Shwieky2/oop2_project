@@ -1,21 +1,17 @@
-#include "Logic.h"
-#include <iostream>
+#include "LogicBase.h"
 
-Logic::Logic() :m_player1(Singleton::instance().getPlayerCharacter1()),
+LogicBase::LogicBase() :m_player1(Singleton::instance().getPlayerCharacter1()),
     m_sidebar(800, 50), m_EndGame(false), m_isGamePaused(false), 
     m_savedPlayerVelocity1(0)
 {
-    if (!m_font.loadFromFile("arial.ttf")) {
-        std::cerr << "Couldn't load the font!" << std::endl;
-        std::exit(-1);
-    }
+    
     std::srand(static_cast<unsigned>(std::time(nullptr)));
+
 
 }
 
 
-
-bool Logic::mouseEvent(sf::RenderWindow& window)
+bool LogicBase::mouseEvent(sf::RenderWindow& window)
 {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -38,13 +34,13 @@ bool Logic::mouseEvent(sf::RenderWindow& window)
     return false;
 };
 
-void Logic::pauseGame()
+void LogicBase::pauseGame()
 {
     m_isGamePaused = true;
     saveState();
 }
 
-void Logic::resumeGame()
+void LogicBase::resumeGame()
 {
     m_isGamePaused = false;
     restoreState();
