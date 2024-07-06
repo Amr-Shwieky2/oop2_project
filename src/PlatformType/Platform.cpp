@@ -4,7 +4,7 @@ Platform::Platform(float x, float y, Type type)
     : m_type(type), m_broken(false)
 {
     m_platformShape.setSize(sf::Vector2f(60, 15));
-    m_platformShape.setFillColor(sf::Color(100, 255, 100));
+    m_platformShape.setFillColor(sf::Color(101, 67, 33));
     m_platformShape.setPosition(x, y);
 }
 
