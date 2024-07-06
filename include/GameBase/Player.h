@@ -14,7 +14,7 @@ public:
 
     sf::FloatRect getBounds() const override;
     void onCollision(GameObject& other) override;
-    void update(float deltaTime) override;
+    void update(float)override {};
     void draw(sf::RenderWindow& window) override;
 
     float getVelocity() const;

@@ -26,11 +26,16 @@ protected:
     virtual Screens_m updateScore() = 0;
 
     GenericLogic m_logic;
+    
 
     Player m_player1;
     Sidebar m_sidebar;
+    Map m_map;
+
 
     sf::Clock m_clock;
+    sf::Sprite m_screen;
+
 
     bool m_isGamePaused;
     bool m_EndGame;

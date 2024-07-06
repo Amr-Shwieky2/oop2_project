@@ -57,6 +57,10 @@ void Screens::changeScreen(Screens_m screenType) {
             gameLogic->initialize(m_window);
             Singleton::instance().setCurrentGameLogic(gameLogic); 
         }
+        else if (screenType == GAME_FOR_TWO_m) {
+            auto gameLogic = std::dynamic_pointer_cast<TwoPlayerLogic>(m_currentScreen);
+            gameLogic->initialize(m_window);
+        }
     }
     catch (const GameException& e) {
         std::cerr << "Error changing screen: " << e.what() << std::endl;

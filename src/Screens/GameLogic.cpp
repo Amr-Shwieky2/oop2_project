@@ -3,7 +3,7 @@
 
 GameLogic::GameLogic()
 {
-    m_screen.setTexture(*(LoadingManager::instance().getScreen(GAME_m)));
+    
 }
 
 void GameLogic::initialize(sf::RenderWindow& window) 
@@ -33,6 +33,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window)
 
 void GameLogic::update(float deltaTime, sf::RenderWindow& window) 
 { 
+    m_player1.update(deltaTime, sf::Keyboard::Left, sf::Keyboard::Right);
     m_logic.update(deltaTime, window, m_player1, m_map, m_sidebar, m_EndGame);
 }
 

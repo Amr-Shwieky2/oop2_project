@@ -6,10 +6,9 @@ LogicBase::LogicBase() :m_player1(Singleton::instance().getPlayerCharacter1()),
 {
     
     std::srand(static_cast<unsigned>(std::time(nullptr)));
-
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(GAME_m)));
 
 }
-
 
 bool LogicBase::mouseEvent(sf::RenderWindow& window)
 {

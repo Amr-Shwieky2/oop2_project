@@ -48,7 +48,7 @@ public:
 private:
     void addNewPlatform(sf::RenderWindow& window);
     void spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& player);
-    void updatePlatform(sf::RenderWindow& window, const Player& player);
+    void updatePlatform(float deltaTime, sf::RenderWindow& window, const Player& player);
     void updateObjects(float deltaTime, sf::RenderWindow& window, const Player& player);
 
     std::vector<std::unique_ptr<Platform>> m_platforms;

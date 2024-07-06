@@ -14,10 +14,10 @@ public:
     GameLogic();
     ~GameLogic() = default;
 
-    void initialize(sf::RenderWindow& window) override;
     Screens_m handleEvents(sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
    
+    void initialize(sf::RenderWindow& window) override;
     void update(float deltaTime, sf::RenderWindow& window) override;
 
 private:
@@ -30,9 +30,8 @@ private:
     Screens_m updateScore() override;
 
     
-    sf::Sprite m_screen;
+    
 
-    Map m_map;
 
     
 };

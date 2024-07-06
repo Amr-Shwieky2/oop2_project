@@ -1,7 +1,7 @@
 #include "GenericLogic.h"
 #include <iostream>
 
-GenericLogic::GenericLogic(): m_scoreBackground(sf::Vector2f(300.0f, 100.0f))
+GenericLogic::GenericLogic() : m_scoreBackground(sf::Vector2f(300.0f, 100.0f))
 {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Couldn't load the font!" << std::endl;
@@ -21,9 +21,9 @@ void GenericLogic::initialize(sf::RenderWindow& window, Player& player, Map& map
 }
 
 void GenericLogic::update(float deltaTime, sf::RenderWindow& window,
-                        Player& player, Map& map, Sidebar& bar, bool& end)
+    Player& player, Map& map, Sidebar& bar, bool& end)
 {
-    player.update(deltaTime);
+    
     map.collision(player, deltaTime);
     map.update(deltaTime, window, player);
 
@@ -40,7 +40,7 @@ void GenericLogic::CenterView(sf::RenderWindow& window, Player& player)
 }
 
 void GenericLogic::render(sf::RenderWindow& window, Player& player,
-                        Map& map, Sidebar& bar, sf::Sprite& screen)
+    Map& map, Sidebar& bar, sf::Sprite& screen)
 {
     window.clear();
 
@@ -59,7 +59,6 @@ void GenericLogic::render(sf::RenderWindow& window, Player& player,
     bar.draw(window);
 
     window.display();
-
 }
 
 void GenericLogic::saveState(sf::Vector2f& savedPlayerPosition,
@@ -78,8 +77,7 @@ void GenericLogic::restoreState(sf::Vector2f& savedPlayerPosition,
     float& savedPlayerVelocity,
     std::vector<Map::PlatformState>& savedPlatformStates,
     std::vector<Map::ObjectState>& savedObjectStates,
-    Player& player,
-    Map& map)
+    Player& player, Map& map)
 {
     player.resetPosition(savedPlayerPosition.x, savedPlayerPosition.y);
     player.setVelocity(savedPlayerVelocity);
@@ -111,7 +109,3 @@ void GenericLogic::showEndBadge(sf::RenderWindow& window,
         sf::sleep(sf::seconds(3.0));
     }
 }
-
-
-
-

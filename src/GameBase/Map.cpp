@@ -18,16 +18,16 @@ void Map::initialize(sf::RenderWindow& window) {
         float y = window.getSize().y - i * gap;
         m_platforms.push_back(std::make_unique<Platform>(x, y));
     }
-
-    m_playerStartX = m_platforms[1]->getBounds().left + m_platforms[1]->getBounds().width / 2 - 25;
-    m_playerStartY = m_platforms[1]->getBounds().top - 100;
+    size_t pos = std::rand() % m_platforms.size();
+    m_playerStartX = m_platforms[pos]->getBounds().left + m_platforms[pos]->getBounds().width / 2 - 25;
+    m_playerStartY = m_platforms[pos]->getBounds().top - 100;
 
 }
 
 void Map::update(float deltaTime, sf::RenderWindow& window, const Player& player)
 {
     m_height = m_playerStartY - player.getPosition().y;
-    updatePlatform(window, player);
+    updatePlatform(deltaTime , window, player);
     updateObjects(deltaTime, window, player);
 }
 
@@ -47,10 +47,10 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
 
     Platform::Type type;
 
-    if (m_height < 1000) {
+    if (m_height < 100) {
         type = Platform::Type::NORMAL;
     }
-    else if (m_height < 2000) {
+    else if (m_height < 200) {
         if (m_platformCount % 2 == 0) {
             type = Platform::Type::NORMAL;
         }
@@ -58,10 +58,10 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::MOVING;
         }
     }
-    else if (m_height < 3000) {
+    else if (m_height < 300) {
         type = Platform::Type::MOVING;
     }
-    else if (m_height < 4000) {
+    else if (m_height < 400) {
         if (m_platformCount % 3 == 0) {
             type = Platform::Type::NORMAL;
         }
@@ -72,7 +72,7 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::BREAKABLE;
         }
     }
-    else if (m_height < 5000) {
+    else if (m_height < 500) {
         if (m_platformCount % 2 == 0) {
             type = Platform::Type::MOVING;
         }
@@ -80,7 +80,7 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::BREAKABLE;
         }
     }
-    else if (m_height < 6000) {
+    else if (m_height < 600) {
         if (m_platformCount % 4 == 0) {
             type = Platform::Type::NORMAL;
         }
@@ -94,7 +94,7 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::MOVING_BREAKABLE;
         }
     }
-    else if (m_height < 7000) {
+    else if (m_height < 700) {
         if (m_platformCount % 3 == 0) {
             type = Platform::Type::MOVING;
         }
@@ -105,10 +105,10 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::MOVING_BREAKABLE;
         }
     }
-    else if (m_height < 8000) {
+    else if (m_height < 800) {
         type = Platform::Type::BREAKABLE;
     }
-    else if (m_height < 9000) {
+    else if (m_height < 900) {
         if (m_platformCount % 2 == 0) {
             type = Platform::Type::BREAKABLE;
         }
@@ -186,36 +186,47 @@ void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& 
     }
 }
 
-void Map::updatePlatform(sf::RenderWindow& window, const Player& player)
+void Map::updatePlatform(float deltaTime, sf::RenderWindow& window, const Player& player)
 {
     if (player.getPosition().y < m_platforms.back()->getBounds().top + 300) {
         addNewPlatform(window);
     }
-
-    if (!m_platforms.empty() && m_platforms[0]->getBounds().top > player.getPosition().y + 400) {
-        m_platforms.erase(m_platforms.begin());
-        m_score++;
+    // Update all platforms before checking for deletions
+    for (auto& platform : m_platforms) {
+        platform->update(deltaTime);
     }
-
-    auto it = m_platforms.begin();
-    while (it != m_platforms.end()) {
-        if ((*it)->isBreakable() && dynamic_cast<BreakablePlatform*>(it->get())->isBroken()) {
-            it = m_platforms.erase(it);
+    auto platformIt = m_platforms.begin();
+    while (platformIt != m_platforms.end()) {
+        if ((*platformIt)->getBounds().top > player.getPosition().y + 400) {
+            platformIt = m_platforms.erase(platformIt);
+            m_score++;
         }
         else {
-            ++it;
+            if ((*platformIt)->isBreakable() && dynamic_cast<BreakablePlatform*>(platformIt->get())->isBroken()) {
+                platformIt = m_platforms.erase(platformIt);
+            }
+            else {
+                ++platformIt;
+            }
         }
     }
+
 }
+
 
 void Map::updateObjects(float deltaTime, sf::RenderWindow& window, const Player& player) {
     spawnObjects(deltaTime, window, player);
-    if (!m_objects.empty() && m_objects[0]->getBounds().top > m_height + 400) {
-        m_objects.erase(m_objects.begin());
-        m_score++;
+    // Also check for objects that are out of the player's view and remove them
+    auto objectIt = m_objects.begin();
+    while (objectIt != m_objects.end()) {
+        if ((*objectIt)->getBounds().top > player.getPosition().y + 400) {
+            objectIt = m_objects.erase(objectIt);
+        }
+        else {
+            ++objectIt;
+        }
     }
 }
-
 void Map::collision(Player& player, float deltaTime) {
     for (auto& object : m_objects) {
         if (object->checkCollision(player)) {
@@ -226,8 +237,9 @@ void Map::collision(Player& player, float deltaTime) {
         m_bat.onCollision(player);
     }
 
-    for (auto& platform : m_platforms) {
-        sf::FloatRect platformBounds = platform->getBounds();
+    auto platformIt = m_platforms.begin();
+    while (platformIt != m_platforms.end()) {
+        sf::FloatRect platformBounds = (*platformIt)->getBounds();
         sf::FloatRect playerBounds = player.getBounds();
 
         if (playerBounds.top + playerBounds.height >= platformBounds.top &&
@@ -236,19 +248,31 @@ void Map::collision(Player& player, float deltaTime) {
             float minX = platformBounds.left - playerBounds.width;
             float maxX = platformBounds.left + platformBounds.width;
             if (playerBounds.left >= minX && playerBounds.left <= maxX) {
-                if (platform->isBreakable()) {
-                    BreakablePlatform* breakable = dynamic_cast<BreakablePlatform*>(platform.get());
-                    if (breakable) {
+                if ((*platformIt)->isBreakable()) {
+                    if (auto breakable = dynamic_cast<BreakablePlatform*>(platformIt->get())) {
                         breakable->breakPlatform();
                     }
+                    platformIt = m_platforms.erase(platformIt);
+                }
+                else if (auto movingBreakable = dynamic_cast<MovingBreakablePlatform*>(platformIt->get())) {
+                    movingBreakable->breakPlatform();
+                    platformIt = m_platforms.erase(platformIt);
+                }
+                else {
+                    ++platformIt;
                 }
                 player.jump();
+
+            }
+            else {
+                ++platformIt;
             }
         }
-        platform->update(deltaTime);
+        else {
+            ++platformIt;
+        }
     }
 }
-
 
 std::vector<Map::PlatformState> Map::getPlatformStates() const {
     std::vector<PlatformState> states;
