@@ -18,7 +18,7 @@ sf::Vector2f StaticObject::getPosition() const {
 }
 
 void StaticObject::setTexture(const GameEffects& textureKey) {
-    m_sprite.setTexture(*(Singleton::instance().getEffect(textureKey)));
+    m_sprite.setTexture(*(LoadingManager::instance().getEffect(textureKey)));
     m_sprite.setScale(0.15f, 0.15f);
 }
 

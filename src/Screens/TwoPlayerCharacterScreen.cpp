@@ -51,11 +51,13 @@ Screens_m TwoPlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
                 if (!m_isPlayerOneDone) {
                     m_isPlayerOneDone = true;
                     Singleton::instance().setPlayerName1(m_playerName1);
+                    Singleton::instance().setPlayerCharacter1(m_selectedCharacterIndex1);
                 }
                 else if (!m_isPlayerTwoDone) {
                     m_isPlayerTwoDone = true;
                     Singleton::instance().setPlayerName2(m_playerName2);
-                    return GAME_m;
+                    Singleton::instance().setPlayerCharacter2(m_selectedCharacterIndex2);
+                    return GAME_FOR_TWO_m;
                 }
             }
             break;

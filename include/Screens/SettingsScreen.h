@@ -1,10 +1,12 @@
 #pragma once
+
+#include <SFML/Graphics.hpp>
 #include "BaseScreen.h"
 #include "Singleton.h"
 
 class SettingsScreen : public BaseScreen {
 public:
-    SettingsScreen();
+    SettingsScreen();  // Add previous screen parameter
     Screens_m handleEvents(sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
 

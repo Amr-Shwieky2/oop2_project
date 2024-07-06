@@ -17,10 +17,10 @@ public:
 	sf::Vector2f getPosition() const override;
 	virtual void update(float deltaTime) = 0;
 	std::string getType() const override { return "MovableObject"; }
-
-
-protected:
 	void setTexture(const GameEffects& textureKey);
 	void setTexture(const Characters& textureKey);
+
+
+	
 };
 

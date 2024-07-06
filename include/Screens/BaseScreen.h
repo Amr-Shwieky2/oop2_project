@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Singleton.h"
+#include "LoadingManager.h"
 
 class BaseScreen
 {

@@ -11,7 +11,7 @@ CharacterSelectionScreen::CharacterSelectionScreen
 {
 
     try {
-        m_screen.setTexture(*(Singleton::instance().getScreen(screenTexture)));
+        m_screen.setTexture(*(LoadingManager::instance().getScreen(screenTexture)));
     }
     catch (const GameException& e) {
         std::cerr << "Error setting texture in CharacterSelectionScreen: " << e.what() << std::endl;

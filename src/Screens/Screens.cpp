@@ -4,6 +4,7 @@
 #include "GameLogic.h"
 #include "PauseScreen.h"
 #include <iostream>
+#include <TwoPlayerLogic.h>
 
 Screens::Screens() : m_firstPage(true) {
     try {
@@ -15,6 +16,7 @@ Screens::Screens() : m_firstPage(true) {
         m_screens[C1_m] = std::make_shared<OnePlayerCharacterScreen>();
         m_screens[C2_m] = std::make_shared<TwoPlayerCharacterScreen>();
         m_screens[GAME_m] = std::make_shared<GameLogic>();
+        m_screens[GAME_FOR_TWO_m] = std::make_shared<TwoPlayerLogic>();
         m_screens[PAUSE_m] = std::make_shared<PauseScreen>();
         Singleton::instance().getSoundManager().playMusic();
 
@@ -55,6 +57,10 @@ void Screens::changeScreen(Screens_m screenType) {
             gameLogic->initialize(m_window);
             Singleton::instance().setCurrentGameLogic(gameLogic); 
         }
+        else if (screenType == GAME_FOR_TWO_m) {
+            auto gameLogic = std::dynamic_pointer_cast<TwoPlayerLogic>(m_currentScreen);
+            gameLogic->initialize(m_window);
+        }
     }
     catch (const GameException& e) {
         std::cerr << "Error changing screen: " << e.what() << std::endl;
@@ -64,7 +70,7 @@ void Screens::changeScreen(Screens_m screenType) {
 
 void Screens::adjustWindowSize(Screens_m screenType) {
     try {
-        sf::Texture* texture = Singleton::instance().getScreen(screenType);
+        sf::Texture* texture = LoadingManager::instance().getScreen(screenType);
         if (texture) {
             sf::Vector2u imageSize = texture->getSize();
             if (m_firstPage) {

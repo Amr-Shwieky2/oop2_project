@@ -11,7 +11,7 @@ MenuScreen::MenuScreen() :
     m_exitButton(300, 500, 200, 50),
     m_isWaving(false)
 {
-    m_screen.setTexture(*(Singleton::instance().getScreen(MENU_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(MENU_m)));
 
     m_font.loadFromFile("arial.ttf");
 

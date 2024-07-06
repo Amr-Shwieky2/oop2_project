@@ -10,9 +10,11 @@ class Player : public MovableObject
 public:
     Player(const Characters&);
 
+    void update(float deltaTime, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey);
+
     sf::FloatRect getBounds() const override;
     void onCollision(GameObject& other) override;
-    void update(float deltaTime) override;
+    void update(float)override {};
     void draw(sf::RenderWindow& window) override;
 
     float getVelocity() const;
@@ -45,6 +47,7 @@ private:
     float m_boostedJumpStrength;  // Increased jump strength for trampoline jumps
     bool m_isFlying;
     float m_flyingTimer;
+
     float m_maxFlyingDuration;
     float m_invulnerabilityTimer; // Timer to track invulnerability duration
     float m_invulnerabilityPeriod; // Period of invulnerability after being hit

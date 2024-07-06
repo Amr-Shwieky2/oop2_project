@@ -31,13 +31,13 @@ sf::Vector2f MovableObject::getPosition() const
 
 void MovableObject::setTexture(const GameEffects& textureKey)
 {
-    m_sprite.setTexture(*(Singleton::instance().getEffect(textureKey)));
+    m_sprite.setTexture(*(LoadingManager::instance().getEffect(textureKey)));
     m_sprite.setScale(0.15f, 0.15f);
 };
 
 void MovableObject::setTexture(const Characters& textureKey)
 {
-    m_sprite.setTexture(*(Singleton::instance().getCharacter(textureKey)));
+    m_sprite.setTexture(*(LoadingManager::instance().getCharacter(textureKey)));
     m_sprite.setScale(0.15f, 0.15f);
 };
 

@@ -16,7 +16,7 @@ Player::Player(const Characters& textureKey)
    
 }
 
-void Player::update(float deltaTime)
+void Player::update(float deltaTime, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey)
 {
     updateFlying(deltaTime);
     updateInvulnerability(deltaTime);
@@ -24,12 +24,12 @@ void Player::update(float deltaTime)
     m_velocity += m_gravity;
     m_sprite.move(0, m_velocity);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (sf::Keyboard::isKeyPressed(leftKey))
     {
         m_sprite.move(-m_moveSpeed, 0);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (sf::Keyboard::isKeyPressed(rightKey))
     {
         m_sprite.move(m_moveSpeed, 0);
     }
@@ -43,8 +43,6 @@ void Player::update(float deltaTime)
     {
         m_sprite.setPosition(0, m_sprite.getPosition().y);
     }
-
-    
 }
 
 void Player::draw(sf::RenderWindow& window)

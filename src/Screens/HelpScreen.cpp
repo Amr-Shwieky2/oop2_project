@@ -6,7 +6,7 @@ HelpScreen::HelpScreen()
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Failed to load font\n";
     }
-    m_screen.setTexture(*(Singleton::instance().getScreen(HELP_m)));
+    m_screen.setTexture(*(LoadingManager::instance().getScreen(HELP_m)));
 
     std::vector<sf::Vector2f> positions = { sf::Vector2f(353, 100), sf::Vector2f(665, 40),sf::Vector2f(157, 265), 
         sf::Vector2f(7, 370),sf::Vector2f(523, 374),sf::Vector2f(652, 449), sf::Vector2f(4, 540),sf::Vector2f(695, 515) };

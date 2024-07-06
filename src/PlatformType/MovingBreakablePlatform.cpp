@@ -18,7 +18,7 @@ void MovingBreakablePlatform::breakPlatform() {
 }
 
 bool MovingBreakablePlatform::isBroken() const {
-    return m_isBrokenPlatform;
+    return BreakablePlatform::isBroken();
 }
 
 void MovingBreakablePlatform::restoreState(float x, float y, bool broken, float direction, float speed) {
