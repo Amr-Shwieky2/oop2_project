@@ -5,6 +5,7 @@
 #include "SoundManager.h"
 #include "LoadingManager.h"
 
+class TwoPlayerLogic;
 class GameLogic;
 
 // Singleton class to manage shared game resources and state
@@ -22,6 +23,12 @@ public:
     // Set the current game logic
     void setCurrentGameLogic(std::shared_ptr<GameLogic> gameLogic);
 
+    // Get the current game logic
+    TwoPlayerLogic& getCurrentTwoGameLogic();
+
+    // Set the current game logic
+    void setCurrentTwoGameLogic(std::shared_ptr<TwoPlayerLogic> gameLogic);
+
     // Player name setters and getters
     void setPlayerName1(const std::string& name);
     void setPlayerName2(const std::string& name);
@@ -36,6 +43,10 @@ public:
 
     int getCharacterNamber1() const;
     int getCharacterNamber2() const;
+
+
+    int getMode() const { return m_modePlayer; };
+    void setMode(int mode) { m_modePlayer = mode; };
 
 private:
     // Private constructor
@@ -61,4 +72,7 @@ private:
 
     // Current game logic instance
     std::shared_ptr<GameLogic> m_currentGameLogic;
+    std::shared_ptr<TwoPlayerLogic> m_currentTwoGameLogic;
+
+    int m_modePlayer;
 };

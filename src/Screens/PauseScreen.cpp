@@ -75,8 +75,13 @@ Screens_m PauseScreen::handleEvents(sf::RenderWindow& window) {
                             Singleton::instance().getSoundManager().playSound("click");
                             switch (i) {
                             case 1: // CONTINUE button
-                                Singleton::instance().getCurrentGameLogic().resumeGame(); // Ensure this method gets the current GameLogic instance
-                                return GAME_m;
+                                if (Singleton::instance().getMode() == 1) {
+                                    Singleton::instance().getCurrentGameLogic().resumeGame(); // Ensure this method gets the current GameLogic instance
+                                    return GAME_m;
+                                }
+                                else {
+                                    return GAME_FOR_TWO_m;
+                                }
                             case 2:
                                 return MENU_m;
                             default:

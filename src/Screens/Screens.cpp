@@ -77,10 +77,14 @@ void Screens::changeScreen(Screens_m screenType) {
             auto gameLogic = std::dynamic_pointer_cast<GameLogic>(m_currentScreen);
             gameLogic->initialize(m_window);
             Singleton::instance().setCurrentGameLogic(gameLogic);
+            Singleton::instance().setMode(1);
         }
         else if (screenType == GAME_FOR_TWO_m) {
             auto gameLogic = std::dynamic_pointer_cast<TwoPlayerLogic>(m_currentScreen);
             gameLogic->initialize(m_window);
+            Singleton::instance().setCurrentTwoGameLogic(gameLogic);
+            Singleton::instance().setMode(2);
+
         }
     }
     catch (const GameException& e) {

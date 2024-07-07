@@ -102,6 +102,39 @@ void Singleton::setCurrentGameLogic(std::shared_ptr<GameLogic> gameLogic) {
     }
 }
 
+TwoPlayerLogic& Singleton::getCurrentTwoGameLogic()
+{
+    try {
+        if (!m_currentTwoGameLogic) {
+            throw GameException("Current game logic is not set");
+        }
+        return *m_currentTwoGameLogic;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error getting current game logic: " << e.what() << std::endl;
+        throw;
+    }
+    catch (...) {
+        std::cerr << "Unknown error getting current game logic" << std::endl;
+        throw;
+    }
+}
+
+void Singleton::setCurrentTwoGameLogic(std::shared_ptr<TwoPlayerLogic> gameLogic)
+{
+    try {
+        m_currentTwoGameLogic = gameLogic;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error setting current game logic: " << e.what() << std::endl;
+        throw;
+    }
+    catch (...) {
+        std::cerr << "Unknown error setting current game logic" << std::endl;
+        throw;
+    }
+}
+
 // Get the current game logic
 GameLogic& Singleton::getCurrentGameLogic() {
     try {
