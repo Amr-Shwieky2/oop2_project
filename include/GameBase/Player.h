@@ -33,6 +33,8 @@ public:
     void updateFlying(float deltaTime); // Update flying state
     void updateInvulnerability(float deltaTime); // Update invulnerability state
     bool getIsFlying() const; // Check if the player is flying
+    int getScore() const { return m_score; }
+    void increaseScore();
 
     std::string getType() const override { return "Player"; } // Get the type of the object
 
@@ -51,4 +53,6 @@ private:
     float m_maxFlyingDuration; // Maximum flying duration
     float m_invulnerabilityTimer; // Timer to track invulnerability duration
     float m_invulnerabilityPeriod; // Period of invulnerability after being hit
+
+    int m_score;
 };

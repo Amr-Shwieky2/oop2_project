@@ -1,8 +1,8 @@
 #pragma once
 #include "Player.h"
 #include "Map.h"
-#include "Sidebar.h"
 #include <SFML/Graphics.hpp>
+#include "BaseSidebar.h"
 
 // Class representing generic game logic
 class GenericLogic {
@@ -11,10 +11,10 @@ public:
 
     void initialize(sf::RenderWindow& window, Player& player, Map& map); // Initialize the game logic
     void update(float deltaTime, sf::RenderWindow& window,
-        Player& player, Map& map, Sidebar& bar, bool& end); // Update the game logic
+        Player& player, Map& map, BaseSidebar& bar, bool& end); // Update the game logic
     void CenterView(sf::RenderWindow& window, Player& player); // Center the view
 
-    void render(sf::RenderWindow& window, Player& player, Map& map, Sidebar& bar, sf::Sprite& screen); // Render the game
+    void render(sf::RenderWindow& window, Player& player, Map& map, BaseSidebar& bar, sf::Sprite& screen); // Render the game
 
     void saveState(sf::Vector2f& savedPlayerPosition, float& savedPlayerVelocity,
         std::vector<Map::PlatformState>& savedPlatformStates,

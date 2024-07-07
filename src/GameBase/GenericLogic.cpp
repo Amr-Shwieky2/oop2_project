@@ -40,14 +40,14 @@ void GenericLogic::initialize(sf::RenderWindow& window, Player& player, Map& map
 }
 
 // Update the game logic
-void GenericLogic::update(float deltaTime, sf::RenderWindow& window, Player& player, Map& map, Sidebar& bar, bool& end) {
+void GenericLogic::update(float deltaTime, sf::RenderWindow& window, Player& player, Map& map, BaseSidebar& bar, bool& end) {
     try {
         map.collision(player);
         map.update(deltaTime, window, player);
 
         CenterView(window, player);
         isFail(player, end);
-        bar.update(map.getScore(), player.getLives());
+        bar.update(player.getScore(), player.getLives());
     }
     catch (const std::exception& e) {
         std::cerr << "Error updating game logic: " << e.what() << std::endl;
@@ -67,7 +67,7 @@ void GenericLogic::CenterView(sf::RenderWindow& window, Player& player) {
 }
 
 // Render the game
-void GenericLogic::render(sf::RenderWindow& window, Player& player, Map& map, Sidebar& bar, sf::Sprite& screen) {
+void GenericLogic::render(sf::RenderWindow& window, Player& player, Map& map, BaseSidebar& bar, sf::Sprite& screen) {
     try {
         window.clear();
 

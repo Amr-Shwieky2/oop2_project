@@ -32,7 +32,7 @@ public:
     ~Map() = default;
 
     void initialize(sf::RenderWindow& window); // Initialize platforms
-    void update(float deltaTime, sf::RenderWindow& window, const Player& player); // Update platforms and objects
+    void update(float deltaTime, sf::RenderWindow& window, Player& player); // Update platforms and objects
     void render(sf::RenderWindow& window); // Render platforms and objects
     void collision(Player& player); // Handle player collisions
 
@@ -43,21 +43,19 @@ public:
     void setObjectStates(const std::vector<ObjectState>& states); // Set object states for loading
 
     float getHeight() const { return m_height; }
-    int getScore() const { return m_score; }
     float getPlayerStartX() const { return m_playerStartX; }
     float getPlayerStartY() const { return m_playerStartY; }
 
 private:
     void addNewPlatform(sf::RenderWindow& window); // Add new platforms as player ascends
     void spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& player); // Spawn new objects
-    void updatePlatform(float deltaTime, sf::RenderWindow& window, const Player& player); // Update existing platforms
+    void updatePlatform(float deltaTime, sf::RenderWindow& window, Player& player); // Update existing platforms
     void updateObjects(float deltaTime, sf::RenderWindow& window, const Player& player); // Update existing objects
 
     std::vector<std::unique_ptr<Platform>> m_platforms;
     std::vector<std::unique_ptr<GameObject>> m_objects;
     Bat m_bat;
 
-    int m_score;
     float m_height;
 
     // Timers for spawning objects

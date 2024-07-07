@@ -11,7 +11,7 @@
 Player::Player(const Characters& textureKey)
     : MovableObject(textureKey), m_velocity(0.0f), m_gravity(0.5f), m_jumpStrength(-15.0f), m_moveSpeed(8.0f),
     m_currentlyColliding(false), m_jumpBoosted(false), m_normalJumpStrength(-15.0f), m_boostedJumpStrength(-23.0f),
-    m_isFlying(false), m_flyingTimer(0.0f), m_maxFlyingDuration(0.0f), m_lives(3), m_invulnerabilityTimer(0),
+    m_isFlying(false), m_flyingTimer(0.0f), m_score(0), m_maxFlyingDuration(0.0f), m_lives(3), m_invulnerabilityTimer(0),
     m_invulnerabilityPeriod(1.0f) {
     try {
         // Any additional initialization can go here
@@ -406,4 +406,9 @@ bool Player::getIsFlying() const {
         std::cerr << "Unknown error checking if Player is flying" << std::endl;
         throw;
     }
+}
+
+void Player::increaseScore()
+{
+    m_score++;
 }

@@ -4,9 +4,9 @@
 #include "Player.h"
 #include "Map.h"
 #include "BaseScreen.h"
-#include "Sidebar.h"
 #include "Singleton.h"
 #include "LogicBase.h"
+#include "SinglePlayerSidebar.h"
 
 // Class representing the game logic
 class GameLogic : public BaseScreen, public LogicBase {
@@ -24,4 +24,8 @@ private:
     void saveState() override; // Save the game state
     void restoreState() override; // Restore the game state
     Screens_m updateScore() override; // Update the score
+
+    bool mouseEvent(sf::RenderWindow& window) override;
+
+    SinglePlayerSidebar m_sidebar;
 };

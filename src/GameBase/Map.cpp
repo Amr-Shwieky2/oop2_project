@@ -2,7 +2,7 @@
 #include <iostream>
 
 Map::Map()
-    : m_height(0), m_score(0), m_batTimer(0), m_blackHoleTimer(0), m_giftTimer(0),
+    : m_height(0), m_batTimer(0), m_blackHoleTimer(0), m_giftTimer(0),
     m_trampolineTimer(0), m_wingGiftTimer(0), m_heartGiftTimer(0), m_batActive(false),
     m_blackHoleActive(false), m_bat(-100, -100), m_playerStartX(0), m_playerStartY(0), m_platformCount(0) {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -22,7 +22,7 @@ void Map::initialize(sf::RenderWindow& window) {
     m_playerStartY = m_platforms[pos]->getBounds().top - 100;
 }
 
-void Map::update(float deltaTime, sf::RenderWindow& window, const Player& player) {
+void Map::update(float deltaTime, sf::RenderWindow& window, Player& player) {
     m_height = m_playerStartY - player.getPosition().y;
     updatePlatform(deltaTime, window, player);
     updateObjects(deltaTime, window, player);
@@ -194,7 +194,7 @@ void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& 
     }
 }
 
-void Map::updatePlatform(float deltaTime, sf::RenderWindow& window, const Player& player) {
+void Map::updatePlatform(float deltaTime, sf::RenderWindow& window, Player& player) {
     if (player.getPosition().y < m_platforms.back()->getBounds().top + 300) {
         addNewPlatform(window);
     }
@@ -207,7 +207,7 @@ void Map::updatePlatform(float deltaTime, sf::RenderWindow& window, const Player
     while (platformIt != m_platforms.end()) {
         if ((*platformIt)->getBounds().top > player.getPosition().y + 400) {
             platformIt = m_platforms.erase(platformIt);
-            m_score++;
+            player.increaseScore();
         }
         else {
             if ((*platformIt)->isBreakable() && dynamic_cast<BreakablePlatform*>(platformIt->get())->isBroken()) {

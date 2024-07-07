@@ -1,7 +1,7 @@
 #pragma once
-#include <Player.h>
-#include <Sidebar.h>
-#include <Map.h>
+#include "Player.h"
+#include "Map.h"
+#include "SinglePlayerSidebar.h"
 #include "GenericLogic.h"
 
 // Base class for game logic
@@ -10,7 +10,7 @@ public:
     LogicBase();
     virtual ~LogicBase() = default;
 
-    bool mouseEvent(sf::RenderWindow& window); // Handle mouse events
+    virtual bool mouseEvent(sf::RenderWindow& window) = 0; // Handle mouse events
     void pauseGame(); // Pause the game
     void resumeGame(); // Resume the game
 
@@ -26,7 +26,7 @@ protected:
     GenericLogic m_logic;
 
     Player m_player1;
-    Sidebar m_sidebar;
+    
     Map m_map;
 
     sf::Clock m_clock;

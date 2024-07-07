@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Constructor to initialize the game logic
-GameLogic::GameLogic() {}
+GameLogic::GameLogic():m_sidebar(800, 600) {}
 
 // Initialize the game
 void GameLogic::initialize(sf::RenderWindow& window) {
@@ -82,7 +82,7 @@ void GameLogic::render(sf::RenderWindow& window) {
 // Show the end badge
 void GameLogic::showEndBadge(sf::RenderWindow& window) {
     try {
-        m_logic.showEndBadge(window, "Score: " + std::to_string(m_map.getScore()), m_EndGame);
+        m_logic.showEndBadge(window, "Score: " + std::to_string(m_player1.getScore()), m_EndGame);
     }
     catch (const std::exception& e) {
         std::cerr << "Error showing end badge in GameLogic: " << e.what() << std::endl;
@@ -129,7 +129,7 @@ void GameLogic::restoreState() {
 // Update the score
 Screens_m GameLogic::updateScore() {
     try {
-        LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_map.getScore());
+        LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_player1.getScore());
     }
     catch (const std::exception& e) {
         std::cerr << "Error updating score in GameLogic: " << e.what() << std::endl;
@@ -140,4 +140,26 @@ Screens_m GameLogic::updateScore() {
         throw;
     }
     return Screens_m::HIGH_SCOORE_m;
+}
+
+// Handle mouse events
+bool GameLogic::mouseEvent(sf::RenderWindow& window) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                sf::Vector2i transformedMousePos = static_cast<sf::Vector2i>(worldPos);
+                if (m_sidebar.isPaused(transformedMousePos)) {
+                    Singleton::instance().getSoundManager().playSound("click");
+                    pauseGame();
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }

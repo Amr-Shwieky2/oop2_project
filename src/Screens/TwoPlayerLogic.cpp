@@ -3,7 +3,7 @@
 
 TwoPlayerLogic::TwoPlayerLogic()
     : m_player2(Singleton::instance().getPlayerCharacter2()),
-    m_sidebar2(800, 50),
+    m_sidebar(800, 50),
     m_savedPlayerVelocity2(0) {
     // Initialize other members as needed
 }
@@ -46,7 +46,6 @@ void TwoPlayerLogic::render(sf::RenderWindow& window) {
 
     window.setView(window.getDefaultView());
     m_sidebar.draw(window);
-    m_sidebar2.draw(window);
 
     window.display();
 }
@@ -70,6 +69,8 @@ void TwoPlayerLogic::update(float deltaTime, sf::RenderWindow& window) {
 
     m_logic.isFail(m_player1, m_EndGame);
     m_logic.isFail(m_player2, m_EndGame);
+
+    m_sidebar.update(m_player1.getScore(), m_player1.getLives(), m_player2.getScore(), m_player2.getLives());
 
     if (m_player1.hasFallen() || m_player2.hasFallen()) {
         m_EndGame = true;
@@ -112,10 +113,33 @@ void TwoPlayerLogic::restoreState() {
 
 Screens_m TwoPlayerLogic::updateScore() {
     if (m_player1.hasFallen()) {
-        LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName2(), m_map.getScore());
+        LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName2(), m_player1.getScore());
     }
     else if (m_player2.hasFallen()) {
-        LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_map.getScore());
+        LoadingManager::instance().updateHighScore(Singleton::instance().getPlayerName1(), m_player2.getScore());
     }
     return Screens_m::HIGH_SCOORE_m;
 }
+
+// Handle mouse events
+bool TwoPlayerLogic::mouseEvent(sf::RenderWindow& window) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                sf::Vector2i transformedMousePos = static_cast<sf::Vector2i>(worldPos);
+                if (m_sidebar.isPaused(transformedMousePos)) {
+                    Singleton::instance().getSoundManager().playSound("click");
+                    pauseGame();
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+

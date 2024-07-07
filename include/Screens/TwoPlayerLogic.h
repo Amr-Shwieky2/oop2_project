@@ -2,6 +2,8 @@
 
 #include "BaseScreen.h"
 #include "GameLogic.h"
+#include "TwoPlayerSidebar.h"
+
 
 class TwoPlayerLogic : public BaseScreen, public LogicBase {
 public:
@@ -21,8 +23,10 @@ private:
 
     Screens_m updateScore() override;
 
+    bool mouseEvent(sf::RenderWindow& window) override;
+
     Player m_player2;
-    Sidebar m_sidebar2;
+    TwoPlayerSidebar m_sidebar;
 
     // Saved states for pause/resume functionality
     sf::Vector2f m_savedPlayerPosition2;
