@@ -28,6 +28,7 @@ void Map::update(float deltaTime, sf::RenderWindow& window, const Player& player
 {
     m_height = m_playerStartY - player.getPosition().y;
     updatePlatform(deltaTime , window, player);
+    
     updateObjects(deltaTime, window, player);
 }
 
@@ -138,7 +139,14 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
     m_platformCount++;
 }
 void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& player) {
-    
+    auto objectExists = [&](const std::string& type) -> bool {
+        for (const auto& object : m_objects) {
+            if (object->getType() == type) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     if (m_height > MEDIUM_HEIGHT) {
         m_batTimer += deltaTime;
@@ -150,42 +158,45 @@ void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& 
         m_bat.update(deltaTime);
     }
 
-    if (m_height > HARD_HEIGHT) {
+    if (m_height > HARD_HEIGHT && !objectExists("BlackHole")) {
         m_blackHoleTimer += deltaTime;
         if (m_blackHoleTimer >= BLACK_HOLE_SPAWN_INTERVAL) {
             m_blackHoleTimer = 0;
-            m_objects.push_back(std::make_unique<BlackHole>
-                (static_cast<float>(std::rand() % window.getSize().x), player.getPosition().y - 350));
+            m_objects.push_back(std::make_unique<BlackHole>(static_cast<float>(window.getSize().x - 60), player.getPosition().y - 350));
         }
     }
 
-    m_heartGiftTimer += deltaTime;
-    if (m_heartGiftTimer >= GIFT_SPAWN_INTERVAL) {
-        m_heartGiftTimer = 0;
-        m_objects.push_back(std::make_unique<HeartGift>
-            (static_cast<float>(std::rand() % window.getSize().x), player.getPosition().y - 350));
+    if (!objectExists("HeartGift")) {
+        m_heartGiftTimer += deltaTime;
+        if (m_heartGiftTimer >= GIFT_SPAWN_INTERVAL) {
+            m_heartGiftTimer = 0;
+            m_objects.push_back(std::make_unique<HeartGift>(static_cast<float>(window.getSize().x - 60), player.getPosition().y - 350));
+        }
     }
 
-    m_trampolineTimer += deltaTime;
-    if (m_trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
-        m_trampolineTimer = 0;
-        if (!m_platforms.empty()) {
-            int randomIndex = std::rand() % m_platforms.size();
-            auto& platform = m_platforms[randomIndex];
-            if (platform->getType() != Platform::Type::MOVING) {
-                m_objects.push_back(std::make_unique<Trampoline>
-                    (platform->getPosition().x, platform->getPosition().y - 20));
+    if (!objectExists("Trampoline")) {
+        m_trampolineTimer += deltaTime;
+        if (m_trampolineTimer >= TRAMPOLINE_SPAWN_INTERVAL) {
+            m_trampolineTimer = 0;
+            if (!m_platforms.empty()) {
+                int randomIndex = std::rand() % m_platforms.size();
+                auto& platform = m_platforms[randomIndex];
+                if (platform->getType() != Platform::Type::MOVING && platform->getType() != Platform::Type::MOVING_BREAKABLE) {
+                    m_objects.push_back(std::make_unique<Trampoline>(platform->getPosition().x, platform->getPosition().y - 20));
+                }
             }
         }
     }
 
-    m_wingGiftTimer += deltaTime;
-    if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
-        m_wingGiftTimer = 0;
-        m_objects.push_back(std::make_unique<WingGift>
-            (static_cast<float>(std::rand() % window.getSize().x), player.getPosition().y - 350));
+    if (!objectExists("WingGift")) {
+        m_wingGiftTimer += deltaTime;
+        if (m_wingGiftTimer >= WING_GIFT_SPAWN_INTERVAL) {
+            m_wingGiftTimer = 0;
+            m_objects.push_back(std::make_unique<WingGift>(static_cast<float>(window.getSize().x - 60), player.getPosition().y - 350));
+        }
     }
 }
+
 
 void Map::updatePlatform(float deltaTime, sf::RenderWindow& window, const Player& player)
 {
@@ -216,6 +227,7 @@ void Map::updatePlatform(float deltaTime, sf::RenderWindow& window, const Player
 
 
 void Map::updateObjects(float deltaTime, sf::RenderWindow& window, const Player& player) {
+    
     spawnObjects(deltaTime, window, player);
     // Also check for objects that are out of the player's view and remove them
     auto objectIt = m_objects.begin();

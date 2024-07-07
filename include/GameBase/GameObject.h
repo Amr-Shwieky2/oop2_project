@@ -19,7 +19,7 @@ enum Characters{ DARK_MAN_p, DINASOR_p, SHARP_p, WITCH_p,
 enum GameEffects{ BAT_a, HEART_a, HOLE_a,TRAMPOLINE_a, WINGS_a };
 
 const int MEDIUM_HEIGHT = 30;
-const float BAT_SPAWN_INTERVAL = 5.0f;
+const float BAT_SPAWN_INTERVAL = 9.0f;
 const int HARD_HEIGHT = 50;
 const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f;
 const float GIFT_SPAWN_INTERVAL = 3.0f;
