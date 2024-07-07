@@ -6,20 +6,21 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 
+// Class managing different screens in the game
 class Screens {
 public:
     Screens();
     ~Screens() = default;
-    void run();
+    void run(); // Main loop to run the current screen
 
 private:
-    void changeScreen(Screens_m screenType);
-    void adjustWindowSize(Screens_m screenType);
-    void destroyCurrentScreen();
+    void changeScreen(Screens_m screenType); // Change the current screen
+    void adjustWindowSize(Screens_m screenType); // Adjust the window size based on the screen
+    void destroyCurrentScreen(); // Destroy the current screen
 
-    sf::RenderWindow m_window;
-    std::shared_ptr<BaseScreen> m_currentScreen;
-    std::map<Screens_m, std::function<std::shared_ptr<BaseScreen>()>> m_screenCreators;
-    Screens_m m_currentScreenType;
-    bool m_firstPage;
+    sf::RenderWindow m_window; // The main game window
+    std::shared_ptr<BaseScreen> m_currentScreen; // Pointer to the current screen
+    std::map<Screens_m, std::function<std::shared_ptr<BaseScreen>()>> m_screenCreators; // Map of screen creators
+    Screens_m m_currentScreenType; // Current screen type
+    bool m_firstPage; // Flag to check if it's the first page
 };

@@ -9,8 +9,9 @@
 #include "SettingsScreen.h"
 #include "HighScoreScreen.h"
 #include "OnePlayerCharacterScreen.h"
-#include <TwoPlayerLogic.h>
+#include "TwoPlayerLogic.h"
 
+// Constructor to initialize the Screens class and set up screen creators
 Screens::Screens() : m_firstPage(true) {
     try {
         m_screenCreators[MENU_m] = []() { return std::make_shared<MenuScreen>(); };
@@ -33,26 +34,38 @@ Screens::Screens() : m_firstPage(true) {
     }
 }
 
+// Main loop to run the current screen
 void Screens::run() {
-    while (m_window.isOpen()) {
-        if (m_currentScreen) {
-            try {
-                m_window.clear();
-                m_currentScreen->render(m_window);
-                m_window.display();
-                Screens_m nextScreen = m_currentScreen->handleEvents(m_window);
-                if (nextScreen != m_currentScreenType && m_screenCreators.find(nextScreen) != m_screenCreators.end()) {
-                    changeScreen(nextScreen);
+    try {
+        while (m_window.isOpen()) {
+            if (m_currentScreen) {
+                try {
+                    m_window.clear();
+                    m_currentScreen->render(m_window);
+                    m_window.display();
+                    Screens_m nextScreen = m_currentScreen->handleEvents(m_window);
+                    if (nextScreen != m_currentScreenType && m_screenCreators.find(nextScreen) != m_screenCreators.end()) {
+                        changeScreen(nextScreen);
+                    }
                 }
-            }
-            catch (const GameException& e) {
-                std::cerr << "Error during screen transition: " << e.what() << std::endl;
-                throw;
+                catch (const GameException& e) {
+                    std::cerr << "Error during screen transition: " << e.what() << std::endl;
+                    throw;
+                }
             }
         }
     }
+    catch (const std::exception& e) {
+        std::cerr << "Unhandled exception in run loop: " << e.what() << std::endl;
+        throw;
+    }
+    catch (...) {
+        std::cerr << "Unhandled unknown exception in run loop" << std::endl;
+        throw;
+    }
 }
 
+// Change the current screen to a new one
 void Screens::changeScreen(Screens_m screenType) {
     try {
         adjustWindowSize(screenType);
@@ -76,12 +89,14 @@ void Screens::changeScreen(Screens_m screenType) {
     }
 }
 
+// Destroy the current screen
 void Screens::destroyCurrentScreen() {
     if (m_currentScreen) {
         m_currentScreen.reset();
     }
 }
 
+// Adjust the window size based on the screen type
 void Screens::adjustWindowSize(Screens_m screenType) {
     try {
         sf::Texture* texture = LoadingManager::instance().getScreen(screenType);

@@ -2,17 +2,30 @@
 #include <fstream>
 #include <iostream>
 
+// Constructor implementation
 LoadingManager::LoadingManager() {
-    loadTextures();
-    loadCharacters();
-    loadEffects();
+    try {
+        loadTextures();
+        loadCharacters();
+        loadEffects();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error initializing LoadingManager: " << e.what() << std::endl;
+        throw;
+    }
+    catch (...) {
+        std::cerr << "Unknown error initializing LoadingManager" << std::endl;
+        throw;
+    }
 }
 
+// Get the singleton instance
 LoadingManager& LoadingManager::instance() {
     static LoadingManager instance;
     return instance;
 }
 
+// Get a screen texture by index
 sf::Texture* LoadingManager::getScreen(const int& screen) {
     if (screen < 0 || screen >= NUM_OF_SCREENS) {
         throw GameException("Screen index out of range");
@@ -20,6 +33,7 @@ sf::Texture* LoadingManager::getScreen(const int& screen) {
     return &m_screens[screen];
 }
 
+// Get a character texture by index
 sf::Texture* LoadingManager::getCharacter(const int& character) {
     if (character < 0 || character >= NUM_OF_CHARACTERS) {
         throw GameException("Character index out of range");
@@ -27,6 +41,7 @@ sf::Texture* LoadingManager::getCharacter(const int& character) {
     return &m_charactersTexture[character];
 }
 
+// Get an effect texture by index
 sf::Texture* LoadingManager::getEffect(const int& effect) {
     if (effect < 0 || effect >= NUM_OF_EFFECTS) {
         throw GameException("Effect index out of range");
@@ -34,6 +49,7 @@ sf::Texture* LoadingManager::getEffect(const int& effect) {
     return &m_effectsTexture[effect];
 }
 
+// Load screen textures
 void LoadingManager::loadTextures() {
     try {
         if (!m_screens[MENU_m].loadFromFile("newMenu.jpg"))
@@ -63,9 +79,9 @@ void LoadingManager::loadTextures() {
     }
 }
 
+// Load character textures
 void LoadingManager::loadCharacters() {
-    try
-    {
+    try {
         if (!m_charactersTexture[DARK_MAN_p].loadFromFile("dark.png"))
             throw GameException("Failed to load dark.png");
         if (!m_charactersTexture[DINASOR_p].loadFromFile("dinasor.png"))
@@ -82,18 +98,16 @@ void LoadingManager::loadCharacters() {
             throw GameException("Failed to load sharp-wing.png");
         if (!m_charactersTexture[WITCH_WINGS_p].loadFromFile("witch-wing.png"))
             throw GameException("Failed to load witch-wing.png");
-
     }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Error loading textures: " << e.what() << std::endl;
+    catch (const std::exception& e) {
+        std::cerr << "Error loading character textures: " << e.what() << std::endl;
         throw;
     }
 }
 
+// Load effect textures
 void LoadingManager::loadEffects() {
-    try
-    {
+    try {
         if (!m_effectsTexture[BAT_a].loadFromFile("bat.png"))
             throw GameException("Failed to load bat.png");
         if (!m_effectsTexture[HEART_a].loadFromFile("heart.png"))
@@ -104,15 +118,14 @@ void LoadingManager::loadEffects() {
             throw GameException("Failed to load trampoline.png");
         if (!m_effectsTexture[WINGS_a].loadFromFile("wings.png"))
             throw GameException("Failed to load wings.png");
-
     }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Error loading textures: " << e.what() << std::endl;
+    catch (const std::exception& e) {
+        std::cerr << "Error loading effect textures: " << e.what() << std::endl;
         throw;
     }
 }
 
+// Load high scores from file
 const std::vector<high_score>& LoadingManager::loadHighScore() {
     std::string file = "highScore.txt";
     std::ifstream input_score(file);
@@ -136,6 +149,7 @@ const std::vector<high_score>& LoadingManager::loadHighScore() {
     return m_listScore;
 }
 
+// Update high scores
 void LoadingManager::updateHighScore(const std::string& playerName, int playerScore) {
     try {
         loadHighScore();
