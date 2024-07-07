@@ -8,8 +8,13 @@ configure_file ("./images/chooseCharacters1.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/chooseCharacters2.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/pause.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 
-
-
+configure_file ("./story/start.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./story/1.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./story/2.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./story/3.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./story/4.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./story/5.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./story/6.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("./icons/bat.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/dark.png" ${CMAKE_BINARY_DIR} COPYONLY)

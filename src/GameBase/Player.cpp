@@ -59,7 +59,7 @@ void Player::onCollision(GameObject& other)
 {
     if (dynamic_cast<HeartGift*>(&other)) {
         increaseLife();
-        Singleton::instance().getSoundManager().playSound("conins");
+        Singleton::instance().getSoundManager().playSound("coins");
     }
 
     if (dynamic_cast<BlackHole*>(&other)) {

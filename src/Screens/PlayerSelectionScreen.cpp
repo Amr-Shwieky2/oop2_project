@@ -1,7 +1,8 @@
 #include "PlayerSelectionScreen.h"
 #include <iostream>
-PlayerSelectionScreen::PlayerSelectionScreen()
+PlayerSelectionScreen::PlayerSelectionScreen(): m_story(true)
 {
+    setStory();
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Failed to load font\n";
     }
@@ -72,9 +73,13 @@ Screens_m PlayerSelectionScreen::handleEvents(sf::RenderWindow& window) {
 
 
 void PlayerSelectionScreen::render(sf::RenderWindow& window) {
+  
+    /*if (m_story) {
+        gameStory(window);
+        m_story = false;
+    }*/ // in the final push will add this code 
+
     window.draw(m_screen);
-
-
     for (size_t i = 0; i < m_Texts.size(); ++i) {
         window.draw(m_Rectangles[i]);
         window.draw(m_Texts[i]);
@@ -128,8 +133,10 @@ void PlayerSelectionScreen::drawStory(sf::RenderWindow& window, unsigned int i, 
 
 void PlayerSelectionScreen::setStory()
 {
-    for (size_t i = 0; i < STORY_SCREENS; i++) {
-        m_storyTexture[i].loadFromFile("story" + std::to_string(i + 1) + ".png");
+    m_storyTexture[0].loadFromFile("start.jpg");
+    m_storySprite[0].setTexture(m_storyTexture[0]);
+    for (size_t i = 1; i < STORY_SCREENS; i++) {
+        m_storyTexture[i].loadFromFile(std::to_string(i) + ".jpg");
         m_storySprite[i].setTexture(m_storyTexture[i]);
     }
 }
