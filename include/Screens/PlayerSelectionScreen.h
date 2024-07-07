@@ -9,7 +9,12 @@ public:
     void render(sf::RenderWindow& window) override;
 
 
+
 private:
+    void gameStory(sf::RenderWindow& window);
+
+    void drawStory(sf::RenderWindow&, unsigned int, float, int);
+    void setStory();
     sf::Sprite m_screen;
     //Chooseen getChooseButton(sf::Vector2i mousePos);
     // Define the rectangles for play mode options

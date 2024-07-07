@@ -23,7 +23,7 @@ const float BLACK_HOLE_SPAWN_INTERVAL = 10.0f;
 const float GIFT_SPAWN_INTERVAL = 3.0f;
 const float TRAMPOLINE_SPAWN_INTERVAL = 3.0f;
 const float WING_GIFT_SPAWN_INTERVAL = 9.0f;
-const int STORY_SCREENS = 8;
+const int STORY_SCREENS = 7;
 
 
 class GameObject {

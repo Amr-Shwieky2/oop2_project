@@ -81,4 +81,57 @@ void PlayerSelectionScreen::render(sf::RenderWindow& window) {
     }
 }
 
+void PlayerSelectionScreen::gameStory(sf::RenderWindow& window)
+{
+    int i = 0;
+    float transitionDuration = 0.5f; // Transition duration in seconds
+    sf::Clock transitionClock;
+
+    while (window.isOpen() && i != STORY_SCREENS) {
+        window.clear();
+        if (auto event = sf::Event{}; window.pollEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                 // play click
+                i++; // Move to the next screen after transition
+                transitionClock.restart();
+            }
+        }
+        float interpolation = transitionClock.getElapsedTime().asSeconds() / transitionDuration;
+        // Draw the current story screen
+        drawStory(window, i, interpolation, i % 2);
+        window.display();
+    }
+}
+
+void PlayerSelectionScreen::drawStory(sf::RenderWindow& window, unsigned int i, float interpolation, int animationIndex)
+{
+    if (interpolation >= 1.0f) {
+        interpolation = 1.0f;
+    }
+
+    sf::Uint8 alpha = static_cast<sf::Uint8>(255 * interpolation);
+    float rotation = 360.0f * interpolation;
+
+    switch (animationIndex) {
+    case 0:
+        m_storySprite[i].setColor(sf::Color(255, 255, 255, alpha));
+        break;
+    case 1:
+        m_storySprite[i].setRotation(rotation);
+        break;
+    default:
+        m_storySprite[i].setColor(sf::Color(255, 255, 255, alpha));
+        break;
+    }
+    if (i < STORY_SCREENS) window.draw(m_storySprite[i]);
+}
+
+void PlayerSelectionScreen::setStory()
+{
+    for (size_t i = 0; i < STORY_SCREENS; i++) {
+        m_storyTexture[i].loadFromFile("story" + std::to_string(i + 1) + ".png");
+        m_storySprite[i].setTexture(m_storyTexture[i]);
+    }
+}
+
 
