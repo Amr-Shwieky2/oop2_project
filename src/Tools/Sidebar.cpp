@@ -44,9 +44,7 @@ Sidebar::Sidebar(float width, float height)
             return a._score < b._score;
             });
 
-        for (const auto& score : m_highScore) {
-            std::cout << score._score << std::endl;
-        }
+        
     }
     catch (const std::exception& e) {
         std::cerr << "Error initializing Sidebar: " << e.what() << std::endl;

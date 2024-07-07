@@ -10,7 +10,7 @@ TwoPlayerCharacterScreen::TwoPlayerCharacterScreen()
          {711, 88, 177, 220}
         }, { 232, 387, 155, 25 }),
     m_selectedCharacterIndex1(0),
-    m_selectedCharacterIndex2(0),
+    m_selectedCharacterIndex2(3),
     m_isPlayerOneDone(false),
     m_isPlayerTwoDone(false) {
     updateSelection();

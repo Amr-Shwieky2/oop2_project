@@ -5,6 +5,7 @@
 #include <memory>
 #include <functional>
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 // Class managing different screens in the game
 class Screens {

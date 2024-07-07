@@ -60,8 +60,16 @@ void TwoPlayerLogic::update(float deltaTime, sf::RenderWindow& window) {
     m_player1.update(deltaTime, sf::Keyboard::A, sf::Keyboard::D); // Left player controls
     m_player2.update(deltaTime, sf::Keyboard::Left, sf::Keyboard::Right);
 
-    m_logic.update(deltaTime, window, m_player1, m_map, m_sidebar, m_EndGame);
-    m_logic.update(deltaTime, window, m_player2, m_map, m_sidebar2, m_EndGame);
+    m_map.collision(m_player1);
+    m_map.update(deltaTime, window, m_player1);
+
+    m_map.collision(m_player2);
+    m_map.update(deltaTime, window, m_player2);
+
+    CenterView(window);
+
+    m_logic.isFail(m_player1, m_EndGame);
+    m_logic.isFail(m_player2, m_EndGame);
 
     if (m_player1.hasFallen() || m_player2.hasFallen()) {
         m_EndGame = true;
@@ -78,6 +86,14 @@ void TwoPlayerLogic::showEndBadge(sf::RenderWindow& window) {
     else {
         m_logic.showEndBadge(window, "It's a tie!", m_EndGame);
     }
+}
+
+void TwoPlayerLogic::CenterView(sf::RenderWindow& window)
+{
+    if (m_player1.getPosition().y > m_player2.getPosition().y)
+        m_logic.CenterView(window, m_player1);
+    else
+        m_logic.CenterView(window, m_player2);
 }
 
 void TwoPlayerLogic::saveState() {

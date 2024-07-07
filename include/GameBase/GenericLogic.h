@@ -10,7 +10,8 @@ public:
     GenericLogic();
 
     void initialize(sf::RenderWindow& window, Player& player, Map& map); // Initialize the game logic
-    void update(float deltaTime, sf::RenderWindow& window, Player& player, Map& map, Sidebar& bar, bool& end); // Update the game logic
+    void update(float deltaTime, sf::RenderWindow& window,
+        Player& player, Map& map, Sidebar& bar, bool& end); // Update the game logic
     void CenterView(sf::RenderWindow& window, Player& player); // Center the view
 
     void render(sf::RenderWindow& window, Player& player, Map& map, Sidebar& bar, sf::Sprite& screen); // Render the game

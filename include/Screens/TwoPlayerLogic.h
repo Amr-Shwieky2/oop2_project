@@ -15,7 +15,7 @@ public:
 
 private:
     void showEndBadge(sf::RenderWindow& window) override;
-
+    void CenterView(sf::RenderWindow& window);
     void saveState() override;
     void restoreState() override;
 
