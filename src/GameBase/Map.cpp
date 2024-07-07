@@ -47,10 +47,10 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
 
     Platform::Type type;
 
-    if (m_height < 100) {
+    if (m_height < 1000) {
         type = Platform::Type::NORMAL;
     }
-    else if (m_height < 200) {
+    else if (m_height < 1500) {
         if (m_platformCount % 2 == 0) {
             type = Platform::Type::NORMAL;
         }
@@ -58,10 +58,10 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::MOVING;
         }
     }
-    else if (m_height < 300) {
+    else if (m_height < 2500) {
         type = Platform::Type::MOVING;
     }
-    else if (m_height < 400) {
+    else if (m_height < 3500) {
         if (m_platformCount % 3 == 0) {
             type = Platform::Type::NORMAL;
         }
@@ -72,7 +72,7 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::BREAKABLE;
         }
     }
-    else if (m_height < 500) {
+    else if (m_height < 4500) {
         if (m_platformCount % 2 == 0) {
             type = Platform::Type::MOVING;
         }
@@ -80,7 +80,7 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::BREAKABLE;
         }
     }
-    else if (m_height < 600) {
+    else if (m_height < 5500) {
         if (m_platformCount % 4 == 0) {
             type = Platform::Type::NORMAL;
         }
@@ -94,7 +94,7 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::MOVING_BREAKABLE;
         }
     }
-    else if (m_height < 700) {
+    else if (m_height < 6500) {
         if (m_platformCount % 3 == 0) {
             type = Platform::Type::MOVING;
         }
@@ -105,10 +105,10 @@ void Map::addNewPlatform(sf::RenderWindow& window) {
             type = Platform::Type::MOVING_BREAKABLE;
         }
     }
-    else if (m_height < 800) {
+    else if (m_height < 7500) {
         type = Platform::Type::BREAKABLE;
     }
-    else if (m_height < 900) {
+    else if (m_height < 8500) {
         if (m_platformCount % 2 == 0) {
             type = Platform::Type::BREAKABLE;
         }
