@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.26)
 
 project (oop2_ex03)
-set (MY_AUTHORS "")
+set (MY_AUTHORS "Nadeen_HajYahia-Amr_Swieky")
 
 include (cmake/CompilerSettings.cmake)
 
