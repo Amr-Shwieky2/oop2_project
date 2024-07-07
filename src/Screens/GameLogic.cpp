@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Constructor to initialize the game logic
-GameLogic::GameLogic():m_sidebar(800, 600) {}
+GameLogic::GameLogic():m_sidebar(800, 50) {}
 
 // Initialize the game
 void GameLogic::initialize(sf::RenderWindow& window) {
