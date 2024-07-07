@@ -92,10 +92,10 @@ Screens_m PlayerSelectionScreen::handleEvents(sf::RenderWindow& window) {
 // Render the player selection screen
 void PlayerSelectionScreen::render(sf::RenderWindow& window) {
     try {
-       /* if (m_story) {
+        if (m_story) {
             gameStory(window);
             m_story = false;
-        }*/
+        }
 
         window.draw(m_screen);
         for (size_t i = 0; i < m_Texts.size(); ++i) {
