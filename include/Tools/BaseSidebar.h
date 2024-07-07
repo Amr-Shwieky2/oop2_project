@@ -2,19 +2,20 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "LoadingManager.h"
 
-class Sidebar {
+class BaseSidebar {
 public:
-    Sidebar(float width, float height);
+    BaseSidebar(float width, float height);
+    virtual ~BaseSidebar() = default;
 
-    void update(int score, int height, int lives);
-    void draw(sf::RenderWindow& window);
+    virtual void update(int, int) {};
+    virtual void draw(sf::RenderWindow& window) = 0;
     bool isPaused(sf::Vector2i mousePos);
 
-private:
+protected:
     sf::RectangleShape m_background;
     sf::Text m_scoreText;
-    sf::Text m_heightText;
     sf::Text m_pauseText;
     sf::RectangleShape m_pauseButton;
     std::vector<sf::Sprite> m_livesSprites;
@@ -23,4 +24,3 @@ private:
     float m_sidebarWidth;
     float m_sidebarHeight;
 };
-

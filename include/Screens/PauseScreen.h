@@ -6,29 +6,26 @@
 #include <iostream>
 #include <cmath>
 
-class PauseScreen : public BaseScreen
-{
+// Class representing the pause screen
+class PauseScreen : public BaseScreen {
 public:
-    PauseScreen();
+    PauseScreen(); // Constructor
 
-    Screens_m handleEvents(sf::RenderWindow& window) override;
-    void render(sf::RenderWindow& window) override;
-
-
+    Screens_m handleEvents(sf::RenderWindow& window) override; // Handle events for the pause screen
+    void render(sf::RenderWindow& window) override; // Render the pause screen
 
 private:
-    void updateWavingText(sf::Vector2i mousePos);
+    void updateWavingText(sf::Vector2i mousePos); // Update the waving text effect
 
-    sf::Sprite m_screen;
+    sf::Sprite m_screen; // Background sprite for the pause screen
 
-    sf::IntRect m_titleRect;
-    sf::IntRect m_continue;
-    sf::IntRect m_settings;
-    std::vector<sf::Text> m_PauseScreenTexts;
-    std::vector<sf::RectangleShape> m_Rectangles;
-    sf::Font m_font;
-    sf::Texture backgroundTexture;
-    sf::Sprite backgroundSprite;
-    sf::Clock m_waveClock;
-
+    sf::IntRect m_titleRect; // Rectangle for the title
+    sf::IntRect m_continue; // Rectangle for the continue button
+    sf::IntRect m_settings; // Rectangle for the settings button
+    std::vector<sf::Text> m_PauseScreenTexts; // Texts for the pause screen options
+    std::vector<sf::RectangleShape> m_Rectangles; // Rectangles for the pause screen options
+    sf::Font m_font; // Font for the text
+    sf::Texture backgroundTexture; // Background texture
+    sf::Sprite backgroundSprite; // Background sprite
+    sf::Clock m_waveClock; // Clock for the waving text effect
 };

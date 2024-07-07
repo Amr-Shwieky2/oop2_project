@@ -1,20 +1,20 @@
 #include "Screens.h"
-#include "GameLogic.h"
-#include "Singleton.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
+// Main function that initializes and runs the game
 int main() {
-    //logic mood
-    /*sf::RenderWindow m_window;
-    sf::Texture* texture = Singleton::instance().getScreen(GAME_m);
-    sf::Vector2u imageSize = texture->getSize();
-    m_window.create(sf::VideoMode(imageSize.x, imageSize.y + 50 ), "Game Window");
-    GameLogic g;
-    g.initialize(m_window);
-    g.handleEvents(m_window);*/
-
-    //game moode
-    Screens s;
-    s.run();
-    return 0;
+    try {
+        Screens s;
+        s.run();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Unhandled exception: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+    catch (...) {
+        std::cerr << "Unhandled unknown exception" << std::endl;
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 }
