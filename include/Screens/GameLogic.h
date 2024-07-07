@@ -22,16 +22,10 @@ public:
 
 private:
     void showEndBadge(sf::RenderWindow& window) override;
-    
 
     void saveState() override;
     void restoreState() override;
 
     Screens_m updateScore() override;
 
-    
-    
-
-
-    
 };

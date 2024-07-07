@@ -43,9 +43,9 @@ SettingsScreen::SettingsScreen() :
     m_backButtonShape.setOutlineColor(sf::Color::White);  // Outline color for better visibility
     m_backButtonShape.setOutlineThickness(2);  // Outline thickness
 
-    std::vector<sf::Vector2f> positions = { sf::Vector2f(290, 200), sf::Vector2f(160, 300) ,sf::Vector2f(185, 410) ,sf::Vector2f(560, 505 )}; // Positions for texts and rectangles
+    std::vector<sf::Vector2f> positions = { sf::Vector2f(290, 200), sf::Vector2f(160, 300) ,sf::Vector2f(185, 410) ,sf::Vector2f(560, 505) }; // Positions for texts and rectangles
 
-    std::string menuItems[] = { "--SOUND SETTINGS--", "SOUND EFFECTS" ,"MUSIC" , "BACK"};
+    std::string menuItems[] = { "--SOUND SETTINGS--", "SOUND EFFECTS" ,"MUSIC" , "BACK" };
     for (int i = 0; i < 4; ++i) {
         sf::Text text(menuItems[i], m_font, 25);
         sf::FloatRect textBounds = text.getLocalBounds();
@@ -65,7 +65,7 @@ Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
         switch (event.type) {
         case sf::Event::Closed:
             window.close();
-            return SETTINGS_m; 
+            return SETTINGS_m;
         case sf::Event::MouseButtonReleased:
             if (event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);

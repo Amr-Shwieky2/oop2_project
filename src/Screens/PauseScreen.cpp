@@ -119,4 +119,3 @@ void PauseScreen::render(sf::RenderWindow& window)
         window.draw(m_PauseScreenTexts[i]);
     }
 }
- 

@@ -4,10 +4,8 @@ LogicBase::LogicBase() :m_player1(Singleton::instance().getPlayerCharacter1()),
     m_sidebar(800, 50), m_EndGame(false), m_isGamePaused(false), 
     m_savedPlayerVelocity1(0)
 {
-    
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     m_screen.setTexture(*(LoadingManager::instance().getScreen(GAME_m)));
-
 }
 
 bool LogicBase::mouseEvent(sf::RenderWindow& window)
@@ -43,4 +41,12 @@ void LogicBase::resumeGame()
 {
     m_isGamePaused = false;
     restoreState();
+}
+
+void LogicBase::resetGame()
+{
+   /* m_isGamePaused = false;
+    m_EndGame = false;
+    m_player1 = Player(Singleton::instance().getPlayerCharacter1());
+    m_map = Map();*/
 }

@@ -59,23 +59,28 @@ void Player::onCollision(GameObject& other)
 {
     if (dynamic_cast<HeartGift*>(&other)) {
         increaseLife();
+        Singleton::instance().getSoundManager().playSound("conins");
     }
 
     if (dynamic_cast<BlackHole*>(&other)) {
         m_lives = -1;
+        Singleton::instance().getSoundManager().playSound("burned");
     }
 
     if (dynamic_cast<Trampoline*>(&other)) {
         boostJump();
+        Singleton::instance().getSoundManager().playSound("jump");
     }
 
     if (dynamic_cast<WingGift*>(&other)) {
         activateFlying(3.0f);
+        Singleton::instance().getSoundManager().playSound("rock");
        // other.resetPosition(getPosition().x, getPosition().y);
     }
 
     if (dynamic_cast<Bat*>(&other)) {
         decrementLife();
+        Singleton::instance().getSoundManager().playSound("burned");
     }
 }
 

@@ -34,6 +34,7 @@ Screens_m OnePlayerCharacterScreen::handleEvents(sf::RenderWindow& window) {
             else if (event.key.code == sf::Keyboard::Enter) {
                 Singleton::instance().setPlayerName1(m_playerName1);
                 Singleton::instance().setPlayerCharacter1(m_selectedCharacterIndex);
+                m_playerNameText1.setString("");
                 return GAME_m;
             }
             break;

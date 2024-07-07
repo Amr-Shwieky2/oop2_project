@@ -25,6 +25,7 @@ Screens_m GameLogic::handleEvents(sf::RenderWindow& window)
         render(window);
         if (m_EndGame) {
             showEndBadge(window);
+            //resetGame();
             return updateScore();
         }
     }

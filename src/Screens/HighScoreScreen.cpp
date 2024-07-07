@@ -4,6 +4,7 @@
 HighScoreScreen::HighScoreScreen() :
     m_backButton(230, 800, 465 - 230, 835 - 800) {
     m_screen.setTexture(*(LoadingManager::instance().getScreen(HIGH_SCOORE_m)));
+    Singleton::instance().getSoundManager().playSound("top5");
 
     // Load the font
     if (!m_font.loadFromFile("arial.ttf")) {
@@ -55,6 +56,7 @@ void HighScoreScreen::update()
 }
 
 Screens_m HighScoreScreen::handleEvents(sf::RenderWindow& window) {
+    
     sf::Event event;
     while (window.pollEvent(event)) {
         switch (event.type) {

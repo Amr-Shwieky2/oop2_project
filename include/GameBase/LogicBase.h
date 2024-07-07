@@ -14,6 +14,7 @@ public:
     bool mouseEvent(sf::RenderWindow& window);
     void pauseGame();
     void resumeGame();
+    void resetGame();
 
     virtual void initialize(sf::RenderWindow& window) = 0;
     virtual void update(float deltaTime, sf::RenderWindow& window) = 0;
@@ -26,7 +27,6 @@ protected:
     virtual Screens_m updateScore() = 0;
 
     GenericLogic m_logic;
-    
 
     Player m_player1;
     Sidebar m_sidebar;
@@ -36,11 +36,8 @@ protected:
     sf::Clock m_clock;
     sf::Sprite m_screen;
 
-
     bool m_isGamePaused;
     bool m_EndGame;
-
-    
 
     // Saved states for pause/resume functionality
     sf::Vector2f m_savedPlayerPosition1;

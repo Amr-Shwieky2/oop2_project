@@ -21,4 +21,8 @@ private:
     std::vector<sf::RectangleShape> m_Rectangles;
 
 
+    sf::Texture m_storyTexture[STORY_SCREENS];
+    sf::Sprite m_storySprite[STORY_SCREENS];
+
+
 };

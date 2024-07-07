@@ -145,6 +145,7 @@ void Map::spawnObjects(float deltaTime, sf::RenderWindow& window, const Player& 
         if (m_batTimer >= BAT_SPAWN_INTERVAL) {
             m_batTimer = 0;
             m_bat.resetPosition(static_cast<float>(window.getSize().x), static_cast<float>(player.getPosition().y - 300));
+            Singleton::instance().getSoundManager().playSound("rock");
         }
         m_bat.update(deltaTime);
     }
@@ -251,17 +252,20 @@ void Map::collision(Player& player, float deltaTime) {
                 if ((*platformIt)->isBreakable()) {
                     if (auto breakable = dynamic_cast<BreakablePlatform*>(platformIt->get())) {
                         breakable->breakPlatform();
+                        Singleton::instance().getSoundManager().playSound("glassshatter");
                     }
                     platformIt = m_platforms.erase(platformIt);
                 }
                 else if (auto movingBreakable = dynamic_cast<MovingBreakablePlatform*>(platformIt->get())) {
                     movingBreakable->breakPlatform();
+                    Singleton::instance().getSoundManager().playSound("glassshatter");
                     platformIt = m_platforms.erase(platformIt);
                 }
                 else {
                     ++platformIt;
                 }
                 player.jump();
+                Singleton::instance().getSoundManager().playSound("jump");
 
             }
             else {

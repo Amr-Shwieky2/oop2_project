@@ -70,7 +70,6 @@ Screens_m MenuScreen::handleEvents(sf::RenderWindow& window)
             if (event.mouseButton.button == sf::Mouse::Left)
             {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
-                std::cout << "Mouse clicked at: (" << mousePos.x << ", " << mousePos.y << ")" << std::endl;
 
                 Menu_c button = getMenuButton(mousePos);
 

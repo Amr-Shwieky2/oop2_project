@@ -1,13 +1,9 @@
 #pragma once
 #include "BaseScreen.h"
-#include "MenuScreen.h"
-#include "PlayerSelectionScreen.h"
-#include "HelpScreen.h"
-#include "SettingsScreen.h"
-#include "HighScoreScreen.h"
-#include "OnePlayerCharacterScreen.h"
+#include <iostream>
 #include <map>
 #include <memory>
+#include <functional>
 #include <SFML/Graphics.hpp>
 
 class Screens {
@@ -19,9 +15,11 @@ public:
 private:
     void changeScreen(Screens_m screenType);
     void adjustWindowSize(Screens_m screenType);
+    void destroyCurrentScreen();
+
     sf::RenderWindow m_window;
     std::shared_ptr<BaseScreen> m_currentScreen;
-    std::map<Screens_m, std::shared_ptr<BaseScreen>> m_screens;
+    std::map<Screens_m, std::function<std::shared_ptr<BaseScreen>()>> m_screenCreators;
     Screens_m m_currentScreenType;
     bool m_firstPage;
 };
