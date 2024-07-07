@@ -1,7 +1,7 @@
 #include "SoundManager.h"
 #include <iostream>
 
-SoundManager::SoundManager()
+SoundManager::SoundManager() 
 {
     // Load all sounds
     loadSound("burned", "burned.wav");
@@ -17,6 +17,10 @@ SoundManager::SoundManager()
     loadSound("top5", "top5.wav");
     loadSound("winning", "winning.wav");
 
+    m_effectDot.setPosition(350 + 50 * 2 - 10, 426 - 5);
+    m_effectDotPosition.x = 350 + 50 * 2 - 10;
+    m_effectDotPosition.y = 426 - 5;
+
     // Optionally, set up music streams if they need to be looped or controlled separately
     if (!music.openFromFile("drama.ogg"))
     {
@@ -25,6 +29,14 @@ SoundManager::SoundManager()
     music.setLoop(true); // Setting music to loop
 }
 
+sf::Vector2f SoundManager::geteffectDotPosition() const {
+    return m_effectDotPosition;
+}
+
+void SoundManager::seteffectDotPosition(const sf::Vector2f& position) {
+    m_effectDot.setPosition(position);
+    m_effectDotPosition = position;
+}
 void SoundManager::playSound(const std::string& name) 
 {
     if (sounds.find(name) != sounds.end())
@@ -51,6 +63,15 @@ void SoundManager::setMusicVolume(float volume)
 {
     music.setVolume(volume);
 }
+
+void SoundManager::resetButton(float x, float y)
+{
+    m_effectDot.setPosition(x, y);
+    m_effectDotPosition = sf::Vector2f(x, y); // Save the position
+    std::cout << m_effectDot.getPosition().x << " " << m_effectDot.getPosition().y;
+}
+
+
 
 void SoundManager::setEffectsVolume(float volume)
 {

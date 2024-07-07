@@ -1,10 +1,11 @@
 #include "SettingsScreen.h"
 #include <iostream>
 
+
 SettingsScreen::SettingsScreen() :
     m_backButton(540, 495, 755 - 540, 540 - 495),
     m_musicVolume(50), // Initial volume set to 50%
-    m_effectsVolume(50) // Initial volume set to 50%
+    m_effectsVolume(50)
 {
     if (!m_font.loadFromFile("arial.ttf")) {
         std::cerr << "Failed to load font\n";
@@ -20,7 +21,8 @@ SettingsScreen::SettingsScreen() :
     m_effectsDot.setRadius(10);
     m_effectsDot.setFillColor(sf::Color::Red);
     m_effectsDot.setPosition(350 + m_effectsVolume * 2 - 10, 318 - 5); // Updated position based on volume
-
+    m_effectsDotPosition.x = 350 + m_effectsVolume * 2 - 10;
+    m_effectsDotPosition.y = 318 - 5;
     // Initialize the music volume bar
     m_musicBar.setSize(sf::Vector2f(200, 10)); // Increased height
     m_musicBar.setFillColor(sf::Color::White);
@@ -30,7 +32,8 @@ SettingsScreen::SettingsScreen() :
     m_musicDot.setRadius(10);
     m_musicDot.setFillColor(sf::Color::Red);
     m_musicDot.setPosition(350 + m_musicVolume * 2 - 10, 426 - 5); // Updated position based on volume
-
+    m_musicDotPosition.x = 350 + m_musicVolume * 2 - 10;
+    m_musicDotPosition.y = 426 - 5;
     m_BackGround.setSize(sf::Vector2f(500, 400));
     m_BackGround.setOutlineThickness(5);
     m_BackGround.setOutlineColor(sf::Color::Red);
@@ -53,10 +56,11 @@ SettingsScreen::SettingsScreen() :
         text.setFillColor(sf::Color::White);
         m_Texts.push_back(text);
     }
-    // Set initial volumes
-    /*Singleton::instance().getSoundManager().playMusic();
-    Singleton::instance().getSoundManager().setMusicVolume(m_musicVolume);
-    Singleton::instance().getSoundManager().setEffectsVolume(m_effectsVolume);*/
+
+
+    m_effectsDot.setPosition(Singleton::instance().getSoundManager().geteffectDotPosition());
+    m_musicDot.setPosition(m_musicDotPosition);
+
 }
 
 Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
@@ -71,12 +75,19 @@ Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
                 sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
 
                 if (m_effectsBar.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    m_effectsVolume = static_cast<float>((mousePos.x - m_effectsBar.getPosition().x) / (m_effectsBar.getSize().x * 0.01));                    m_effectsDot.setPosition(m_effectsBar.getPosition().x + m_effectsVolume * 2 - 10, m_effectsBar.getPosition().y - 5);
+                    m_effectsVolume = static_cast<float>((mousePos.x - m_effectsBar.getPosition().x) / (m_effectsBar.getSize().x * 0.01));
+                    m_effectsDot.setPosition(m_effectsBar.getPosition().x + m_effectsVolume * 2 - 10, m_effectsBar.getPosition().y - 5);
+                    m_effectsDotPosition.x = m_effectsBar.getPosition().x + m_effectsVolume * 2 - 10;
+                    m_effectsDotPosition.y = m_effectsBar.getPosition().y - 5;
+                    Singleton::instance().getSoundManager().resetButton(m_effectsDotPosition.x, m_effectsDotPosition.y);
                     updateVolume();
                 }
                 if (m_musicBar.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    std::cout << m_musicDot.getPosition().x << " " << m_musicDot.getPosition().y << std::endl;
                     m_musicVolume = static_cast<float>((mousePos.x - m_musicBar.getPosition().x) / (m_musicBar.getSize().x * 0.01));
                     m_musicDot.setPosition(m_musicBar.getPosition().x + m_musicVolume * 2 - 10, m_musicBar.getPosition().y - 5);
+                    m_musicDotPosition.x = m_effectsBar.getPosition().x + m_effectsVolume * 2 - 10;
+                    m_musicDotPosition.y = m_effectsBar.getPosition().y - 5;
                     updateVolume();
                 }
                 if (m_backButtonShape.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
@@ -92,6 +103,7 @@ Screens_m SettingsScreen::handleEvents(sf::RenderWindow& window) {
 
 
 void SettingsScreen::render(sf::RenderWindow& window) {
+
     window.draw(m_screen);
     window.draw(m_BackGround);
     window.draw(m_effectsBar);
@@ -109,4 +121,5 @@ void SettingsScreen::render(sf::RenderWindow& window) {
 void SettingsScreen::updateVolume() {
     Singleton::instance().getSoundManager().setMusicVolume(m_musicVolume);
     Singleton::instance().getSoundManager().setEffectsVolume(m_effectsVolume);
+
 }

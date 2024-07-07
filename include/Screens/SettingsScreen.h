@@ -23,5 +23,7 @@ private:
     float m_effectsVolume;
     sf::Font m_font;
     std::vector<sf::Text> m_Texts;
+    sf::Vector2f m_effectsDotPosition;
+    sf::Vector2f m_musicDotPosition;
     void updateVolume();
 };
