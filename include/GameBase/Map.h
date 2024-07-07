@@ -33,7 +33,7 @@ public:
     void initialize(sf::RenderWindow& window);
     void update(float deltaTime, sf::RenderWindow& window, const Player& player);
     void render(sf::RenderWindow& window);
-    void collision(Player& player, float deltaTime);
+    void collision(Player& player);
 
     std::vector<PlatformState> getPlatformStates() const;
     void setPlatformStates(const std::vector<PlatformState>& states);

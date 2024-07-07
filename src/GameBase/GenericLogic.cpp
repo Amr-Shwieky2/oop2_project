@@ -24,12 +24,12 @@ void GenericLogic::update(float deltaTime, sf::RenderWindow& window,
     Player& player, Map& map, Sidebar& bar, bool& end)
 {
     
-    map.collision(player, deltaTime);
+    map.collision(player);
     map.update(deltaTime, window, player);
 
     CenterView(window, player);
     isFail(player, end);
-    bar.update(map.getScore(), static_cast<int>(map.getHeight()), player.getLives());
+    bar.update(map.getScore(), player.getLives());
 }
 
 void GenericLogic::CenterView(sf::RenderWindow& window, Player& player)

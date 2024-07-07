@@ -240,7 +240,7 @@ void Map::updateObjects(float deltaTime, sf::RenderWindow& window, const Player&
         }
     }
 }
-void Map::collision(Player& player, float deltaTime) {
+void Map::collision(Player& player) {
     for (auto& object : m_objects) {
         if (object->checkCollision(player)) {
             object->onCollision(player);
