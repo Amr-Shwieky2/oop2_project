@@ -74,6 +74,14 @@ void LoadingManager::loadCharacters() {
             throw GameException("Failed to load sharp.png");
         if (!m_charactersTexture[WITCH_p].loadFromFile("witch.png"))
             throw GameException("Failed to load witch.png");
+        if (!m_charactersTexture[DARK_MAN_WINGS_p].loadFromFile("dark-wing.png"))
+            throw GameException("Failed to load dark-wing.png");
+        if (!m_charactersTexture[DINASOR_WINGS_p].loadFromFile("dinasor-wing.png"))
+            throw GameException("Failed to load dinasor-wing.png");
+        if (!m_charactersTexture[SHARP_WINGS_p].loadFromFile("sharp-wing.png"))
+            throw GameException("Failed to load sharp-wing.png");
+        if (!m_charactersTexture[WITCH_WINGS_p].loadFromFile("witch-wing.png"))
+            throw GameException("Failed to load witch-wing.png");
 
     }
     catch (const std::exception& e)
