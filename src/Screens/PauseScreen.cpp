@@ -27,7 +27,6 @@ PauseScreen::PauseScreen() {
 
         std::vector<std::pair<sf::IntRect*, std::string>> buttons = {
             {&m_continue, "CONTINUE"},
-            {&m_settings, "SETTINGS"},
             {&m_settings, "MENU"}
         };
 
@@ -79,8 +78,6 @@ Screens_m PauseScreen::handleEvents(sf::RenderWindow& window) {
                                 Singleton::instance().getCurrentGameLogic().resumeGame(); // Ensure this method gets the current GameLogic instance
                                 return GAME_m;
                             case 2:
-                                return SETTINGS_m;
-                            case 3:
                                 return MENU_m;
                             default:
                                 break;
