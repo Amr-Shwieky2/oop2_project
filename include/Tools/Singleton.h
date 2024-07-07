@@ -25,6 +25,9 @@ public:
     Characters getPlayerCharacter1() const { return m_playerCharacter1; };
     Characters getPlayerCharacter2() const { return m_playerCharacter2; };
 
+    int getCharacterNamber1() const { return m_characterNamber1; };
+    int getCharacterNamber2() const { return m_characterNamber2; };
+
 private:
     Singleton();
     void fillCharacters(const int&, Characters&);
@@ -33,6 +36,9 @@ private:
     std::string m_playerName2;
     Characters m_playerCharacter1 = DARK_MAN_p;
     Characters m_playerCharacter2 = DARK_MAN_p;
+
+    int m_characterNamber1;
+    int m_characterNamber2;
 
     SoundManager m_soundManager;
     std::shared_ptr<GameLogic> m_currentGameLogic;

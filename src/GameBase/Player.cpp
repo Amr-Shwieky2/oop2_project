@@ -165,6 +165,8 @@ void Player::activateFlying(float duration)
         m_maxFlyingDuration = duration;
         m_flyingTimer = 0;  
         m_invulnerabilityTimer = m_invulnerabilityPeriod; 
+        Singleton::instance().setPlayerCharacter1(Singleton::instance().getCharacterNamber1() + 4);
+        setTexture(Singleton::instance().getPlayerCharacter1());
         // Reset invulnerability timer
     }
 
@@ -178,7 +180,10 @@ void Player::updateFlying(float deltaTime)
             m_velocity = -7.0f;  // Negative to move up
         }
         else {
+            Singleton::instance().setPlayerCharacter1(Singleton::instance().getCharacterNamber1() - 4);
+            setTexture(Singleton::instance().getPlayerCharacter1());
             m_isFlying = false;
+            std::cout << "I am here";
         }
     }
 }

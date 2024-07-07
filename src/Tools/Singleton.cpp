@@ -13,11 +13,13 @@ Singleton& Singleton::instance() {
 
 void Singleton::setPlayerCharacter1(const int& Character)
 {
+    m_characterNamber1 = Character;
     fillCharacters(Character, m_playerCharacter1);
 }
 
 void Singleton::setPlayerCharacter2(const int& Character)
 {
+    m_characterNamber2 = Character;
     fillCharacters(Character, m_playerCharacter2);
 }
 
@@ -36,6 +38,18 @@ void Singleton::fillCharacters(const int& Character, Characters& player)
         break;
     case 3:
         player = SHARP_p;
+        break;
+    case 4:
+        player = DARK_MAN_WINGS_p;
+        break;
+    case 5:
+        player = DINASOR_WINGS_p;
+        break;
+    case 6:
+        player = WITCH_WINGS_p;
+        break;
+    case 7:
+        player = SHARP_WINGS_p;
         break;
 
     default:
