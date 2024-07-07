@@ -1,6 +1,6 @@
 #pragma once
 #include <Player.h>
-#include <Sidebar.h>
+#include <BaseSidebar.h>
 #include <Map.h>
 #include "GenericLogic.h"
 
@@ -29,7 +29,7 @@ protected:
     GenericLogic m_logic;
 
     Player m_player1;
-    Sidebar m_sidebar;
+    std::unique_ptr <  BaseSidebar > m_sidebar;
     Map m_map;
 
 

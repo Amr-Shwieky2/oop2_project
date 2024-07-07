@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Map.h"
-#include "Sidebar.h"
+#include "BaseSidebar.h"
 #include <SFML/Graphics.hpp>
 
 
@@ -12,10 +12,10 @@ public:
 
 	void initialize(sf::RenderWindow& window, Player& player, Map& map);
 	void update(float deltaTime, sf::RenderWindow& window,
-		Player& player, Map& map, Sidebar& bar, bool& end);
+		Player& player, Map& map, BaseSidebar& bar, bool& end);
 	void CenterView(sf::RenderWindow& window, Player& player);
 
-	void render(sf::RenderWindow& window, Player& player, Map& map, Sidebar& bar, sf::Sprite& screen);
+	void render(sf::RenderWindow& window, Player& player, Map& map, BaseSidebar& bar, sf::Sprite& screen);
 
 	void saveState(sf::Vector2f& savedPlayerPosition, 
 					float& savedPlayerVelocity, 

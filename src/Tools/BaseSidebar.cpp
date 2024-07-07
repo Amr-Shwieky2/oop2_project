@@ -1,7 +1,7 @@
-#include "Sidebar.h"
+#include "BaseSidebar.h"
 #include <iostream>
 
-Sidebar::Sidebar(float width, float height)
+BaseSidebar::BaseSidebar(float width, float height)
     : m_sidebarWidth(width), m_sidebarHeight(height)
 {
     if (!m_font.loadFromFile("arial.ttf")) {
@@ -30,36 +30,13 @@ Sidebar::Sidebar(float width, float height)
     m_pauseButton.setOutlineThickness(5);
     m_pauseButton.setOutlineColor(sf::Color::Black);  // Outline color for better visibility  
 
-
     m_pauseText.setFont(m_font);
     m_pauseText.setString("PAUSE");
     m_pauseText.setCharacterSize(24);
     m_pauseText.setFillColor(sf::Color::Black);
 }
 
-void Sidebar::update(int score, int height, int lives)
-{
-    m_scoreText.setString("Score: " + std::to_string(score));
-    m_heightText.setString("Height: " + std::to_string(std::max(0, height)));
-
-    m_livesSprites.clear();
-    for (int i = 0; i < lives; ++i)
-    {
-        sf::Sprite lifeSprite;
-        lifeSprite.setTexture(m_lifeTexture);
-        lifeSprite.setScale(0.1f, 0.1f);  // Scale down the heart image to 10% of its original size
-        lifeSprite.setPosition(static_cast<float>(300 + i * 50), 0.f);
-        m_livesSprites.push_back(lifeSprite);
-    }
-
-    m_background.setPosition(0, 0);
-    m_scoreText.setPosition(10, 10);
-    m_heightText.setPosition(100, 10);
-    m_pauseButton.setPosition(700, 10);
-    m_pauseText.setPosition(705, 12);
-}
-
-void Sidebar::draw(sf::RenderWindow& window)
+void BaseSidebar::draw(sf::RenderWindow& window)
 {
     window.draw(m_background);
     window.draw(m_scoreText);
@@ -72,7 +49,7 @@ void Sidebar::draw(sf::RenderWindow& window)
     }
 }
 
-bool Sidebar::isPaused(sf::Vector2i mousePos)
+bool BaseSidebar::isPaused(sf::Vector2i mousePos)
 {
     return m_pauseButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }

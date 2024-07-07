@@ -25,7 +25,7 @@ private:
 
     Player m_player2;
     Map m_map2;
-    Sidebar m_sidebar2;
+    SinglePlayerSidebar m_sidebar2;
 
     sf::View m_leftView;
     sf::View m_rightView;

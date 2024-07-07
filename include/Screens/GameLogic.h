@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "BaseScreen.h"
-#include "Sidebar.h"
+#include "BaseSidebar.h"
 #include "Singleton.h"
 #include "LogicBase.h"
 

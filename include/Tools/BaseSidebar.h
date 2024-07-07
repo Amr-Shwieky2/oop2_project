@@ -3,15 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class Sidebar {
+class BaseSidebar {
 public:
-    Sidebar(float width, float height);
+    BaseSidebar(float width, float height);
 
-    void update(int score, int height, int lives);
-    void draw(sf::RenderWindow& window);
+    virtual void update(int score, int height, int lives) = 0;
+    virtual void draw(sf::RenderWindow& window);
     bool isPaused(sf::Vector2i mousePos);
 
-private:
+protected:
     sf::RectangleShape m_background;
     sf::Text m_scoreText;
     sf::Text m_heightText;
@@ -23,4 +23,3 @@ private:
     float m_sidebarWidth;
     float m_sidebarHeight;
 };
-

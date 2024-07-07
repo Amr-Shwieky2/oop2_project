@@ -21,7 +21,7 @@ void GenericLogic::initialize(sf::RenderWindow& window, Player& player, Map& map
 }
 
 void GenericLogic::update(float deltaTime, sf::RenderWindow& window,
-    Player& player, Map& map, Sidebar& bar, bool& end)
+    Player& player, Map& map, BaseSidebar& bar, bool& end)
 {
     
     map.collision(player, deltaTime);
@@ -40,7 +40,7 @@ void GenericLogic::CenterView(sf::RenderWindow& window, Player& player)
 }
 
 void GenericLogic::render(sf::RenderWindow& window, Player& player,
-    Map& map, Sidebar& bar, sf::Sprite& screen)
+    Map& map, BaseSidebar& bar, sf::Sprite& screen)
 {
     window.clear();
 
